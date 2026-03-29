@@ -18,10 +18,10 @@ const navLinks = [
 ];
 
 const socialLinks = [
-  { icon: Instagram, href: "https://instagram.com", label: "Instagram" },
+  { icon: Instagram, href: "https://www.instagram.com/fatih.yc8/", label: "Instagram" },
   { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
-  { icon: Github, href: "https://github.com", label: "GitHub" },
-  { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
+  { icon: Github, href: "https://github.com/fatihemreyuce", label: "GitHub" },
+  { icon: Linkedin, href: "https://www.linkedin.com/in/fatih-emre-y%C3%BCce-3b0538355/", label: "LinkedIn" },
 ];
 
 export function Header() {

@@ -23,10 +23,10 @@ import { Instagram, Github, Linkedin, Twitter } from "@/components/icons/social"
 /* ─── Contact info card (3-D tilt) ──────────────────── */
 
 const socialLinks = [
-  { icon: Github,    href: "https://github.com",    label: "GitHub",    color: "#e4e4e7" },
-  { icon: Linkedin,  href: "https://linkedin.com",  label: "LinkedIn",  color: "#60a5fa" },
+  { icon: Github,    href: "https://github.com/fatihemreyuce", label: "GitHub",    color: "#e4e4e7" },
+  { icon: Linkedin,  href: "https://www.linkedin.com/in/fatih-emre-y%C3%BCce-3b0538355/", label: "LinkedIn",  color: "#60a5fa" },
   { icon: Twitter,   href: "https://twitter.com",   label: "Twitter",   color: "#38BDF8" },
-  { icon: Instagram, href: "https://instagram.com", label: "Instagram", color: "#f472b6" },
+  { icon: Instagram, href: "https://www.instagram.com/fatih.yc8/", label: "Instagram", color: "#f472b6" },
 ];
 
 function InfoCard() {

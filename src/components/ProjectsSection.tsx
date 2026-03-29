@@ -362,7 +362,7 @@ export function ProjectsSection() {
             <span>
               Daha fazla proje{" "}
               <a
-                href="https://github.com"
+                href="https://github.com/fatihemreyuce"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-zinc-300 hover:text-white underline underline-offset-4 decoration-white/20 hover:decoration-white/60 transition-all duration-200 inline-flex items-center gap-1"
