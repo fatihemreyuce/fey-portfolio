@@ -9,12 +9,12 @@ import { Button } from "@/components/ui/button";
 import { AnimatedGradientText } from "@/components/magicui/animated-gradient-text";
 
 const navLinks = [
-  { label: "Hakkımda",  href: "/#about"      },
+  { label: "Hakkımda",  href: "/about"    },
   { label: "Deneyim",   href: "/#experience" },
-  { label: "Projeler",  href: "/#projects"   },
-  { label: "Beceriler", href: "/#skills"     },
-  { label: "Hobiler",   href: "/#hobbies"    },
-  { label: "İletişim",  href: "/#contact"    },
+  { label: "Projeler",  href: "/projects" },
+  { label: "Beceriler", href: "/skills"   },
+  { label: "Hobiler",   href: "/hobbies"  },
+  { label: "İletişim",  href: "/#contact" },
 ];
 
 const socialLinks = [

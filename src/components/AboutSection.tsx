@@ -22,6 +22,7 @@ import {
   Rocket,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { TypewriterGradientText } from "@/components/magicui/typewriter-gradient-text";
 import { Meteors } from "@/components/magicui/meteors";
@@ -512,6 +513,17 @@ export function AboutSection() {
                   <ArrowRight className="w-4 h-4" />
                   İletişime Geç
                 </a>
+              </Button>
+
+              <Button
+                variant="outline"
+                asChild
+                className="rounded-xl border-white/10 bg-white/[0.03] text-zinc-300 hover:border-blue-500/30 hover:text-white hover:bg-blue-500/10 px-6 text-sm font-semibold transition-all duration-300 gap-2"
+              >
+                <Link href="/about">
+                  <Sparkles className="w-4 h-4" />
+                  Hakkımda Daha Fazla
+                </Link>
               </Button>
 
               <Button

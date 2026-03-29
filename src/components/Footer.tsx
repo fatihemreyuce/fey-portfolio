@@ -14,18 +14,18 @@ const navColumns = [
   {
     title: "Gezinti",
     links: [
-      { label: "Hakkımda",  href: "/#about"      },
+      { label: "Hakkımda",  href: "/about"       },
       { label: "Deneyim",   href: "/#experience" },
-      { label: "Projeler",  href: "/#projects"   },
-      { label: "Beceriler", href: "/#skills"     },
+      { label: "Projeler",  href: "/projects"    },
+      { label: "Beceriler", href: "/skills"      },
     ],
   },
   {
     title: "Keşfet",
     links: [
-      { label: "Hobiler",   href: "/#hobbies"  },
-      { label: "SSS",       href: "/#faq"      },
-      { label: "İletişim",  href: "/#contact"  },
+      { label: "Hobiler",   href: "/hobbies"  },
+      { label: "SSS",       href: "/#faq"     },
+      { label: "İletişim",  href: "/#contact" },
     ],
   },
 ];
