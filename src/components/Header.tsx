@@ -9,12 +9,12 @@ import { Button } from "@/components/ui/button";
 import { AnimatedGradientText } from "@/components/magicui/animated-gradient-text";
 
 const navLinks = [
-  { label: "Hakkımda",  href: "#about"      },
-  { label: "Deneyim",   href: "#experience" },
-  { label: "Projeler",  href: "#projects"   },
-  { label: "Beceriler", href: "#skills"     },
-  { label: "Hobiler",   href: "#hobbies"    },
-  { label: "İletişim",  href: "#contact"    },
+  { label: "Hakkımda",  href: "/#about"      },
+  { label: "Deneyim",   href: "/#experience" },
+  { label: "Projeler",  href: "/#projects"   },
+  { label: "Beceriler", href: "/#skills"     },
+  { label: "Hobiler",   href: "/#hobbies"    },
+  { label: "İletişim",  href: "/#contact"    },
 ];
 
 const socialLinks = [
@@ -33,7 +33,7 @@ export function Header() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
 
-      const sections = navLinks.map((l) => l.href.replace("#", ""));
+      const sections = navLinks.map((l) => l.href.replace("/#", ""));
       for (const section of sections.reverse()) {
         const el = document.getElementById(section);
         if (el && window.scrollY >= el.offsetTop - 120) {
@@ -80,7 +80,7 @@ export function Header() {
             {/* Desktop Nav */}
             <nav className="hidden md:flex items-center gap-1">
               {navLinks.map((link) => {
-                const sectionId = link.href.replace("#", "");
+                const sectionId = link.href.replace("/#", "");
                 const isActive = activeSection === sectionId;
                 return (
                   <Link
@@ -131,7 +131,7 @@ export function Header() {
                 asChild
                 className="relative overflow-hidden rounded-lg bg-gradient-to-r from-blue-600 to-emerald-600 px-5 py-2 text-sm font-semibold text-white shadow-[0_0_20px_rgba(59,130,246,0.25)] transition-all duration-300 hover:shadow-[0_0_28px_rgba(59,130,246,0.45)] hover:scale-[1.02] border-0"
               >
-                <a href="#contact">İletişime Geç</a>
+                <a href="/#contact">İletişime Geç</a>
               </Button>
             </div>
 
@@ -189,7 +189,7 @@ export function Header() {
                 asChild
                 className="w-full rounded-lg bg-gradient-to-r from-blue-600 to-emerald-600 text-sm font-semibold text-white border-0 hover:opacity-90"
               >
-                <a href="#contact" onClick={() => setIsMenuOpen(false)}>
+                <a href="/#contact" onClick={() => setIsMenuOpen(false)}>
                   İletişime Geç
                 </a>
               </Button>
