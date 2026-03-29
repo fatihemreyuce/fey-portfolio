@@ -396,21 +396,26 @@ export function AboutSection() {
       className="relative min-h-screen flex items-center py-24 overflow-hidden border-b border-white/5"
     >
       {/* ── Background ── */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
-        <div className="absolute top-1/4 -left-20 w-[520px] h-[520px] rounded-full bg-blue-600/[0.05] blur-3xl" />
-        <div className="absolute bottom-1/4 -right-20 w-[420px] h-[420px] rounded-full bg-emerald-600/[0.05] blur-3xl" />
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden>
+        <div className="absolute top-1/4 -left-20 h-[520px] w-[520px] rounded-full bg-blue-600/[0.05] blur-3xl" />
+        <div className="absolute bottom-1/4 -right-20 h-[420px] w-[420px] rounded-full bg-emerald-600/[0.05] blur-3xl" />
         <div
           className="absolute inset-0 opacity-[0.025]"
           style={{
             backgroundImage: "radial-gradient(circle, #60a5fa 1px, transparent 1px)",
-            backgroundSize:  "30px 30px",
+            backgroundSize: "30px 30px",
           }}
         />
-        {/* Section-wide meteors — simetrik çiftler; yatay şerit kaldırıldı (meteorlarla çarpışan asimetrik görünüm) */}
-        <Meteors number={14} symmetric />
+      </div>
+      {/* Meteorlar mobilde metin sütununa taşıyordu — üst / sol alanda kırpılır; lg+ tam bölüm */}
+      <div
+        className="pointer-events-none absolute z-0 overflow-hidden max-lg:left-0 max-lg:right-0 max-lg:top-0 max-lg:h-[min(56vh,500px)] lg:inset-0"
+        aria-hidden
+      >
+        <Meteors number={12} symmetric />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-6xl w-full px-4 sm:px-6 lg:px-8">
+      <div className="relative z-20 mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
 
           {/* ── Left: 3D Profile Card — lg’de sola hizalı; header logosu ile aynı iç kenar */}
@@ -427,7 +432,7 @@ export function AboutSection() {
 
           {/* ── Right: Content ── */}
           <div
-            className="space-y-8"
+            className="min-w-0 space-y-8"
             style={{
               opacity:    visible ? 1 : 0,
               transform:  visible ? "none" : "translateX(44px)",
@@ -442,22 +447,22 @@ export function AboutSection() {
               </span>
             </div>
 
-            {/* Headline */}
+            {/* Headline — br yerine flex + gap-0: mobilde fazla satır aralığı azalır */}
             <h2
-              className="text-4xl sm:text-[2.75rem] font-bold leading-[1.15] tracking-tight"
+              className="flex min-w-0 flex-col gap-0 text-4xl font-bold leading-[1.06] tracking-tight sm:text-[2.75rem] sm:leading-[1.12]"
               aria-label="Kod Yazan; vurgu metni dönüşümlü: ürün, detay, performans ve deneyim odaklı ifadeler. Geliştirici."
             >
               <span className="text-white">Kod Yazan,</span>
-              <br />
-              <TypewriterGradientText
-                phrases={ABOUT_HEADLINE_PHRASES}
-                active={visible}
-                className="text-4xl sm:text-[2.75rem] font-bold"
-                msPerChar={68}
-                msDeletePerChar={36}
-                pauseAfterTypeMs={2600}
-              />
-              <br />
+              <span className="min-h-0 min-w-0 leading-[1.06] sm:leading-[1.12]">
+                <TypewriterGradientText
+                  phrases={ABOUT_HEADLINE_PHRASES}
+                  active={visible}
+                  className="text-4xl font-bold sm:text-[2.75rem]"
+                  msPerChar={68}
+                  msDeletePerChar={36}
+                  pauseAfterTypeMs={2600}
+                />
+              </span>
               <span className="text-white">Geliştirici</span>
             </h2>
 

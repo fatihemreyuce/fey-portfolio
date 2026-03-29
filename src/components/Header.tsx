@@ -49,12 +49,9 @@ export function Header() {
 
   return (
     <>
-      {/* Glow line at top */}
-      <div className="fixed top-0 left-0 right-0 z-50 h-[2px] bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-80" />
-
       <header
         className={cn(
-          "fixed top-0 left-0 right-0 z-40 mt-[2px] transition-all duration-500",
+          "fixed top-0 left-0 right-0 z-40 transition-all duration-500",
           isScrolled
             ? "bg-black/80 backdrop-blur-xl border-b border-white/5 shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
             : "bg-transparent",
@@ -200,8 +197,8 @@ export function Header() {
         </div>
       </header>
 
-      {/* Spacer */}
-      <div className="h-[66px]" />
+      {/* Spacer — header yüksekliği (h-16) */}
+      <div className="h-16" />
     </>
   );
 }

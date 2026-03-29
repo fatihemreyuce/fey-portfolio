@@ -84,15 +84,16 @@ export function TypewriterGradientText({
 
   if (phrases.length === 0) return null;
 
+  /* Invisible width sample wrapped on narrow screens and reserved 2–3 lines → huge gap under short typed text. */
   return (
-    <span className="inline-grid align-middle [grid-template-areas:'stack']">
+    <span className="grid min-h-0 min-w-0 w-full [grid-template-areas:'stack'] align-middle leading-[inherit]">
       <span
-        className="invisible [grid-area:stack] select-none pointer-events-none font-[inherit]"
+        className="invisible [grid-area:stack] line-clamp-1 min-h-0 min-w-0 w-full select-none break-words font-[inherit] leading-[inherit] pointer-events-none"
         aria-hidden
       >
         {widthSample}
       </span>
-      <span className="[grid-area:stack] font-[inherit]">
+      <span className="min-h-0 min-w-0 [grid-area:stack] w-full font-[inherit] leading-[inherit]">
         <span className={cn(gradient, className)}>{slice}</span>
         {showCaret && (
           <span
