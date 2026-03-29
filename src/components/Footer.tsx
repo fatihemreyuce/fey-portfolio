@@ -307,7 +307,7 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative overflow-hidden border-t border-white/[0.06] bg-[#050505]">
+    <footer className="relative overflow-hidden bg-[#050505]">
 
       {/* ── Background layers ── */}
       <FloatingOrbs />
@@ -323,8 +323,6 @@ export function Footer() {
             backgroundSize:  "32px 32px",
           }}
         />
-        {/* Top fade-in line */}
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent" />
       </div>
 
       {/* ── Main content ── */}
@@ -423,9 +421,7 @@ export function Footer() {
         </div>
 
         {/* ── Divider ── */}
-        <div className="relative h-px bg-white/[0.05]">
-          <div className="absolute left-1/2 -translate-x-1/2 -top-px h-px w-32 bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
-        </div>
+        <div className="h-px bg-white/[0.05]" />
 
         {/* ── Bottom bar ── */}
         <div className="py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
