@@ -150,14 +150,16 @@ export function Header() {
           </div>
         </div>
 
-        {/* Mobile menu */}
+        {/* Mobile menu — max-h-96 was clipping the CTA; use viewport cap + scroll */}
         <div
           className={cn(
-            "md:hidden overflow-hidden transition-all duration-300 ease-in-out",
-            isMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0",
+            "md:hidden overflow-hidden transition-[max-height,opacity] duration-300 ease-in-out",
+            isMenuOpen
+              ? "max-h-[min(calc(100dvh-4.5rem),32rem)] opacity-100"
+              : "max-h-0 opacity-0 pointer-events-none",
           )}
         >
-          <div className="border-t border-white/5 bg-black/90 backdrop-blur-xl px-4 py-4 space-y-1">
+          <div className="max-h-[min(calc(100dvh-4.5rem),32rem)] overflow-y-auto overscroll-contain border-t border-white/5 bg-black/90 backdrop-blur-xl px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] space-y-1">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
