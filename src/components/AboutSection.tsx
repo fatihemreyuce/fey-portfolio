@@ -114,15 +114,10 @@ function ProfileCard3D() {
   return (
     <div className="relative flex items-center justify-center" style={{ width: 340, height: 480 }}>
 
-      {/* Meteors inside card container */}
-      <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
-        <Meteors number={10} />
-      </div>
-
-      {/* Rotating rings */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="absolute w-[330px] h-[330px] rounded-full border border-blue-500/10 animate-spin-slow" />
-        <div className="absolute w-[278px] h-[278px] rounded-full border border-emerald-500/[0.07] animate-spin-reverse" />
+      {/* Rotating rings — kartın arkasında */}
+      <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
+        <div className="absolute w-[330px] h-[330px] rounded-full border border-blue-500/[0.08] animate-spin-slow" />
+        <div className="absolute w-[278px] h-[278px] rounded-full border border-emerald-500/[0.06] animate-spin-reverse" />
         {([0, 72, 144, 216, 288] as const).map((deg) => {
           const pos = RING_DOT_POSITIONS[deg];
           return (
@@ -141,7 +136,7 @@ function ProfileCard3D() {
         return (
           <div
             key={i}
-            className="absolute z-20 flex items-center justify-center w-10 h-10 rounded-xl bg-zinc-900/95 border border-white/10 shadow-lg animate-float pointer-events-none"
+            className="absolute z-[8] flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.09] bg-zinc-950/90 shadow-lg backdrop-blur-sm animate-float pointer-events-none"
             style={{
               top:            pos.top,
               left:           pos.left,
@@ -154,22 +149,22 @@ function ProfileCard3D() {
         );
       })}
 
-      {/* Ambient glow behind card */}
+      {/* Ambient glow — halkalar ile kart arası */}
       <div
         className={cn(
-          "absolute w-64 h-80 rounded-3xl blur-3xl pointer-events-none transition-all duration-700",
+          "absolute z-[5] h-80 w-64 rounded-3xl blur-3xl pointer-events-none transition-all duration-700",
           "bg-gradient-to-br from-blue-600/10 via-transparent to-emerald-600/10",
           hovered && "from-blue-600/22 to-emerald-600/22",
         )}
       />
 
-      {/* The 3D card */}
+      {/* The 3D card — yörünge ikonlarının üstünde; yarı saydam satırlara görünmez */}
       <div
         ref={cardRef}
         onMouseMove={onMove}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={onLeave}
-        className="relative z-10 w-64 rounded-3xl overflow-hidden border border-white/10 bg-zinc-900/90 backdrop-blur-xl shadow-2xl cursor-pointer"
+        className="relative z-30 w-64 cursor-pointer overflow-hidden rounded-3xl border border-white/[0.09] bg-zinc-950/95 shadow-[0_24px_48px_-12px_rgba(0,0,0,0.65)] backdrop-blur-xl"
         style={{
           transform:      `perspective(900px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${hovered ? 1.03 : 1})`,
           transition:     hovered ? "transform 0.1s ease-out" : "transform 0.55s ease-out",
@@ -177,30 +172,39 @@ function ProfileCard3D() {
         }}
       >
         {/* ── Header: avatar area ── */}
-        <div className="relative h-52 flex items-center justify-center overflow-hidden">
+        <div className="relative flex h-52 items-center justify-center overflow-hidden">
           {/* BG gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-indigo-950/70 to-emerald-950" />
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-indigo-950/80 to-emerald-950" />
 
           {/* Grid */}
           <div
-            className="absolute inset-0 opacity-[0.18]"
+            className="absolute inset-0 opacity-[0.14]"
             style={{
               backgroundImage:
-                "linear-gradient(rgba(59,130,246,0.35) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.35) 1px, transparent 1px)",
+                "linear-gradient(rgba(59,130,246,0.28) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.28) 1px, transparent 1px)",
               backgroundSize: "20px 20px",
             }}
           />
 
           {/* Ambient orbs */}
-          <div className="absolute top-0 left-0 w-24 h-24 bg-blue-500/20 blur-2xl animate-glow-pulse" />
+          <div className="absolute left-0 top-0 h-24 w-24 animate-glow-pulse rounded-full bg-blue-500/18 blur-2xl" />
           <div
-            className="absolute bottom-0 right-0 w-28 h-28 bg-emerald-500/20 blur-2xl animate-glow-pulse"
+            className="absolute bottom-0 right-0 h-28 w-28 animate-glow-pulse rounded-full bg-emerald-500/18 blur-2xl"
             style={{ animationDelay: "1.5s" }}
+          />
+
+          {/* Hafif üstten ışık — meteor yerine sakin derinlik */}
+          <div
+            className="pointer-events-none absolute inset-0 opacity-50"
+            style={{
+              background:
+                "radial-gradient(ellipse 85% 70% at 50% -20%, rgba(96,165,250,0.22), transparent 55%)",
+            }}
           />
 
           {/* Initials avatar */}
           <div
-            className="relative z-10 w-24 h-24 rounded-2xl flex items-center justify-center text-3xl font-black text-white select-none"
+            className="relative z-10 flex h-24 w-24 select-none items-center justify-center rounded-2xl text-3xl font-black text-white"
             style={{
               transform:  "translateZ(32px)",
               background: "linear-gradient(135deg, #3b82f6 0%, #10b981 100%)",
@@ -215,12 +219,9 @@ function ProfileCard3D() {
             </div>
           </div>
 
-          {/* Meteors inside card header */}
-          <Meteors number={8} className="opacity-40" />
-
           {/* Scanlines */}
           <div
-            className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-40"
+            className="pointer-events-none absolute inset-0 mix-blend-overlay opacity-[0.32]"
             style={{
               backgroundImage:
                 "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(59,130,246,0.06) 2px, rgba(59,130,246,0.06) 4px)",
@@ -229,18 +230,18 @@ function ProfileCard3D() {
         </div>
 
         {/* ── Body ── */}
-        <div className="p-5 space-y-4" style={{ transform: "translateZ(20px)" }}>
+        <div className="relative z-10 space-y-4 p-5" style={{ transform: "translateZ(20px)" }}>
           {/* Name & role */}
           <div className="text-center">
-            <p className="font-bold text-white text-base">Fatih Emre Yüce</p>
-            <p className="text-[11px] text-blue-400 font-semibold tracking-[0.2em] uppercase mt-1">
+            <p className="text-base font-bold text-white">Fatih Emre Yüce</p>
+            <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-blue-400/95">
               Frontend Developer
             </p>
           </div>
 
           {/* Available badge */}
           <div className="flex justify-center">
-            <div className="flex items-center gap-2 py-1.5 px-4 rounded-full border border-emerald-500/25 bg-emerald-500/10">
+            <div className="flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-4 py-1.5">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
@@ -249,7 +250,7 @@ function ProfileCard3D() {
             </div>
           </div>
 
-          {/* Info rows */}
+          {/* Info rows — opak zemin, alttaki dekorasyon görünmez */}
           <div className="space-y-2">
             {[
               { icon: MapPin,   text: "Türkiye" },
@@ -258,10 +259,12 @@ function ProfileCard3D() {
             ].map(({ icon: Icon, text }) => (
               <div
                 key={text}
-                className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white/[0.04] border border-white/[0.06] hover:bg-white/[0.07] transition-colors"
+                className="flex items-center gap-3 rounded-xl border border-white/[0.07] bg-zinc-900/85 px-3.5 py-2.5 transition-colors hover:border-white/12 hover:bg-zinc-900/95"
               >
-                <Icon className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
-                <span className="text-xs text-zinc-400">{text}</span>
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white/[0.05]">
+                  <Icon className="h-3.5 w-3.5 text-zinc-400" />
+                </span>
+                <span className="text-xs font-medium text-zinc-300">{text}</span>
               </div>
             ))}
           </div>
