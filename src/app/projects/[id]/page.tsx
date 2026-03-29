@@ -37,9 +37,24 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 /* ─── Status helpers ─────────────────────────────────── */
 
 const STATUS_MAP = {
-  live:        { label: "Yayında",     Icon: Radio,        color: "text-emerald-400 border-emerald-500/25 bg-emerald-500/10" },
-  completed:   { label: "Tamamlandı",  Icon: CheckCircle2, color: "text-blue-400 border-blue-500/25 bg-blue-500/10"          },
-  development: { label: "Geliştirme",  Icon: Clock,        color: "text-amber-400 border-amber-500/25 bg-amber-500/10"       },
+  live: {
+    label: "Yayında",
+    Icon: Radio,
+    color:
+      "text-emerald-900 border-emerald-400/70 bg-emerald-100/95 dark:text-emerald-400 dark:border-emerald-500/25 dark:bg-emerald-500/10",
+  },
+  completed: {
+    label: "Tamamlandı",
+    Icon: CheckCircle2,
+    color:
+      "text-blue-900 border-blue-400/70 bg-blue-100/95 dark:text-blue-400 dark:border-blue-500/25 dark:bg-blue-500/10",
+  },
+  development: {
+    label: "Geliştirme",
+    Icon: Clock,
+    color:
+      "text-amber-900 border-amber-400/70 bg-amber-100/95 dark:text-amber-400 dark:border-amber-500/25 dark:bg-amber-500/10",
+  },
 } as const;
 
 /* ─── Page ──────────────────────────────────────────── */
@@ -59,7 +74,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
       <main className="flex flex-1 flex-col">
 
         {/* ── Hero ─────────────────────────────────────── */}
-        <section className="relative overflow-hidden border-b border-white/5 pt-16 pb-20">
+        <section className="relative overflow-hidden border-b border-zinc-200 dark:border-white/5 pt-16 pb-20">
 
           {/* Background */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -142,7 +157,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                       {status.label}
                     </div>
                   )}
-                  <div className="flex items-center gap-1.5 text-xs text-zinc-500 px-2.5 py-1 rounded-full border border-white/5 bg-white/[0.03]">
+                  <div className="flex items-center gap-1.5 rounded-full border border-zinc-200/90 bg-slate-50 px-2.5 py-1 text-xs text-zinc-500 dark:border-white/5 dark:bg-white/[0.03]">
                     <Calendar className="w-3 h-3" />
                     {project.year}
                   </div>

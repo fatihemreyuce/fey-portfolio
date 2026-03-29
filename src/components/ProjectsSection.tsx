@@ -15,7 +15,7 @@ import {
 import { Github } from "@/components/icons/social";
 import { AnimatedGradientText } from "@/components/magicui/animated-gradient-text";
 import { Meteors } from "@/components/magicui/meteors";
-import { cn } from "@/lib/utils";
+import { cn, hexNeedsForcedDarkText } from "@/lib/utils";
 import { projects, type Project } from "@/data/projects";
 
 /* ─── constants ─────────────────────────────────────── */
@@ -23,9 +23,24 @@ import { projects, type Project } from "@/data/projects";
 const CATEGORIES = ["Tümü", "Fullstack", "Frontend", "Backend"] as const;
 
 const STATUS_MAP = {
-  live:        { label: "Yayında",     icon: Radio,         color: "text-emerald-400 border-emerald-500/25 bg-emerald-500/10" },
-  completed:   { label: "Tamamlandı",  icon: CheckCircle2,  color: "text-blue-400 border-blue-500/25 bg-blue-500/10"          },
-  development: { label: "Geliştirme",  icon: Clock,         color: "text-amber-400 border-amber-500/25 bg-amber-500/10"       },
+  live: {
+    label: "Yayında",
+    icon: Radio,
+    color:
+      "text-emerald-900 border-emerald-400/70 bg-emerald-100/95 dark:text-emerald-400 dark:border-emerald-500/25 dark:bg-emerald-500/10",
+  },
+  completed: {
+    label: "Tamamlandı",
+    icon: CheckCircle2,
+    color:
+      "text-blue-900 border-blue-400/70 bg-blue-100/95 dark:text-blue-400 dark:border-blue-500/25 dark:bg-blue-500/10",
+  },
+  development: {
+    label: "Geliştirme",
+    icon: Clock,
+    color:
+      "text-amber-900 border-amber-400/70 bg-amber-100/95 dark:text-amber-400 dark:border-amber-500/25 dark:bg-amber-500/10",
+  },
 } as const;
 
 /* ─── ProjectCard ────────────────────────────────────── */
@@ -34,7 +49,6 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
   const cardRef            = useRef<HTMLDivElement>(null);
   const [tilt, setTilt]    = useState({ x: 0, y: 0 });
   const [hovered, setHov]  = useState(false);
-
   const onMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const rect = cardRef.current?.getBoundingClientRect();
     if (!rect) return;
@@ -61,15 +75,17 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       onMouseMove={onMove}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={onLeave}
-      className="relative group flex h-full flex-col rounded-2xl border border-white/[0.07] bg-zinc-900/60 backdrop-blur-sm overflow-hidden cursor-pointer"
+      className="relative group flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/95 shadow-md backdrop-blur-sm dark:border-white/[0.07] dark:bg-zinc-900/60 dark:shadow-[0_4px_24px_rgba(0,0,0,0.4)]"
       style={{
         transform:      `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${hovered ? 1.02 : 1})`,
         transition:     hovered ? "transform 0.12s ease-out" : "transform 0.5s ease-out",
         transformStyle: "preserve-3d",
         animationDelay: `${index * 0.1}s`,
-        boxShadow: hovered
-          ? `0 20px 60px ${project.accent.from}22, 0 0 0 1px ${project.accent.from}30`
-          : "0 4px 24px rgba(0,0,0,0.4)",
+        ...(hovered
+          ? {
+              boxShadow: `0 20px 60px ${project.accent.from}22, 0 0 0 1px ${project.accent.from}30`,
+            }
+          : {}),
       }}
     >
       {/* Meteors inside card */}
@@ -119,12 +135,12 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                 boxShadow:  `0 0 20px ${project.accent.from}40`,
               }}
             >
-              <Icon className="w-5 h-5 text-white" />
+              <Icon className="h-5 w-5 !text-white" />
             </div>
 
             {/* Category */}
             <span
-              className="text-[11px] font-bold px-2.5 py-1 rounded-lg border border-white/10 bg-black/30 backdrop-blur-sm"
+              className="rounded-lg border border-white/40 bg-white/25 px-2.5 py-1 text-[11px] font-bold shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-black/30 dark:shadow-none"
               style={{ color: project.accent.from }}
             >
               {project.category}
@@ -148,12 +164,12 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       >
         {/* Title + year */}
         <div className="flex items-start justify-between gap-2 shrink-0">
-          <h3 className="text-base font-bold text-white leading-snug">{project.title}</h3>
-          <span className="text-[11px] text-zinc-600 shrink-0 mt-0.5">{project.year}</span>
+          <h3 className="text-base font-bold leading-snug text-zinc-900 dark:text-white">{project.title}</h3>
+          <span className="mt-0.5 shrink-0 text-[11px] text-zinc-500 dark:text-zinc-600">{project.year}</span>
         </div>
 
         {/* Description — fixed block height so rows align across cards */}
-        <p className="text-sm text-zinc-400 leading-relaxed line-clamp-3 min-h-[4.5rem] shrink-0">
+        <p className="line-clamp-3 min-h-[4.5rem] shrink-0 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
           {project.shortDesc}
         </p>
 
@@ -162,14 +178,17 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           {project.techs.slice(0, 4).map((tech) => (
             <span
               key={tech.name}
-              className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-white/[0.05] border border-white/[0.07]"
+              className={cn(
+                "project-tech-pill rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[10px] font-medium dark:border-white/[0.07] dark:bg-white/[0.05]",
+                hexNeedsForcedDarkText(tech.color) && "project-tech-pill--force-dark",
+              )}
               style={{ color: tech.color }}
             >
               {tech.name}
             </span>
           ))}
           {project.techs.length > 4 && (
-            <span className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-white/[0.05] border border-white/[0.07] text-zinc-500">
+            <span className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[10px] font-medium text-zinc-600 dark:border-white/[0.07] dark:bg-white/[0.05] dark:text-zinc-500">
               +{project.techs.length - 4}
             </span>
           )}
@@ -186,9 +205,9 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="flex items-center justify-center w-8 h-8 rounded-lg border border-white/10 bg-white/[0.04] text-zinc-400 hover:text-white hover:border-white/20 hover:bg-white/[0.08] transition-all duration-200"
+              className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-100 bg-zinc-50/80 text-zinc-600 shadow-sm transition-all duration-200 hover:border-zinc-200 hover:bg-zinc-100/80 hover:text-zinc-900 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-none dark:hover:border-white/20 dark:hover:bg-white/[0.08] dark:hover:text-white"
             >
-              <Github className="w-4 h-4" />
+              <Github className="h-4 w-4" />
             </a>
           )}
           {project.liveUrl && (
@@ -197,9 +216,9 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="flex items-center justify-center w-8 h-8 rounded-lg border border-white/10 bg-white/[0.04] text-zinc-400 hover:text-white hover:border-white/20 hover:bg-white/[0.08] transition-all duration-200"
+              className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-100 bg-zinc-50/80 text-zinc-600 shadow-sm transition-all duration-200 hover:border-zinc-200 hover:bg-zinc-100/80 hover:text-zinc-900 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-none dark:hover:border-white/20 dark:hover:bg-white/[0.08] dark:hover:text-white"
             >
-              <ExternalLink className="w-4 h-4" />
+              <ExternalLink className="h-4 w-4" />
             </a>
           )}
         </div>
@@ -207,7 +226,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         {/* Detail link */}
         <Link
           href={`/projects/${project.id}`}
-          className="group/btn flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-xl border border-white/10 bg-white/[0.04] text-zinc-300 hover:text-white hover:bg-white/[0.08] hover:border-white/20 transition-all duration-200"
+          className="group/btn flex items-center gap-1.5 rounded-xl border border-zinc-100 bg-zinc-50/80 px-4 py-2 text-xs font-semibold text-zinc-700 shadow-sm transition-all duration-200 hover:border-zinc-200 hover:bg-zinc-100/80 hover:text-zinc-950 dark:border-white/10 dark:bg-white/[0.04] dark:text-zinc-300 dark:shadow-none dark:hover:border-white/20 dark:hover:bg-white/[0.08] dark:hover:text-white"
           onClick={(e) => e.stopPropagation()}
         >
           Detaylar
@@ -254,7 +273,7 @@ export function ProjectsSection() {
     <section
       ref={ref}
       id="projects"
-      className="relative py-24 overflow-hidden border-b border-white/5"
+      className="relative py-24 overflow-hidden border-b border-zinc-200 dark:border-white/5"
     >
       {/* ── Background ── */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
@@ -289,7 +308,7 @@ export function ProjectsSection() {
           </div>
 
           <h2 className="text-4xl sm:text-[2.75rem] font-bold leading-[1.15] tracking-tight">
-            <span className="text-white">Üzerinde Çalıştığım</span>
+            <span className="text-zinc-900 dark:text-white">Üzerinde Çalıştığım</span>
             <br />
             <AnimatedGradientText className="text-4xl sm:text-[2.75rem] font-bold">
               Seçkin Projeler
@@ -311,20 +330,20 @@ export function ProjectsSection() {
             transition: "opacity 0.6s ease 0.1s, transform 0.6s ease 0.1s",
           }}
         >
-          <div className="inline-flex items-center gap-1 p-1 rounded-xl border border-white/[0.07] bg-white/[0.03]">
+          <div className="inline-flex items-center gap-1 rounded-xl border border-zinc-200 bg-slate-100 p-1 dark:border-white/[0.07] dark:bg-white/[0.03]">
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setFilter(cat)}
                 className={cn(
-                  "relative px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200",
+                  "relative rounded-lg px-5 py-2 text-sm font-medium transition-all duration-200",
                   filter === cat
-                    ? "text-white"
-                    : "text-zinc-500 hover:text-zinc-300",
+                    ? "text-zinc-900 dark:text-white"
+                    : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-300",
                 )}
               >
                 {filter === cat && (
-                  <span className="absolute inset-0 rounded-lg bg-white/[0.08] border border-white/10" />
+                  <span className="absolute inset-0 rounded-lg border border-zinc-300 bg-white dark:border-white/10 dark:bg-white/[0.08]" />
                 )}
                 <span className="relative">{cat}</span>
               </button>
@@ -357,18 +376,18 @@ export function ProjectsSection() {
             transition: "opacity 0.6s ease 0.5s",
           }}
         >
-          <div className="flex items-center gap-3 text-sm text-zinc-500">
-            <Sparkles className="w-4 h-4 text-violet-400" />
+          <div className="flex items-center gap-3 text-sm text-zinc-600 dark:text-zinc-500">
+            <Sparkles className="h-4 w-4 text-violet-500 dark:text-violet-400" />
             <span>
               Daha fazla proje{" "}
               <a
                 href="https://github.com/fatihemreyuce"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-zinc-300 hover:text-white underline underline-offset-4 decoration-white/20 hover:decoration-white/60 transition-all duration-200 inline-flex items-center gap-1"
+                className="inline-flex items-center gap-1 text-violet-600 underline decoration-violet-200 underline-offset-4 transition-all duration-200 hover:text-violet-800 hover:decoration-violet-400 dark:text-zinc-300 dark:decoration-white/20 dark:hover:text-white dark:hover:decoration-white/60"
               >
                 GitHub&apos;da
-                <ArrowRight className="w-3.5 h-3.5" />
+                <ArrowRight className="h-3.5 w-3.5" />
               </a>
             </span>
           </div>

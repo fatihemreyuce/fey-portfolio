@@ -3,10 +3,12 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X, Code2 } from "lucide-react";
-import { Instagram, Twitter, Github, Linkedin } from "@/components/icons/social";
+import { BrandSocialIconLink } from "@/components/BrandSocialIconLink";
+import { brandSocialLinksHeader } from "@/data/brand-social-links";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { AnimatedGradientText } from "@/components/magicui/animated-gradient-text";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const navLinks = [
   { label: "Hakkımda",  href: "/about"    },
@@ -15,13 +17,6 @@ const navLinks = [
   { label: "Beceriler", href: "/skills"   },
   { label: "Hobiler",   href: "/hobbies"  },
   { label: "İletişim",  href: "/#contact" },
-];
-
-const socialLinks = [
-  { icon: Instagram, href: "https://www.instagram.com/fatih.yc8/", label: "Instagram" },
-  { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
-  { icon: Github, href: "https://github.com/fatihemreyuce", label: "GitHub" },
-  { icon: Linkedin, href: "https://www.linkedin.com/in/fatih-emre-y%C3%BCce-3b0538355/", label: "LinkedIn" },
 ];
 
 export function Header() {
@@ -53,7 +48,7 @@ export function Header() {
         className={cn(
           "fixed top-0 left-0 right-0 z-40 transition-all duration-500",
           isScrolled
-            ? "bg-black/80 backdrop-blur-xl border-b border-white/5 shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
+            ? "border-b border-zinc-200/90 bg-white/90 shadow-sm backdrop-blur-xl dark:border-white/5 dark:bg-black/80 dark:shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
             : "bg-transparent",
         )}
       >
@@ -84,10 +79,10 @@ export function Header() {
                     key={link.href}
                     href={link.href}
                     className={cn(
-                      "relative px-4 py-2 text-sm font-medium transition-all duration-200 rounded-md group",
+                      "relative rounded-md px-4 py-2 text-sm font-medium transition-all duration-200 group",
                       isActive
-                        ? "text-white"
-                        : "text-zinc-400 hover:text-zinc-100",
+                        ? "text-zinc-900 dark:text-white"
+                        : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100",
                     )}
                   >
                     {isActive && (
@@ -106,27 +101,20 @@ export function Header() {
             </nav>
 
             {/* Right side */}
-            <div className="hidden md:flex items-center gap-3">
+            <div className="hidden items-center gap-2 md:flex">
               {/* Social Icons */}
-              <div className="flex items-center gap-1 mr-2">
-                {socialLinks.map(({ icon: Icon, href, label }) => (
-                  <a
-                    key={label}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={label}
-                    className="flex h-8 w-8 items-center justify-center rounded-md text-zinc-500 transition-all duration-200 hover:text-blue-400 hover:bg-blue-500/10"
-                  >
-                    <Icon className="h-4 w-4" />
-                  </a>
+              <div className="mr-1 flex items-center gap-1.5">
+                {brandSocialLinksHeader.map((link) => (
+                  <BrandSocialIconLink key={link.label} link={link} variant="headerDesktop" />
                 ))}
               </div>
+
+              <ThemeToggle />
 
               {/* CTA */}
               <Button
                 asChild
-                className="relative overflow-hidden rounded-lg bg-gradient-to-r from-blue-600 to-emerald-600 px-5 py-2 text-sm font-semibold text-white shadow-[0_0_20px_rgba(59,130,246,0.25)] transition-all duration-300 hover:shadow-[0_0_28px_rgba(59,130,246,0.45)] hover:scale-[1.02] border-0"
+                className="relative overflow-hidden rounded-lg border-0 bg-gradient-to-r from-blue-600 to-emerald-600 px-5 py-2 text-sm font-semibold !text-white shadow-[0_0_20px_rgba(59,130,246,0.25)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_28px_rgba(59,130,246,0.45)]"
               >
                 <a href="/#contact">İletişime Geç</a>
               </Button>
@@ -135,7 +123,7 @@ export function Header() {
             {/* Mobile hamburger */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-zinc-400 transition-all duration-200 hover:border-blue-500/40 hover:text-blue-400"
+              className="flex h-9 w-9 items-center justify-center rounded-lg border border-zinc-200 bg-white text-zinc-600 transition-all duration-200 hover:border-blue-500/40 hover:text-blue-600 md:hidden dark:border-white/10 dark:bg-white/5 dark:text-zinc-400 dark:hover:text-blue-400"
               aria-label="Menüyü aç"
             >
               {isMenuOpen ? (
@@ -156,37 +144,29 @@ export function Header() {
               : "max-h-0 opacity-0 pointer-events-none",
           )}
         >
-          <div className="max-h-[min(calc(100dvh-4.5rem),32rem)] overflow-y-auto overscroll-contain border-t border-white/5 bg-black/90 backdrop-blur-xl px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] space-y-1">
+          <div className="max-h-[min(calc(100dvh-4.5rem),32rem)] space-y-1 overflow-y-auto overscroll-contain border-t border-zinc-200 bg-white/98 px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] backdrop-blur-xl dark:border-white/5 dark:bg-black/90">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsMenuOpen(false)}
-                className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-zinc-400 transition-all duration-200 hover:bg-blue-500/10 hover:text-white"
+                className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-zinc-600 transition-all duration-200 hover:bg-blue-500/10 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
               >
                 <span className="h-1 w-1 rounded-full bg-blue-500" />
                 {link.label}
               </Link>
             ))}
 
-            <div className="pt-3 border-t border-white/5 mt-3">
-              <div className="flex items-center gap-2 mb-3">
-                {socialLinks.map(({ icon: Icon, href, label }) => (
-                  <a
-                    key={label}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={label}
-                    className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 text-zinc-500 hover:border-blue-500/40 hover:text-blue-400 transition-all duration-200"
-                  >
-                    <Icon className="h-4 w-4" />
-                  </a>
+            <div className="mt-3 border-t border-zinc-200 pt-3 dark:border-white/5">
+              <div className="mb-3 flex items-center gap-2">
+                {brandSocialLinksHeader.map((link) => (
+                  <BrandSocialIconLink key={link.label} link={link} variant="headerMobile" />
                 ))}
+                <ThemeToggle className="ml-auto" />
               </div>
               <Button
                 asChild
-                className="w-full rounded-lg bg-gradient-to-r from-blue-600 to-emerald-600 text-sm font-semibold text-white border-0 hover:opacity-90"
+                className="w-full rounded-lg border-0 bg-gradient-to-r from-blue-600 to-emerald-600 text-sm font-semibold !text-white hover:opacity-90"
               >
                 <a href="/#contact" onClick={() => setIsMenuOpen(false)}>
                   İletişime Geç

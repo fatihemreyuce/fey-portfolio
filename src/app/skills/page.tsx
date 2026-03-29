@@ -84,7 +84,7 @@ function SkillBar({ name, level, color, started, delay, years }: {
     <div className="space-y-1.5 group" onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}>
       <div className="flex items-center justify-between text-xs">
         <div className="flex items-center gap-2">
-          <span className="font-medium text-zinc-300 group-hover:text-white transition-colors">{name}</span>
+          <span className="font-medium text-zinc-700 transition-colors group-hover:text-zinc-950 dark:text-zinc-300 dark:group-hover:text-white">{name}</span>
           {years > 0 && <span className="text-[10px] text-zinc-600">{years}y</span>}
         </div>
         <div className="flex items-center gap-2">
@@ -94,7 +94,7 @@ function SkillBar({ name, level, color, started, delay, years }: {
           <span className="text-[10px] text-zinc-600 tabular-nums">{level}%</span>
         </div>
       </div>
-      <div className="relative h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+      <div className="relative h-1.5 overflow-hidden rounded-full bg-zinc-200 dark:bg-white/[0.06]">
         <div className="absolute left-0 top-0 h-full rounded-full transition-all"
           style={{
             width: started ? `${level}%` : "0%",
@@ -145,7 +145,7 @@ function CategoryCard({ category, started, index, vis }: {
       onMouseMove={onMove}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={onLeave}
-      className="relative group flex h-full flex-col rounded-2xl border border-white/[0.07] bg-zinc-900/60 backdrop-blur-sm overflow-hidden"
+      className="relative group flex h-full flex-col overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/95 shadow-md backdrop-blur-sm dark:border-white/[0.07] dark:bg-zinc-900/60 dark:shadow-[0_4px_24px_rgba(0,0,0,0.4)]"
       style={{
         opacity: vis ? 1 : 0,
         transform: vis
@@ -153,7 +153,11 @@ function CategoryCard({ category, started, index, vis }: {
           : "translateY(40px)",
         transition: vis ? (hov ? "transform 0.12s ease-out" : "transform 0.5s ease-out") : `opacity 0.55s ease ${0.1 + index * 0.12}s, transform 0.55s ease ${0.1 + index * 0.12}s`,
         transformStyle: "preserve-3d",
-        boxShadow: hov ? `0 20px 60px ${category.accent.from}22, 0 0 0 1px ${category.accent.from}28` : "0 4px 24px rgba(0,0,0,0.4)",
+        ...(hov
+          ? {
+              boxShadow: `0 20px 60px ${category.accent.from}22, 0 0 0 1px ${category.accent.from}28`,
+            }
+          : {}),
       }}
     >
       <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
@@ -175,11 +179,11 @@ function CategoryCard({ category, started, index, vis }: {
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 rounded-xl flex items-center justify-center border border-white/15 shrink-0"
               style={{ background: `linear-gradient(135deg,${category.accent.from}55,${category.accent.to}55)`, boxShadow: `0 0 20px ${category.accent.from}40` }}>
-              <Icon className="w-5 h-5 text-white" />
+              <Icon className="h-5 w-5 !text-white" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-white">{category.title}</h3>
-              <p className="text-[10px] text-zinc-500">{category.skills.length} beceri</p>
+              <h3 className="text-sm font-bold text-zinc-900 dark:text-white">{category.title}</h3>
+              <p className="text-[10px] text-zinc-600 dark:text-zinc-500">{category.skills.length} beceri</p>
             </div>
           </div>
           {/* Total level indicator */}
@@ -194,7 +198,7 @@ function CategoryCard({ category, started, index, vis }: {
 
       {/* Body */}
       <div className="flex flex-1 flex-col p-5 space-y-4" style={{ transform: "translateZ(10px)" }}>
-        <p className="text-xs text-zinc-500 leading-relaxed">{category.shortDesc}</p>
+        <p className="text-xs leading-relaxed text-zinc-600 dark:text-zinc-500">{category.shortDesc}</p>
 
         <div className="flex-1 space-y-3.5">
           {category.skills.map((skill, i) => (
@@ -214,9 +218,9 @@ function CategoryCard({ category, started, index, vis }: {
       {/* Footer */}
       <div className="px-5 pb-5">
         <Link href={`/skills/${category.id}`}
-          className="group/btn flex items-center justify-between w-full px-4 py-2.5 rounded-xl border border-white/[0.07] bg-white/[0.03] hover:bg-white/[0.07] hover:border-white/15 transition-all duration-200">
-          <span className="text-xs font-semibold text-zinc-400 group-hover/btn:text-white transition-colors">Detaylı incele</span>
-          <ArrowUpRight className="w-3.5 h-3.5 text-zinc-600 group-hover/btn:text-white group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-all duration-200" />
+          className="group/btn flex w-full items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-2.5 transition-all duration-200 hover:border-zinc-300 hover:bg-white dark:border-white/[0.07] dark:bg-white/[0.03] dark:hover:border-white/15 dark:hover:bg-white/[0.07]">
+          <span className="text-xs font-semibold text-zinc-600 transition-colors group-hover/btn:text-zinc-900 dark:text-zinc-400 dark:group-hover/btn:text-white">Detaylı incele</span>
+          <ArrowUpRight className="h-3.5 w-3.5 text-zinc-500 transition-all duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 group-hover/btn:text-zinc-900 dark:text-zinc-600 dark:group-hover/btn:text-white" />
         </Link>
       </div>
 
@@ -241,7 +245,7 @@ function LevelLegend({ vis }: { vis: boolean }) {
           return l.label === label;
         });
         return (
-          <div key={label} className="flex items-center gap-3 px-4 py-3 rounded-xl border border-white/[0.07] bg-white/[0.03]"
+          <div key={label} className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white px-4 py-3 dark:border-white/[0.07] dark:bg-white/[0.03]"
             style={{ opacity: vis ? 1 : 0, transform: vis ? "none" : "translateY(16px)", transition: `opacity 0.5s ease ${0.1 + i * 0.08}s, transform 0.5s ease ${0.1 + i * 0.08}s` }}>
             <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ background: `${color}18` }}>
               <Icon className="w-5 h-5" style={{ color }} />
@@ -270,7 +274,7 @@ function RoadmapSection() {
   } as const;
 
   return (
-    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-24 overflow-hidden border-b border-white/5">
+    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-24 overflow-hidden border-b border-zinc-200 dark:border-white/5">
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
         <div className="absolute top-1/3 -left-20 w-[500px] h-[400px] rounded-full bg-blue-600/[0.04] blur-3xl" />
         <Meteors number={10} />
@@ -282,7 +286,7 @@ function RoadmapSection() {
             <span className="text-xs font-semibold text-blue-400 tracking-[0.18em] uppercase">Öğrenme Haritası</span>
           </div>
           <h2 className="text-4xl sm:text-[2.75rem] font-bold leading-[1.15] tracking-tight">
-            <span className="text-white">Nerede Olduğum,</span>
+            <span className="text-zinc-900 dark:text-white">Nerede Olduğum,</span>
             <br />
             <AnimatedGradientText className="text-4xl sm:text-[2.75rem] font-bold">Nereye Gidiyorum?</AnimatedGradientText>
           </h2>
@@ -298,18 +302,18 @@ function RoadmapSection() {
             return (
               <div
                 key={label}
-                className="flex items-center gap-3 p-4 rounded-xl border border-white/[0.07] bg-zinc-900/50 group hover:border-white/15 transition-all duration-200"
+                className="group flex items-center gap-3 rounded-xl border border-zinc-200 bg-white p-4 transition-all duration-200 hover:border-zinc-300 dark:border-white/[0.07] dark:bg-zinc-900/50 dark:hover:border-white/15"
                 style={{
                   opacity: vis ? 1 : 0,
                   transform: vis ? "none" : "translateY(20px)",
                   transition: `opacity 0.5s ease ${0.08 + i * 0.06}s, transform 0.5s ease ${0.08 + i * 0.06}s`,
                 }}
               >
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border border-white/[0.07]" style={{ background: `${cfg.color}12` }}>
-                  <CfgIcon className="w-5 h-5" style={{ color: cfg.color }} />
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-zinc-200 dark:border-white/[0.07]" style={{ background: `${cfg.color}12` }}>
+                  <CfgIcon className="h-5 w-5" style={{ color: cfg.color }} />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-semibold text-zinc-200 group-hover:text-white transition-colors truncate">{label}</p>
+                  <p className="truncate text-sm font-semibold text-zinc-800 transition-colors group-hover:text-zinc-950 dark:text-zinc-200 dark:group-hover:text-white">{label}</p>
                   <p className="text-[10px] font-medium" style={{ color: cfg.color }}>{cfg.label}</p>
                 </div>
                 {status === "current" && (
@@ -334,7 +338,7 @@ function HeroSection() {
   const expertCount = skillCategories.flatMap((c) => c.skills).filter((s) => s.level >= 90).length;
 
   return (
-    <section className="relative py-24 overflow-hidden border-b border-white/5">
+    <section className="relative py-24 overflow-hidden border-b border-zinc-200 dark:border-white/5">
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
         <div className="absolute top-1/3 -left-20 w-[600px] h-[500px] rounded-full bg-emerald-600/[0.05] blur-3xl" />
         <div className="absolute bottom-1/3 -right-20 w-[500px] h-[400px] rounded-full bg-violet-600/[0.04] blur-3xl" />
@@ -345,7 +349,7 @@ function HeroSection() {
       <div className="relative z-10 mx-auto max-w-6xl w-full px-4 sm:px-6 lg:px-8">
         {/* Back */}
         <div className="mb-10" style={{ opacity: mounted ? 1 : 0, transform: mounted ? "none" : "translateY(-12px)", transition: "opacity 0.5s, transform 0.5s" }}>
-          <Link href="/" className="group inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-white/[0.08] bg-white/[0.03] hover:border-emerald-500/30 hover:bg-emerald-500/[0.06] transition-all text-zinc-400 hover:text-white text-sm font-medium">
+          <Link href="/" className="group inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-600 transition-all hover:border-emerald-300 hover:bg-emerald-50 hover:text-zinc-900 dark:border-white/[0.08] dark:bg-white/[0.03] dark:text-zinc-400 dark:hover:border-emerald-500/30 dark:hover:bg-emerald-500/[0.06] dark:hover:text-white">
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform duration-200" />Ana Sayfa
           </Link>
         </div>
@@ -383,11 +387,11 @@ function HeroSection() {
                 { label: "Kategori",       value: `${skillCategories.length}`,     color: "#fbbf24" },
                 { label: "Yıl Öğrenme",    value: "4+",              color: "#a78bfa" },
               ].map(({ label, value, color }) => (
-                <div key={label} className="flex items-center gap-3 px-4 py-3 rounded-xl border border-white/[0.07] bg-white/[0.03]">
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: `${color}18` }}>
+                <div key={label} className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white px-4 py-3 dark:border-white/[0.07] dark:bg-white/[0.03]">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg" style={{ background: `${color}18` }}>
                     <p className="text-sm font-black" style={{ color }}>{value}</p>
                   </div>
-                  <p className="text-xs text-zinc-400">{label}</p>
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400">{label}</p>
                 </div>
               ))}
             </div>
@@ -428,7 +432,7 @@ function HeroSection() {
                 return (
                   <div
                     key={cat.id}
-                    className="absolute flex items-center justify-center w-12 h-12 rounded-xl border border-white/10 bg-zinc-900/90 backdrop-blur-sm animate-float shadow-lg"
+                    className="absolute flex h-12 w-12 animate-float items-center justify-center rounded-xl border border-zinc-200 bg-white/95 shadow-lg backdrop-blur-sm dark:border-white/10 dark:bg-zinc-900/90"
                     style={{
                       left: `calc(50% + ${x}px - 24px)`,
                       top:  `calc(50% + ${y}px - 24px)`,
@@ -457,7 +461,7 @@ function HeroSection() {
 function SkillsGridSection() {
   const { ref, vis } = useInView(0.05);
   return (
-    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-24 overflow-hidden border-b border-white/5">
+    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-24 overflow-hidden border-b border-zinc-200 dark:border-white/5">
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
         <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full bg-emerald-600/[0.04] blur-3xl" />
         <Meteors number={12} symmetric />
@@ -470,7 +474,7 @@ function SkillsGridSection() {
             <span className="text-xs font-semibold text-emerald-400 tracking-[0.18em] uppercase">Tüm Beceriler</span>
           </div>
           <h2 className="text-4xl sm:text-[2.75rem] font-bold leading-[1.15] tracking-tight">
-            <span className="text-white">Kullandığım</span>
+            <span className="text-zinc-900 dark:text-white">Kullandığım</span>
             <br />
             <AnimatedGradientText className="text-4xl sm:text-[2.75rem] font-bold">Teknolojiler</AnimatedGradientText>
           </h2>
@@ -506,7 +510,7 @@ function WhySkillsSection() {
   ];
 
   return (
-    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-24 overflow-hidden border-b border-white/5">
+    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-24 overflow-hidden border-b border-zinc-200 dark:border-white/5">
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
         <div className="absolute bottom-0 left-1/3 w-[500px] h-[400px] rounded-full bg-blue-600/[0.04] blur-3xl" />
       </div>
@@ -517,7 +521,7 @@ function WhySkillsSection() {
             <span className="text-xs font-semibold text-amber-400 tracking-[0.18em] uppercase">Öğrenme Felsefem</span>
           </div>
           <h2 className="text-4xl sm:text-[2.75rem] font-bold leading-[1.15] tracking-tight">
-            <span className="text-white">Nasıl Öğreniyorum,</span>
+            <span className="text-zinc-900 dark:text-white">Nasıl Öğreniyorum,</span>
             <br />
             <AnimatedGradientText className="text-4xl sm:text-[2.75rem] font-bold">Neden Öğreniyorum?</AnimatedGradientText>
           </h2>
@@ -525,7 +529,7 @@ function WhySkillsSection() {
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {points.map(({ icon: Icon, color, title, desc }, i) => (
-            <div key={title} className="group relative rounded-2xl border border-white/[0.07] bg-zinc-900/60 p-6 space-y-4 overflow-hidden"
+            <div key={title} className="group relative space-y-4 overflow-hidden rounded-2xl border border-zinc-200 bg-white p-6 dark:border-white/[0.07] dark:bg-zinc-900/60"
               style={{ opacity: vis ? 1 : 0, transform: vis ? "none" : "translateY(28px)", transition: `opacity 0.6s ease ${i * 0.1}s, transform 0.6s ease ${i * 0.1}s` }}>
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                 style={{ background: `radial-gradient(circle at 50% 0%, ${color}10 0%,transparent 70%)` }} />
@@ -535,8 +539,8 @@ function WhySkillsSection() {
                 <Icon className="w-6 h-6" style={{ color }} />
               </div>
               <div>
-                <h3 className="font-bold text-white text-sm mb-2">{title}</h3>
-                <p className="text-xs text-zinc-400 leading-relaxed">{desc}</p>
+                <h3 className="mb-2 text-sm font-bold text-zinc-900 dark:text-white">{title}</h3>
+                <p className="text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">{desc}</p>
               </div>
             </div>
           ))}
@@ -563,7 +567,7 @@ function CTASection() {
           <span className="text-xs font-semibold text-emerald-400 tracking-[0.18em] uppercase">Teknoloji + Vizyon</span>
         </div>
         <h2 className="text-4xl sm:text-5xl font-black leading-[1.1] tracking-tight">
-          <span className="text-white">Bu Becerilerle</span>
+          <span className="text-zinc-900 dark:text-white">Bu Becerilerle</span>
           <br />
           <AnimatedGradientText className="text-4xl sm:text-5xl font-black">Seninle Çalışayım</AnimatedGradientText>
         </h2>
@@ -590,7 +594,7 @@ function CTASection() {
 
 export default function SkillsPage() {
   return (
-    <div className="min-h-screen bg-[#050505] text-zinc-100 flex flex-col">
+    <div className="flex min-h-screen flex-col bg-background text-foreground">
       <Header />
       <main className="flex flex-1 flex-col">
         <HeroSection />

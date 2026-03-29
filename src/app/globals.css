@@ -1,6 +1,18 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
+  --background: #050505;
+  --foreground: #ededed;
+}
+
+html.light {
+  --background: #f1f5f9;
+  --foreground: #0f172a;
+}
+
+html.dark {
   --background: #050505;
   --foreground: #ededed;
 }
@@ -96,4 +108,39 @@ body {
 
 html {
   scroll-behavior: smooth;
+}
+
+/* Light theme: çoğu bileşende sabit text-white / zinc kullanıldığı için hızlı uyum */
+html.light .text-white {
+  color: var(--foreground) !important;
+}
+
+html.light .text-zinc-100 {
+  color: #1e293b !important;
+}
+
+html.light .text-zinc-200 {
+  color: #334155 !important;
+}
+
+html.light .text-zinc-300 {
+  color: #475569 !important;
+}
+
+html.light .text-zinc-400 {
+  color: #64748b !important;
+}
+
+html.light .text-zinc-500 {
+  color: #64748b !important;
+}
+
+html.light .text-zinc-600 {
+  color: #475569 !important;
+}
+
+/* Proje kartı tech pill: çok açık hex (#e4e4e7 vb.) light modda kaybolmasın */
+html.light .project-tech-pill--force-dark {
+  color: #27272a !important;
+  -webkit-text-fill-color: #27272a;
 }

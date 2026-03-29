@@ -5,7 +5,8 @@ import Link from "next/link";
 import { Code2, ArrowUp, Heart, Sparkles, ExternalLink } from "lucide-react";
 import { AnimatedGradientText } from "@/components/magicui/animated-gradient-text";
 import { Meteors } from "@/components/magicui/meteors";
-import { Instagram, Github, Linkedin, Twitter } from "@/components/icons/social";
+import { BrandSocialIconLink } from "@/components/BrandSocialIconLink";
+import { brandSocialLinksFooter } from "@/data/brand-social-links";
 import { cn } from "@/lib/utils";
 
 /* ─── Data ───────────────────────────────────────────── */
@@ -28,13 +29,6 @@ const navColumns = [
       { label: "İletişim",  href: "/#contact" },
     ],
   },
-];
-
-const socialLinks = [
-  { icon: Github,    href: "https://github.com/fatihemreyuce", label: "GitHub",    color: "#e4e4e7" },
-  { icon: Linkedin,  href: "https://www.linkedin.com/in/fatih-emre-y%C3%BCce-3b0538355/", label: "LinkedIn",  color: "#60a5fa" },
-  { icon: Twitter,   href: "https://twitter.com",   label: "Twitter",   color: "#38BDF8" },
-  { icon: Instagram, href: "https://www.instagram.com/fatih.yc8/", label: "Instagram", color: "#f472b6" },
 ];
 
 const stats = [
@@ -115,57 +109,6 @@ function LogoCard() {
         </div>
       </div>
     </div>
-  );
-}
-
-/* ─── 3D Social Icon ─────────────────────────────────── */
-
-function SocialIcon({
-  icon: Icon,
-  href,
-  label,
-  color,
-}: {
-  icon: React.ElementType;
-  href: string;
-  label: string;
-  color: string;
-}) {
-  const [hov, setHov] = useState(false);
-
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={label}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-      className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.07] bg-white/[0.03] overflow-hidden"
-      style={{
-        transform:  hov
-          ? `perspective(500px) rotateY(15deg) rotateX(-8deg) translateZ(8px) scale(1.1)`
-          : `perspective(500px) rotateY(0deg) rotateX(0deg) translateZ(0px) scale(1)`,
-        transition:  "transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease",
-        boxShadow:   hov ? `0 8px 24px ${color}35` : "none",
-        borderColor: hov ? `${color}50` : undefined,
-      }}
-    >
-      {/* Shine sweep */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: hov
-            ? `radial-gradient(circle at 35% 30%, ${color}25 0%, transparent 65%)`
-            : "transparent",
-          transition: "background 0.25s ease",
-        }}
-      />
-      <Icon
-        className="h-4 w-4 relative z-10 transition-colors duration-200"
-        style={{ color: hov ? color : "#71717a" }}
-      />
-    </a>
   );
 }
 
@@ -307,7 +250,7 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative overflow-hidden bg-[#050505]">
+    <footer className="relative overflow-hidden bg-slate-100 dark:bg-[#050505]">
 
       {/* ── Background layers ── */}
       <FloatingOrbs />
@@ -342,8 +285,8 @@ export function Footer() {
 
             {/* Social icons */}
             <div className="flex items-center gap-2">
-              {socialLinks.map((s) => (
-                <SocialIcon key={s.label} {...s} />
+              {brandSocialLinksFooter.map((link) => (
+                <BrandSocialIconLink key={link.label} link={link} variant="footer" />
               ))}
             </div>
 
@@ -421,7 +364,7 @@ export function Footer() {
         </div>
 
         {/* ── Divider ── */}
-        <div className="h-px bg-white/[0.05]" />
+        <div className="h-px bg-zinc-300/70 dark:bg-white/[0.05]" />
 
         {/* ── Bottom bar ── */}
         <div className="py-6 flex flex-col sm:flex-row items-center justify-between gap-4">

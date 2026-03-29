@@ -28,7 +28,7 @@ function SkillBar({
   return (
     <div className="space-y-1.5">
       <div className="flex items-center justify-between text-xs">
-        <span className="font-medium text-zinc-300">{name}</span>
+        <span className="font-medium text-zinc-700 dark:text-zinc-300">{name}</span>
         <span
           className="text-[10px] font-semibold px-1.5 py-0.5 rounded-md"
           style={{
@@ -41,7 +41,7 @@ function SkillBar({
         </span>
       </div>
       {/* Track */}
-      <div className="relative h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+      <div className="relative h-1.5 overflow-hidden rounded-full bg-zinc-200 dark:bg-white/[0.06]">
         {/* Fill */}
         <div
           className="absolute left-0 top-0 h-full rounded-full transition-all"
@@ -99,14 +99,16 @@ function CategoryCard({
       onMouseMove={onMove}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={onLeave}
-      className="relative group flex h-full min-h-0 flex-col rounded-2xl border border-white/[0.07] bg-zinc-900/60 backdrop-blur-sm overflow-hidden"
+      className="relative group flex h-full min-h-0 flex-col overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/95 shadow-md backdrop-blur-sm dark:border-white/[0.07] dark:bg-zinc-900/60 dark:shadow-[0_4px_24px_rgba(0,0,0,0.4)]"
       style={{
         transform:      `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${hovered ? 1.02 : 1})`,
         transition:     hovered ? "transform 0.12s ease-out" : "transform 0.5s ease-out",
         transformStyle: "preserve-3d",
-        boxShadow: hovered
-          ? `0 20px 60px ${category.accent.from}22, 0 0 0 1px ${category.accent.from}28`
-          : "0 4px 24px rgba(0,0,0,0.4)",
+        ...(hovered
+          ? {
+              boxShadow: `0 20px 60px ${category.accent.from}22, 0 0 0 1px ${category.accent.from}28`,
+            }
+          : {}),
       }}
     >
       {/* Meteors on hover */}
@@ -152,7 +154,7 @@ function CategoryCard({
               boxShadow:  `0 0 20px ${category.accent.from}40`,
             }}
           >
-            <Icon className="w-5 h-5 text-white" />
+            <Icon className="h-5 w-5 !text-white" />
           </div>
         </div>
       </div>
@@ -163,8 +165,8 @@ function CategoryCard({
         style={{ transform: "translateZ(10px)" }}
       >
         <div className="shrink-0">
-          <h3 className="text-base font-bold text-white mb-1">{category.title}</h3>
-          <p className="min-h-[3.25rem] text-xs text-zinc-500 leading-relaxed line-clamp-3">
+          <h3 className="mb-1 text-base font-bold text-zinc-900 dark:text-white">{category.title}</h3>
+          <p className="line-clamp-3 min-h-[3.25rem] text-xs leading-relaxed text-zinc-600 dark:text-zinc-500">
             {category.shortDesc}
           </p>
         </div>
@@ -189,13 +191,13 @@ function CategoryCard({
       <div className="px-5 pb-5 pt-0 shrink-0">
         <Link
           href={`/skills/${category.id}`}
-          className="group/btn flex items-center justify-between w-full px-4 py-2.5 rounded-xl border border-white/[0.07] bg-white/[0.03] hover:bg-white/[0.07] hover:border-white/15 transition-all duration-200"
+          className="group/btn flex w-full items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-2.5 transition-all duration-200 hover:border-zinc-300 hover:bg-white dark:border-white/[0.07] dark:bg-white/[0.03] dark:hover:border-white/15 dark:hover:bg-white/[0.07]"
         >
-          <span className="text-xs font-semibold text-zinc-400 group-hover/btn:text-white transition-colors">
+          <span className="text-xs font-semibold text-zinc-600 transition-colors group-hover/btn:text-zinc-900 dark:text-zinc-400 dark:group-hover/btn:text-white">
             Tüm becerileri gör
           </span>
           <ArrowUpRight
-            className="w-3.5 h-3.5 text-zinc-600 group-hover/btn:text-white group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-all duration-200"
+            className="h-3.5 w-3.5 text-zinc-500 transition-all duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 group-hover/btn:text-zinc-900 dark:text-zinc-600 dark:group-hover/btn:text-white"
           />
         </Link>
       </div>
@@ -237,7 +239,7 @@ export function SkillsSection() {
     <section
       ref={ref}
       id="skills"
-      className="relative py-24 overflow-hidden border-b border-white/5"
+      className="relative py-24 overflow-hidden border-b border-zinc-200 dark:border-white/5"
     >
       {/* ── Background ── */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
@@ -272,7 +274,7 @@ export function SkillsSection() {
           </div>
 
           <h2 className="text-4xl sm:text-[2.75rem] font-bold leading-[1.15] tracking-tight">
-            <span className="text-white">Kullandığım</span>
+            <span className="text-zinc-900 dark:text-white">Kullandığım</span>
             <br />
             <AnimatedGradientText className="text-4xl sm:text-[2.75rem] font-bold">
               Teknolojiler

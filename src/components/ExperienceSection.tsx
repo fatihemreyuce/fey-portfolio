@@ -101,7 +101,7 @@ function TimelineCard({
     <div
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
-      className="group relative rounded-2xl border border-white/[0.07] bg-zinc-900/70 backdrop-blur-sm overflow-hidden transition-all duration-300"
+      className="group relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/95 shadow-md backdrop-blur-sm transition-all duration-300 dark:border-white/[0.07] dark:bg-zinc-900/70 dark:shadow-[0_4px_20px_rgba(0,0,0,0.4)]"
       style={{
         opacity:    visible ? 1 : 0,
         transform:  visible
@@ -110,9 +110,11 @@ function TimelineCard({
             ? "translateX(-32px)"
             : "translateX(32px)",
         transition: "opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease",
-        boxShadow: hov
-          ? `0 16px 48px ${item.accent.from}20, 0 0 0 1px ${item.accent.from}25`
-          : "0 4px 20px rgba(0,0,0,0.4)",
+        ...(hov
+          ? {
+              boxShadow: `0 16px 48px ${item.accent.from}20, 0 0 0 1px ${item.accent.from}25`,
+            }
+          : {}),
       }}
     >
       {/* Hover bg tint */}
@@ -134,18 +136,18 @@ function TimelineCard({
         {/* Header row */}
         <div className="flex items-start gap-3">
           <div
-            className="shrink-0 w-10 h-10 rounded-xl flex items-center justify-center border border-white/10"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10"
             style={{
               background: `linear-gradient(135deg, ${item.accent.from}35, ${item.accent.to}35)`,
               boxShadow:  `0 0 16px ${item.accent.from}30`,
             }}
           >
-            <Icon className="w-5 h-5 text-white" />
+            <Icon className="h-5 w-5 !text-white" />
           </div>
 
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="text-sm font-bold text-white leading-snug">{item.title}</h3>
+              <h3 className="text-sm font-bold leading-snug text-zinc-900 dark:text-white">{item.title}</h3>
               {item.current && (
                 <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
                   Güncel
@@ -159,24 +161,24 @@ function TimelineCard({
         </div>
 
         {/* Meta */}
-        <div className="flex flex-wrap items-center gap-3 text-[11px] text-zinc-500">
+        <div className="flex flex-wrap items-center gap-3 text-[11px] text-zinc-600 dark:text-zinc-400">
           <span className="flex items-center gap-1">
-            <Calendar className="w-3 h-3" />{item.period}
+            <Calendar className="h-3 w-3 shrink-0" />{item.period}
           </span>
           <span className="flex items-center gap-1">
-            <MapPin className="w-3 h-3" />{item.location}
+            <MapPin className="h-3 w-3 shrink-0" />{item.location}
           </span>
         </div>
 
         {/* Description */}
-        <p className="text-xs text-zinc-400 leading-relaxed">{item.description}</p>
+        <p className="text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">{item.description}</p>
 
         {/* Tags */}
         <div className="flex flex-wrap gap-1.5">
           {item.tags.map((tag) => (
             <span
               key={tag}
-              className="text-[10px] font-medium px-2 py-0.5 rounded-md border border-white/[0.07] bg-white/[0.04]"
+              className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[10px] font-medium dark:border-white/[0.07] dark:bg-white/[0.04]"
               style={{ color: item.accent.from }}
             >
               {tag}
@@ -232,7 +234,7 @@ export function ExperienceSection() {
     <section
       ref={ref}
       id="experience"
-      className="relative py-24 overflow-hidden border-b border-white/5"
+      className="relative py-24 overflow-hidden border-b border-zinc-200 dark:border-white/5"
     >
       {/* Background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
@@ -266,7 +268,7 @@ export function ExperienceSection() {
             </span>
           </div>
           <h2 className="text-4xl sm:text-[2.75rem] font-bold leading-[1.15] tracking-tight">
-            <span className="text-white">Yolculuğum ve</span>
+            <span className="text-zinc-900 dark:text-white">Yolculuğum ve</span>
             <br />
             <AnimatedGradientText className="text-4xl sm:text-[2.75rem] font-bold">
               Büyüme Hikayem
@@ -285,18 +287,20 @@ export function ExperienceSection() {
             transition: "opacity 0.6s ease 0.1s",
           }}
         >
-          <div className="inline-flex items-center gap-1 p-1 rounded-xl border border-white/[0.07] bg-white/[0.03]">
+          <div className="inline-flex items-center gap-1 rounded-xl border border-zinc-200 bg-slate-100 p-1 dark:border-white/[0.07] dark:bg-white/[0.03]">
             {FILTERS.map(({ label, value }) => (
               <button
                 key={value}
                 onClick={() => { setFil(value); setCV({}); }}
                 className={cn(
-                  "relative px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200",
-                  filter === value ? "text-white" : "text-zinc-500 hover:text-zinc-300",
+                  "relative rounded-lg px-5 py-2 text-sm font-medium transition-all duration-200",
+                  filter === value
+                    ? "text-zinc-900 dark:text-white"
+                    : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-300",
                 )}
               >
                 {filter === value && (
-                  <span className="absolute inset-0 rounded-lg bg-white/[0.08] border border-white/10" />
+                  <span className="absolute inset-0 rounded-lg border border-zinc-300 bg-white dark:border-white/10 dark:bg-white/[0.08]" />
                 )}
                 <span className="relative">{label}</span>
               </button>
@@ -336,11 +340,18 @@ export function ExperienceSection() {
                   {/* Center dot */}
                   <div className="hidden md:flex flex-col items-center pt-4">
                     <div
-                      className="w-3.5 h-3.5 rounded-full border-2 border-zinc-900 transition-all duration-500 z-10"
-                      style={{
-                        background:  cardVis[item.id] ? item.accent.from : "rgba(255,255,255,0.15)",
-                        boxShadow:   cardVis[item.id] ? `0 0 14px ${item.accent.from}80` : "none",
-                      }}
+                      className={cn(
+                        "z-10 h-3.5 w-3.5 rounded-full border-2 border-zinc-300 transition-all duration-500 dark:border-zinc-900",
+                        !cardVis[item.id] && "bg-zinc-300 dark:bg-white/15",
+                      )}
+                      style={
+                        cardVis[item.id]
+                          ? {
+                              background: item.accent.from,
+                              boxShadow: `0 0 14px ${item.accent.from}80`,
+                            }
+                          : undefined
+                      }
                     />
                   </div>
 
@@ -366,7 +377,7 @@ export function ExperienceSection() {
                         className="w-2.5 h-2.5 rounded-full shrink-0"
                         style={{ background: item.accent.from, boxShadow: `0 0 8px ${item.accent.from}` }}
                       />
-                      <div className="h-px flex-1 bg-white/[0.06]" />
+                      <div className="h-px flex-1 bg-zinc-200 dark:bg-white/[0.06]" />
                     </div>
                     <TimelineCard
                       item={item}

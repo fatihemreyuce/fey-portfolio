@@ -75,10 +75,10 @@ function FAQAccordion({
   return (
     <div
       className={cn(
-        "group rounded-2xl border overflow-hidden transition-all duration-300",
+        "group overflow-hidden rounded-2xl border transition-all duration-300",
         open
-          ? "border-white/15 bg-white/[0.05]"
-          : "border-white/[0.07] bg-zinc-900/60 hover:border-white/10 hover:bg-white/[0.04]",
+          ? "border-zinc-300 bg-white shadow-sm dark:border-white/15 dark:bg-white/[0.05] dark:shadow-none"
+          : "border-zinc-200/90 bg-slate-50 hover:border-zinc-300 hover:bg-white dark:border-white/[0.07] dark:bg-zinc-900/60 dark:hover:border-white/10 dark:hover:bg-white/[0.04]",
       )}
       style={{
         opacity:    visible ? 1 : 0,
@@ -94,12 +94,20 @@ function FAQAccordion({
       >
         {/* Number badge */}
         <span
-          className="shrink-0 w-7 h-7 rounded-lg flex items-center justify-center text-[11px] font-black border transition-all duration-300"
-          style={{
-            color:       open ? item.accent : "rgba(255,255,255,0.3)",
-            borderColor: open ? `${item.accent}40` : "rgba(255,255,255,0.08)",
-            background:  open ? `${item.accent}15` : "rgba(255,255,255,0.03)",
-          }}
+          className={cn(
+            "flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border text-[11px] font-black transition-all duration-300",
+            !open &&
+              "border-zinc-200 bg-white text-zinc-500 dark:border-white/10 dark:bg-white/[0.03] dark:text-white/30",
+          )}
+          style={
+            open
+              ? {
+                  color: item.accent,
+                  borderColor: `${item.accent}40`,
+                  background: `${item.accent}15`,
+                }
+              : undefined
+          }
         >
           {String(index + 1).padStart(2, "0")}
         </span>
@@ -107,7 +115,9 @@ function FAQAccordion({
         <span
           className={cn(
             "flex-1 text-sm font-semibold transition-colors duration-200",
-            open ? "text-white" : "text-zinc-300 group-hover:text-white",
+            open
+              ? "text-zinc-900 dark:text-white"
+              : "text-zinc-700 group-hover:text-zinc-950 dark:text-zinc-300 dark:group-hover:text-white",
           )}
         >
           {item.q}
@@ -115,9 +125,12 @@ function FAQAccordion({
 
         {/* Chevron */}
         <ChevronDown
-          className="w-4 h-4 shrink-0 transition-all duration-300"
+          className={cn(
+            "h-4 w-4 shrink-0 transition-all duration-300",
+            !open && "text-zinc-400 dark:text-white/30",
+          )}
           style={{
-            color:     open ? item.accent : "rgba(255,255,255,0.3)",
+            color: open ? item.accent : undefined,
             transform: open ? "rotate(180deg)" : "rotate(0deg)",
           }}
         />
@@ -136,7 +149,7 @@ function FAQAccordion({
                 className="w-px shrink-0 rounded-full self-stretch"
                 style={{ background: `linear-gradient(180deg, ${item.accent}60, transparent)` }}
               />
-              <p className="text-sm text-zinc-400 leading-relaxed">{item.a}</p>
+              <p className="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">{item.a}</p>
             </div>
           </div>
         </div>
@@ -170,7 +183,7 @@ export function FAQSection() {
     <section
       ref={ref}
       id="faq"
-      className="relative py-24 overflow-hidden border-b border-white/5"
+      className="relative py-24 overflow-hidden border-b border-zinc-200 dark:border-white/5"
     >
       {/* Background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
@@ -204,7 +217,7 @@ export function FAQSection() {
           </div>
 
           <h2 className="text-4xl sm:text-[2.75rem] font-bold leading-[1.15] tracking-tight">
-            <span className="text-white">Sıkça Sorulan</span>
+            <span className="text-zinc-900 dark:text-white">Sıkça Sorulan</span>
             <br />
             <AnimatedGradientText className="text-4xl sm:text-[2.75rem] font-bold">
               Sorular
@@ -252,7 +265,7 @@ export function FAQSection() {
             transition: "opacity 0.6s ease 0.7s",
           }}
         >
-          <div className="flex items-center gap-3 px-6 py-4 rounded-2xl border border-white/[0.07] bg-white/[0.03]">
+          <div className="flex items-center gap-3 rounded-2xl border border-zinc-200 bg-white px-6 py-4 dark:border-white/[0.07] dark:bg-white/[0.03]">
             <Sparkles className="w-4 h-4 text-indigo-400 shrink-0" />
             <p className="text-sm text-zinc-400">
               Başka sorunuz var mı?{" "}

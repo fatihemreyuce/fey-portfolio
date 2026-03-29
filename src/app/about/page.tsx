@@ -285,7 +285,9 @@ function SectionHeader({
         <br />
         <AnimatedGradientText className="text-4xl sm:text-[2.75rem] font-bold">{gradient}</AnimatedGradientText>
       </h2>
-      {sub && <p className="text-zinc-400 max-w-xl mx-auto leading-relaxed">{sub}</p>}
+      {sub && (
+        <p className="mx-auto max-w-xl leading-relaxed text-zinc-600 dark:text-zinc-400">{sub}</p>
+      )}
     </div>
   );
 }
@@ -302,7 +304,7 @@ function HeroProfileCard() {
       onMouseMove={onMove}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={onLeave}
-      className="relative w-72 rounded-3xl border border-white/10 bg-zinc-900/90 backdrop-blur-xl shadow-2xl overflow-hidden cursor-pointer select-none"
+      className="relative w-72 cursor-pointer select-none overflow-hidden rounded-3xl border border-zinc-200/80 bg-white/95 shadow-2xl backdrop-blur-xl dark:border-white/10 dark:bg-zinc-900/90"
       style={{
         transform:      `perspective(900px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${hov ? 1.03 : 1})`,
         transition:     hov ? "transform 0.1s ease-out" : "transform 0.5s ease-out",
@@ -330,7 +332,7 @@ function HeroProfileCard() {
           }}
         >
           FE
-          <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-emerald-400 border-2 border-zinc-900">
+          <span className="absolute -right-2 -top-2 h-5 w-5 rounded-full border-2 border-white bg-emerald-400 dark:border-zinc-900">
             <span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-75" />
           </span>
         </div>
@@ -342,18 +344,20 @@ function HeroProfileCard() {
       </div>
 
       {/* Body */}
-      <div className="p-5 space-y-4" style={{ transform: "translateZ(18px)" }}>
+      <div className="space-y-4 p-5" style={{ transform: "translateZ(18px)" }}>
         <div className="text-center">
-          <p className="font-bold text-white text-lg">Fatih Emre Yüce</p>
-          <p className="text-[11px] text-blue-400 font-semibold tracking-[0.22em] uppercase mt-1">Frontend Developer</p>
+          <p className="text-lg font-bold text-zinc-900 dark:text-white">Fatih Emre Yüce</p>
+          <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-blue-600 dark:text-blue-400">
+            Frontend Developer
+          </p>
         </div>
         <div className="flex justify-center">
-          <div className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-emerald-500/25 bg-emerald-500/10">
+          <div className="flex items-center gap-2 rounded-full border border-emerald-400/50 bg-emerald-50 px-4 py-1.5 dark:border-emerald-500/25 dark:bg-emerald-500/10">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
             </span>
-            <span className="text-[11px] text-emerald-400 font-medium">Projelere Açık</span>
+            <span className="text-[11px] font-medium text-emerald-800 dark:text-emerald-400">Projelere Açık</span>
           </div>
         </div>
         <div className="space-y-2">
@@ -362,9 +366,12 @@ function HeroProfileCard() {
             { icon: Calendar, text: "3+ Yıl Deneyim"    },
             { icon: Globe,    text: "Uzaktan & Tam Zamanlı" },
           ].map(({ icon: Icon, text }) => (
-            <div key={text} className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white/[0.04] border border-white/[0.06]">
-              <Icon className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
-              <span className="text-xs text-zinc-400">{text}</span>
+            <div
+              key={text}
+              className="flex items-center gap-2.5 rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 dark:border-white/[0.06] dark:bg-white/[0.04]"
+            >
+              <Icon className="h-3.5 w-3.5 shrink-0 text-zinc-500" />
+              <span className="text-xs text-zinc-700 dark:text-zinc-400">{text}</span>
             </div>
           ))}
         </div>
@@ -385,7 +392,7 @@ function HeroSection() {
   useEffect(() => { const t = setTimeout(() => setMounted(true), 100); return () => clearTimeout(t); }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center py-24 overflow-hidden border-b border-white/5">
+    <section className="relative min-h-screen flex items-center py-24 overflow-hidden border-b border-zinc-200 dark:border-white/5">
       {/* Background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
         <div className="absolute top-1/4 -left-20 w-[600px] h-[600px] rounded-full bg-blue-600/[0.05] blur-3xl" />
@@ -402,7 +409,7 @@ function HeroSection() {
         <div className="mb-12" style={{ opacity: mounted ? 1 : 0, transform: mounted ? "none" : "translateY(-12px)", transition: "opacity 0.5s ease, transform 0.5s ease" }}>
           <Link
             href="/"
-            className="group inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-white/[0.08] bg-white/[0.03] hover:border-blue-500/30 hover:bg-blue-500/[0.06] transition-all duration-200 text-zinc-400 hover:text-white text-sm font-medium"
+            className="group inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-600 transition-all duration-200 hover:border-blue-300 hover:bg-blue-50 hover:text-zinc-900 dark:border-white/[0.08] dark:bg-white/[0.03] dark:text-zinc-400 dark:hover:border-blue-500/30 dark:hover:bg-blue-500/[0.06] dark:hover:text-white"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform duration-200" />
             Ana Sayfa
@@ -442,7 +449,7 @@ function HeroSection() {
                 ].map(({ icon: Icon, color, x, y, delay }) => (
                   <div
                     key={color + x}
-                    className="absolute flex items-center justify-center w-10 h-10 rounded-xl bg-zinc-900/95 border border-white/10 shadow-lg animate-float pointer-events-none"
+                    className="pointer-events-none absolute flex h-10 w-10 animate-float items-center justify-center rounded-xl border border-zinc-200 bg-white/95 shadow-lg dark:border-white/10 dark:bg-zinc-900/95"
                     style={{
                       left: `calc(50% + ${x}px - 20px)`,
                       top:  `calc(50% + ${y}px - 20px)`,
@@ -479,10 +486,11 @@ function HeroSection() {
               />
             </h1>
 
-            <p className="text-zinc-400 leading-relaxed text-lg max-w-lg">
-              Merhaba, ben <span className="text-white font-semibold">Fatih Emre Yüce</span>. Kod yazmayı bir sanat olarak gören,{" "}
-              <span className="text-blue-400 font-medium">kullanıcı deneyimini</span> her şeyin merkezine koyan bir frontend geliştirici.
-              Güzel şeyler inşa etmek için sabırsızlanıyorum.
+            <p className="max-w-lg text-lg leading-relaxed text-zinc-600 dark:text-zinc-400">
+              Merhaba, ben{" "}
+              <span className="font-semibold text-zinc-900 dark:text-white">Fatih Emre Yüce</span>. Kod yazmayı bir sanat olarak
+              gören, <span className="font-medium text-blue-600 dark:text-blue-400">kullanıcı deneyimini</span> her şeyin merkezine koyan
+              bir frontend geliştirici. Güzel şeyler inşa etmek için sabırsızlanıyorum.
             </p>
 
             {/* Quick facts */}
@@ -493,13 +501,16 @@ function HeroSection() {
                 { label: "Durum",       value: "Müsait",       icon: Zap,      color: "#fbbf24" },
                 { label: "Çalışma",     value: "Uzaktan",      icon: Globe,    color: "#a78bfa" },
               ].map(({ label, value, icon: Icon, color }) => (
-                <div key={label} className="flex items-center gap-3 px-4 py-3 rounded-xl border border-white/[0.07] bg-white/[0.03]">
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: `${color}18` }}>
-                    <Icon className="w-4 h-4" style={{ color }} />
+                <div
+                  key={label}
+                  className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white px-4 py-3 dark:border-white/[0.07] dark:bg-white/[0.03]"
+                >
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg" style={{ background: `${color}18` }}>
+                    <Icon className="h-4 w-4" style={{ color }} />
                   </div>
                   <div>
-                    <p className="text-[10px] text-zinc-600 uppercase tracking-wider">{label}</p>
-                    <p className="text-sm font-semibold text-zinc-200">{value}</p>
+                    <p className="text-[10px] uppercase tracking-wider text-zinc-500 dark:text-zinc-600">{label}</p>
+                    <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-200">{value}</p>
                   </div>
                 </div>
               ))}
@@ -514,10 +525,20 @@ function HeroSection() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.07] bg-white/[0.03] hover:border-white/15 hover:bg-white/[0.07] transition-all duration-200"
+                  className={cn(
+                    "group flex h-10 w-10 items-center justify-center rounded-xl border border-zinc-200 bg-white transition-all duration-200 hover:border-zinc-300 hover:bg-zinc-50 dark:border-white/[0.07] dark:bg-white/[0.03] dark:hover:border-white/15 dark:hover:bg-white/[0.07]",
+                  )}
                   style={{ ["--hc" as string]: color }}
                 >
-                  <Icon className="h-4 w-4 text-zinc-500 hover:text-white transition-colors" style={{ color }} />
+                  <Icon
+                    className={cn(
+                      "h-4 w-4 transition-colors",
+                      label === "GitHub"
+                        ? "text-zinc-800 group-hover:text-zinc-950 dark:text-zinc-400 dark:group-hover:text-zinc-100"
+                        : "text-zinc-600 dark:text-zinc-500",
+                    )}
+                    style={label === "GitHub" ? undefined : { color }}
+                  />
                 </a>
               ))}
             </div>
@@ -530,7 +551,11 @@ function HeroSection() {
                   İletişime Geç
                 </Link>
               </Button>
-              <Button variant="outline" asChild className="rounded-xl border-white/10 bg-white/[0.03] text-zinc-300 hover:border-blue-500/30 hover:text-white hover:bg-blue-500/10 px-6 text-sm font-semibold transition-all duration-300 gap-2">
+              <Button
+                variant="outline"
+                asChild
+                className="gap-2 rounded-xl border-zinc-200 bg-white px-6 text-sm font-semibold text-zinc-800 transition-all duration-300 hover:border-blue-300 hover:bg-blue-50 hover:text-zinc-950 dark:border-white/10 dark:bg-white/[0.03] dark:text-zinc-300 dark:hover:border-blue-500/30 dark:hover:bg-blue-500/10 dark:hover:text-white"
+              >
                 <a href="/cv.pdf" download>
                   <Download className="w-4 h-4" />
                   CV İndir
@@ -554,7 +579,7 @@ function StorySection() {
   const tilt2 = useTilt();
 
   return (
-    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-28 overflow-hidden border-b border-white/5">
+    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-28 overflow-hidden border-b border-zinc-200 dark:border-white/5">
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
         <div className="absolute top-1/3 -right-24 w-[500px] h-[500px] rounded-full bg-violet-600/[0.04] blur-3xl" />
         <div className="absolute bottom-1/3 -left-24 w-[400px] h-[400px] rounded-full bg-blue-600/[0.04] blur-3xl" />
@@ -592,14 +617,16 @@ function StorySection() {
             >
               <Quote className="absolute top-4 right-5 w-16 h-16 text-violet-500/10" aria-hidden />
               <div style={{ transform: "translateZ(12px)" }}>
-                <p className="text-zinc-300 text-lg leading-relaxed italic font-light">
+                <p className="text-lg font-light italic leading-relaxed text-zinc-700 dark:text-zinc-300">
                   "Kod yazmak benim için sadece bir meslek değil — düşüncelerimi somutlaştırmanın,
                   hayal ettiğim şeyleri var etmenin en güçlü yolu."
                 </p>
                 <div className="mt-4 flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-emerald-500 flex items-center justify-center text-xs font-black text-white">FE</div>
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-emerald-500 text-xs font-black text-white">
+                    FE
+                  </div>
                   <div>
-                    <p className="text-sm font-semibold text-white">Fatih Emre Yüce</p>
+                    <p className="text-sm font-semibold text-zinc-900 dark:text-white">Fatih Emre Yüce</p>
                     <p className="text-xs text-zinc-500">Frontend Developer</p>
                   </div>
                 </div>
@@ -632,8 +659,8 @@ function StorySection() {
                     <div className="w-px flex-1 min-h-[32px] bg-gradient-to-b from-blue-500/40 to-transparent" />
                   </div>
                   <div className="pb-4">
-                    <h3 className="text-sm font-bold text-white mb-1">{title}</h3>
-                    <p className="text-sm text-zinc-400 leading-relaxed">{text}</p>
+                    <h3 className="mb-1 text-sm font-bold text-zinc-900 dark:text-white">{title}</h3>
+                    <p className="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">{text}</p>
                   </div>
                 </div>
               ))}
@@ -647,12 +674,16 @@ function StorySection() {
               onMouseMove={tilt2.onMove}
               onMouseEnter={() => tilt2.setHov(true)}
               onMouseLeave={tilt2.onLeave}
-              className="relative rounded-2xl border border-white/[0.07] bg-zinc-900/70 backdrop-blur-xl overflow-hidden"
+              className="relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/95 shadow-md backdrop-blur-xl dark:border-white/[0.07] dark:bg-zinc-900/70 dark:shadow-[0_4px_24px_rgba(0,0,0,0.4)]"
               style={{
                 transform: `perspective(900px) rotateX(${tilt2.tilt.x}deg) rotateY(${tilt2.tilt.y}deg) scale(${tilt2.hov ? 1.015 : 1})`,
                 transition: tilt2.hov ? "transform 0.12s ease-out" : "transform 0.55s ease-out",
                 transformStyle: "preserve-3d",
-                boxShadow: tilt2.hov ? "0 24px 60px rgba(59,130,246,0.12),0 0 0 1px rgba(59,130,246,0.15)" : "0 4px 24px rgba(0,0,0,0.4)",
+                ...(tilt2.hov
+                  ? {
+                      boxShadow: "0 24px 60px rgba(59,130,246,0.12),0 0 0 1px rgba(59,130,246,0.15)",
+                    }
+                  : {}),
               }}
             >
               {/* Header gradient */}
@@ -667,16 +698,16 @@ function StorySection() {
                     <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-blue-500 to-emerald-500 flex items-center justify-center shadow-[0_0_40px_rgba(59,130,246,0.4)]">
                       <Target className="w-8 h-8 text-white" />
                     </div>
-                    <p className="mt-3 text-white font-bold text-lg">Amacım</p>
+                    <p className="mt-3 text-lg font-bold text-zinc-900 dark:text-white">Amacım</p>
                   </div>
                 </div>
               </div>
 
               <div className="p-6 space-y-5" style={{ transform: "translateZ(12px)" }}>
-                <p className="text-zinc-300 leading-relaxed">
-                  İnsanların hayatını <span className="text-blue-400 font-medium">kolaylaştıran</span>,{" "}
-                  <span className="text-emerald-400 font-medium">hızlı</span> ve{" "}
-                  <span className="text-violet-400 font-medium">güzel</span> dijital ürünler geliştirmek.
+                <p className="leading-relaxed text-zinc-700 dark:text-zinc-300">
+                  İnsanların hayatını <span className="font-medium text-blue-600 dark:text-blue-400">kolaylaştıran</span>,{" "}
+                  <span className="font-medium text-emerald-600 dark:text-emerald-400">hızlı</span> ve{" "}
+                  <span className="font-medium text-violet-600 dark:text-violet-400">güzel</span> dijital ürünler geliştirmek.
                   Her projeyi bir kullanıcının hayatına dokunan bir fırsat olarak görüyorum.
                 </p>
 
@@ -687,9 +718,12 @@ function StorySection() {
                     { value: "10+", label: "Teknoloji",   color: "#fbbf24" },
                     { value: "∞",   label: "Merak",       color: "#a78bfa" },
                   ].map(({ value, label, color }) => (
-                    <div key={label} className="text-center px-3 py-2 rounded-xl border border-white/[0.06] bg-white/[0.03]">
+                    <div
+                      key={label}
+                      className="rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-center dark:border-white/[0.06] dark:bg-white/[0.03]"
+                    >
                       <p className="text-xl font-black" style={{ color }}>{value}</p>
-                      <p className="text-[10px] text-zinc-500 uppercase tracking-wider mt-0.5">{label}</p>
+                      <p className="mt-0.5 text-[10px] uppercase tracking-wider text-zinc-600 dark:text-zinc-500">{label}</p>
                     </div>
                   ))}
                 </div>
@@ -741,7 +775,7 @@ function VisionMissionCard({
       onMouseMove={onMove}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={onLeave}
-      className="relative rounded-2xl border border-white/[0.07] bg-zinc-900/70 backdrop-blur-xl overflow-hidden h-full"
+      className="relative h-full overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/95 shadow-md backdrop-blur-xl dark:border-white/[0.07] dark:bg-zinc-900/70 dark:shadow-[0_4px_20px_rgba(0,0,0,0.4)]"
       style={{
         opacity: vis ? 1 : 0,
         transform: vis
@@ -751,7 +785,7 @@ function VisionMissionCard({
           ? hov ? "transform 0.12s ease-out" : "transform 0.55s ease-out"
           : `opacity 0.7s ease ${delay}ms, transform 0.7s ease ${delay}ms`,
         transformStyle: "preserve-3d",
-        boxShadow: hov ? `0 24px 60px ${glowColor}20, 0 0 0 1px ${glowColor}20` : "0 4px 20px rgba(0,0,0,0.4)",
+        ...(hov ? { boxShadow: `0 24px 60px ${glowColor}20, 0 0 0 1px ${glowColor}20` } : {}),
       }}
     >
       {/* Background gradient */}
@@ -789,13 +823,13 @@ function VisionMissionCard({
       </div>
 
       {/* Content */}
-      <div className="p-6 space-y-5" style={{ transform: "translateZ(14px)" }}>
-        <h3 className="text-xl font-bold text-white">{title}</h3>
-        <p className="text-zinc-400 leading-relaxed text-sm">{text}</p>
+      <div className="space-y-5 p-6" style={{ transform: "translateZ(14px)" }}>
+        <h3 className="text-xl font-bold text-zinc-900 dark:text-white">{title}</h3>
+        <p className="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">{text}</p>
         <ul className="space-y-2.5">
           {bullets.map((b) => (
-            <li key={b} className="flex items-start gap-2.5 text-sm text-zinc-300">
-              <div className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0" style={{ background: glowColor }} />
+            <li key={b} className="flex items-start gap-2.5 text-sm text-zinc-700 dark:text-zinc-300">
+              <div className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: glowColor }} />
               {b}
             </li>
           ))}
@@ -815,7 +849,7 @@ function VisionMissionCard({
 function VisionMissionSection() {
   const { ref, vis } = useInView(0.1);
   return (
-    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-28 overflow-hidden border-b border-white/5">
+    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-28 overflow-hidden border-b border-zinc-200 dark:border-white/5">
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] rounded-full bg-blue-600/[0.03] blur-3xl" />
         <Meteors number={12} symmetric />
@@ -882,7 +916,7 @@ function ValueCard({ icon: Icon, title, desc, color, bg, vis, delay }: typeof VA
       onMouseMove={onMove}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={onLeave}
-      className="relative rounded-2xl border border-white/[0.07] bg-zinc-900/60 backdrop-blur-sm overflow-hidden h-full cursor-default"
+      className="relative h-full cursor-default overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/95 shadow-sm backdrop-blur-sm dark:border-white/[0.07] dark:bg-zinc-900/60 dark:shadow-none"
       style={{
         opacity: vis ? 1 : 0,
         transform: vis
@@ -892,7 +926,7 @@ function ValueCard({ icon: Icon, title, desc, color, bg, vis, delay }: typeof VA
           ? hov ? "transform 0.12s ease-out" : "transform 0.45s ease-out"
           : `opacity 0.6s ease ${delay}ms, transform 0.6s ease ${delay}ms`,
         transformStyle: "preserve-3d",
-        boxShadow: hov ? `0 16px 48px ${color}25` : "none",
+        ...(hov ? { boxShadow: `0 16px 48px ${color}25` } : {}),
       }}
     >
       {/* Hover bg */}
@@ -909,8 +943,8 @@ function ValueCard({ icon: Icon, title, desc, color, bg, vis, delay }: typeof VA
         }}>
           <Icon className="w-6 h-6" style={{ color }} />
         </div>
-        <h3 className="font-bold text-white text-base">{title}</h3>
-        <p className="text-sm text-zinc-400 leading-relaxed">{desc}</p>
+        <h3 className="text-base font-bold text-zinc-900 dark:text-white">{title}</h3>
+        <p className="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">{desc}</p>
       </div>
 
       {/* Specular */}
@@ -926,7 +960,7 @@ function ValueCard({ icon: Icon, title, desc, color, bg, vis, delay }: typeof VA
 function ValuesSection() {
   const { ref, vis } = useInView(0.08);
   return (
-    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-28 overflow-hidden border-b border-white/5">
+    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-28 overflow-hidden border-b border-zinc-200 dark:border-white/5">
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
         <div className="absolute top-0 left-1/3 w-[400px] h-[400px] rounded-full bg-amber-600/[0.03] blur-3xl" />
         <div className="absolute bottom-0 right-1/3 w-[400px] h-[400px] rounded-full bg-pink-600/[0.03] blur-3xl" />
@@ -963,7 +997,7 @@ function TechBadge({ name, icon: Icon, color, group, vis, delay }: typeof techSt
     <div
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
-      className="relative flex items-center gap-3 px-4 py-3 rounded-xl border border-white/[0.07] bg-white/[0.04] hover:bg-white/[0.08] cursor-default overflow-hidden"
+      className="relative flex min-h-[4.25rem] cursor-default items-center gap-4 overflow-hidden rounded-xl border border-zinc-200 bg-white px-4 py-3.5 shadow-sm hover:bg-zinc-50 dark:border-white/[0.07] dark:bg-white/[0.04] dark:shadow-none dark:hover:bg-white/[0.08]"
       style={{
         opacity: vis ? 1 : 0,
         transform: vis ? (hov ? "translateY(-3px) scale(1.03)" : "none") : "translateY(20px)",
@@ -972,14 +1006,14 @@ function TechBadge({ name, icon: Icon, color, group, vis, delay }: typeof techSt
       }}
     >
       <div className="absolute left-0 top-0 bottom-0 w-0.5 rounded-r-full" style={{ background: color, opacity: hov ? 0.9 : 0.4, transition: "opacity 0.2s" }} />
-      <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: `${color}15` }}>
-        <Icon className="w-4 h-4" style={{ color }} />
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl" style={{ background: `${color}15` }}>
+        <Icon className="h-5 w-5" style={{ color }} />
       </div>
-      <div>
-        <p className="text-sm font-semibold text-zinc-200">{name}</p>
-        <p className="text-[10px] text-zinc-600 uppercase tracking-wider">{group}</p>
+      <div className="min-w-0 flex-1 space-y-1">
+        <p className="text-[0.9375rem] font-semibold leading-snug text-zinc-900 dark:text-zinc-200">{name}</p>
+        <p className="text-[11px] font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-600">{group}</p>
       </div>
-      {hov && <Sparkles className="absolute top-2 right-2 w-3 h-3 animate-pulse" style={{ color }} />}
+      {hov && <Sparkles className="absolute right-3 top-3 h-3.5 w-3.5 animate-pulse" style={{ color }} />}
     </div>
   );
 }
@@ -987,7 +1021,7 @@ function TechBadge({ name, icon: Icon, color, group, vis, delay }: typeof techSt
 function TechSection() {
   const { ref, vis } = useInView(0.08);
   return (
-    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-28 overflow-hidden border-b border-white/5">
+    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-28 overflow-hidden border-b border-zinc-200 dark:border-white/5">
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
         <div className="absolute top-1/3 -left-20 w-[500px] h-[400px] rounded-full bg-blue-600/[0.04] blur-3xl" />
         <div className="absolute bottom-1/3 -right-20 w-[400px] h-[400px] rounded-full bg-emerald-600/[0.04] blur-3xl" />
@@ -1006,26 +1040,31 @@ function TechSection() {
         </div>
 
         {/* Grouped grid */}
-        {["Frontend", "Backend", "Araçlar"].map((group) => {
-          const items = techStack.filter((t) => t.group === group);
-          return (
-            <div key={group} className="mb-10">
-              <div className="flex items-center gap-3 mb-5">
-                <span className="text-xs font-bold uppercase tracking-[0.2em]" style={{
-                  color: group === "Frontend" ? "#60a5fa" : group === "Backend" ? "#34d399" : "#a78bfa",
-                }}>
-                  {group}
-                </span>
-                <div className="flex-1 h-px bg-white/[0.05]" />
+        <div className="mt-12 space-y-14 sm:mt-14 sm:space-y-16">
+          {["Frontend", "Backend", "Araçlar"].map((group) => {
+            const items = techStack.filter((t) => t.group === group);
+            return (
+              <div key={group}>
+                <div className="mb-6 flex items-center gap-4 sm:mb-7">
+                  <span
+                    className="shrink-0 text-xs font-bold uppercase tracking-[0.2em] sm:text-sm"
+                    style={{
+                      color: group === "Frontend" ? "#60a5fa" : group === "Backend" ? "#34d399" : "#a78bfa",
+                    }}
+                  >
+                    {group}
+                  </span>
+                  <div className="h-px flex-1 bg-zinc-200 dark:bg-white/[0.05]" />
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
+                  {items.map((t, i) => (
+                    <TechBadge key={t.name} {...t} vis={vis} delay={i * 60} />
+                  ))}
+                </div>
               </div>
-              <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                {items.map((t, i) => (
-                  <TechBadge key={t.name} {...t} vis={vis} delay={i * 60} />
-                ))}
-              </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </section>
   );
@@ -1038,7 +1077,7 @@ function TechSection() {
 function TimelineSection() {
   const { ref, vis } = useInView(0.05);
   return (
-    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-28 overflow-hidden border-b border-white/5">
+    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-28 overflow-hidden border-b border-zinc-200 dark:border-white/5">
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-violet-600/[0.03] blur-3xl" />
         <Meteors number={10} symmetric />
@@ -1082,9 +1121,9 @@ function TimelineSection() {
 
                   {/* Center dot */}
                   <div className="hidden md:flex flex-col items-center pt-5">
-                    <div className="relative z-10 flex items-center justify-center w-10 h-10 rounded-xl border border-zinc-800 bg-zinc-900"
+                    <div className="relative z-10 flex h-10 w-10 items-center justify-center rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900"
                       style={{ boxShadow: vis ? `0 0 24px ${item.color}50` : "none", transition: "box-shadow 0.5s ease" }}>
-                      <Icon className="w-5 h-5" style={{ color: item.color }} />
+                      <Icon className="h-5 w-5" style={{ color: item.color }} />
                     </div>
                     <div className="text-[10px] font-bold mt-2 tracking-wider" style={{ color: item.color }}>{item.year}</div>
                   </div>
@@ -1097,11 +1136,11 @@ function TimelineSection() {
                   {/* Mobile */}
                   <div className="md:hidden">
                     <div className="flex items-center gap-3 mb-3">
-                      <div className="flex items-center justify-center w-8 h-8 rounded-lg border border-zinc-800 bg-zinc-900 shrink-0" style={{ boxShadow: `0 0 12px ${item.color}40` }}>
-                        <Icon className="w-4 h-4" style={{ color: item.color }} />
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900" style={{ boxShadow: `0 0 12px ${item.color}40` }}>
+                        <Icon className="h-4 w-4" style={{ color: item.color }} />
                       </div>
                       <span className="text-xs font-bold uppercase tracking-wider" style={{ color: item.color }}>{item.year}</span>
-                      <div className="h-px flex-1 bg-white/[0.06]" />
+                      <div className="h-px flex-1 bg-zinc-200 dark:bg-white/[0.06]" />
                     </div>
                     <TimelineCard item={item} Icon={Icon} color={item.color} current={item.current} />
                   </div>
@@ -1126,9 +1165,11 @@ function TimelineCard({ item, Icon, color, current }: {
     <div
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
-      className="group relative rounded-2xl border border-white/[0.07] bg-zinc-900/70 backdrop-blur-sm overflow-hidden transition-all duration-300 p-5 space-y-3"
+      className="group relative space-y-3 overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/95 p-5 shadow-md backdrop-blur-sm transition-all duration-300 dark:border-white/[0.07] dark:bg-zinc-900/70 dark:shadow-[0_4px_20px_rgba(0,0,0,0.35)]"
       style={{
-        boxShadow: hov ? `0 16px 48px ${color}20, 0 0 0 1px ${color}20` : "0 4px 20px rgba(0,0,0,0.35)",
+        ...(hov
+          ? { boxShadow: `0 16px 48px ${color}20, 0 0 0 1px ${color}20` }
+          : {}),
       }}
     >
       <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
@@ -1137,12 +1178,12 @@ function TimelineCard({ item, Icon, color, current }: {
         style={{ background: `linear-gradient(90deg,transparent,${color}60,transparent)` }} />
 
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-bold text-white">{item.title}</h3>
+        <h3 className="text-sm font-bold text-zinc-900 dark:text-white">{item.title}</h3>
         {current && (
           <span className="text-[9px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400">Güncel</span>
         )}
       </div>
-      <p className="text-xs text-zinc-400 leading-relaxed">{item.desc}</p>
+      <p className="text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">{item.desc}</p>
     </div>
   );
 }
@@ -1172,11 +1213,11 @@ function AnimatedStat({ value, suffix, label, icon: Icon, color, started }: type
     <div
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
-      className="relative text-center p-6 rounded-2xl border border-white/[0.06] bg-white/[0.03] overflow-hidden cursor-default"
+      className="relative cursor-default overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-50/90 p-6 text-center dark:border-white/[0.06] dark:bg-white/[0.03]"
       style={{
         transform: hov ? "perspective(400px) translateZ(18px) scale(1.05)" : "perspective(400px) translateZ(0) scale(1)",
         transition: "transform 0.28s ease, box-shadow 0.28s ease",
-        boxShadow: hov ? `0 16px 48px ${color}20` : "none",
+        ...(hov ? { boxShadow: `0 16px 48px ${color}20` } : {}),
       }}
     >
       <div className="absolute inset-0 pointer-events-none opacity-0 hover:opacity-100 transition-opacity duration-300" style={{
@@ -1189,7 +1230,7 @@ function AnimatedStat({ value, suffix, label, icon: Icon, color, started }: type
         <p className="text-3xl font-black tabular-nums" style={{ color }}>
           {count}<span className="text-xl">{suffix}</span>
         </p>
-        <p className="text-xs text-zinc-500 uppercase tracking-widest">{label}</p>
+        <p className="text-xs uppercase tracking-widest text-zinc-600 dark:text-zinc-500">{label}</p>
       </div>
     </div>
   );
@@ -1198,7 +1239,7 @@ function AnimatedStat({ value, suffix, label, icon: Icon, color, started }: type
 function StatsSection() {
   const { ref, vis } = useInView(0.15);
   return (
-    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-20 overflow-hidden border-b border-white/5">
+    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-20 overflow-hidden border-b border-zinc-200 dark:border-white/5">
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full bg-blue-600/[0.04] blur-3xl" />
       </div>
@@ -1221,7 +1262,7 @@ function StatsSection() {
 function WhyMeSection() {
   const { ref, vis } = useInView(0.1);
   return (
-    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-28 overflow-hidden border-b border-white/5">
+    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-28 overflow-hidden border-b border-zinc-200 dark:border-white/5">
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
         <div className="absolute -top-20 left-1/3 w-[500px] h-[400px] rounded-full bg-emerald-600/[0.04] blur-3xl" />
         <Meteors number={10} />
@@ -1244,24 +1285,24 @@ function WhyMeSection() {
             return (
               <div
                 key={title}
-                className="group relative rounded-2xl border border-white/[0.07] bg-zinc-900/60 p-6 space-y-4 overflow-hidden"
+                className="group relative space-y-4 overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/95 p-6 shadow-sm dark:border-white/[0.07] dark:bg-zinc-900/60 dark:shadow-none"
                 style={{
                   opacity: vis ? 1 : 0,
                   transform: vis ? "none" : "translateY(32px)",
                   transition: `opacity 0.6s ease ${delay}ms, transform 0.6s ease ${delay}ms`,
                 }}
               >
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                   style={{ background: `radial-gradient(circle at 50% 0%, ${color}10 0%, transparent 70%)` }} />
-                <div className="absolute top-0 left-0 right-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                <div className="absolute left-0 right-0 top-0 h-px opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                   style={{ background: `linear-gradient(90deg,transparent,${color}60,transparent)` }} />
 
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110" style={{ background: `${color}15`, boxShadow: `0 0 0 0 ${color}40` }}>
-                  <Icon className="w-6 h-6" style={{ color }} />
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl transition-all duration-300 group-hover:scale-110" style={{ background: `${color}15`, boxShadow: `0 0 0 0 ${color}40` }}>
+                  <Icon className="h-6 w-6" style={{ color }} />
                 </div>
                 <div>
-                  <h3 className="font-bold text-white text-sm mb-2">{title}</h3>
-                  <p className="text-xs text-zinc-400 leading-relaxed">{desc}</p>
+                  <h3 className="mb-2 text-sm font-bold text-zinc-900 dark:text-white">{title}</h3>
+                  <p className="text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">{desc}</p>
                 </div>
               </div>
             );
@@ -1294,7 +1335,7 @@ function CTASection() {
           onMouseMove={tilt.onMove}
           onMouseEnter={() => tilt.setHov(true)}
           onMouseLeave={tilt.onLeave}
-          className="relative rounded-3xl border border-white/[0.08] bg-zinc-900/80 backdrop-blur-xl overflow-hidden text-center p-12 sm:p-16"
+          className="relative overflow-hidden rounded-3xl border border-zinc-200/80 bg-white/95 p-12 text-center shadow-[0_8px_40px_rgba(15,23,42,0.08)] backdrop-blur-xl dark:border-white/[0.08] dark:bg-zinc-900/80 dark:shadow-[0_8px_40px_rgba(0,0,0,0.5)] sm:p-16"
           style={{
             opacity: vis ? 1 : 0,
             transform: vis
@@ -1304,9 +1345,11 @@ function CTASection() {
               ? tilt.hov ? "transform 0.15s ease-out, opacity 0s" : "transform 0.55s ease-out, opacity 0s"
               : "opacity 0.7s ease, transform 0.7s ease",
             transformStyle: "preserve-3d",
-            boxShadow: tilt.hov
-              ? "0 32px 80px rgba(59,130,246,0.15), 0 0 0 1px rgba(59,130,246,0.15)"
-              : "0 8px 40px rgba(0,0,0,0.5)",
+            ...(tilt.hov
+              ? {
+                  boxShadow: "0 32px 80px rgba(59,130,246,0.15), 0 0 0 1px rgba(59,130,246,0.15)",
+                }
+              : {}),
           }}
         >
           {/* BG pattern */}
@@ -1321,32 +1364,36 @@ function CTASection() {
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-emerald-600/[0.05] blur-3xl animate-glow-pulse" style={{ animationDelay: "1.5s" }} />
 
           <div className="relative z-10 space-y-8" style={{ transform: "translateZ(20px)" }}>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-blue-500/20 bg-blue-500/10">
-              <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-              <span className="text-xs font-semibold text-blue-400 tracking-[0.18em] uppercase">Hazır mısın?</span>
+            <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3.5 py-1.5 dark:border-blue-500/20 dark:bg-blue-500/10">
+              <Sparkles className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-700 dark:text-blue-400">Hazır mısın?</span>
             </div>
 
             <div>
-              <h2 className="text-4xl sm:text-5xl font-black leading-[1.1] tracking-tight">
-                <span className="text-white">Birlikte</span>
+              <h2 className="text-4xl font-black leading-[1.1] tracking-tight sm:text-5xl">
+                <span className="text-zinc-900 dark:text-white">Birlikte</span>
                 <br />
-                <AnimatedGradientText className="text-4xl sm:text-5xl font-black">
+                <AnimatedGradientText className="text-4xl font-black sm:text-5xl">
                   Harika Şeyler Yapalım
                 </AnimatedGradientText>
               </h2>
-              <p className="mt-5 text-zinc-400 text-lg max-w-xl mx-auto leading-relaxed">
+              <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-zinc-600 dark:text-zinc-400">
                 Yeni bir proje, iş birliği ya da sadece merhaba demek için — kapım her zaman açık.
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-4 justify-center">
-              <Button asChild className="relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-emerald-600 px-8 py-3 text-base font-semibold text-white border-0 shadow-[0_0_28px_rgba(59,130,246,0.35)] hover:shadow-[0_0_48px_rgba(59,130,246,0.55)] hover:scale-[1.02] transition-all duration-300 gap-2 h-auto">
+            <div className="flex flex-wrap justify-center gap-4">
+              <Button asChild className="relative h-auto gap-2 overflow-hidden rounded-xl border-0 bg-gradient-to-r from-blue-600 to-emerald-600 px-8 py-3 text-base font-semibold text-white shadow-[0_0_28px_rgba(59,130,246,0.35)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_48px_rgba(59,130,246,0.55)]">
                 <Link href="/#contact">
-                  <ArrowRight className="w-5 h-5" />
+                  <ArrowRight className="h-5 w-5" />
                   İletişime Geç
                 </Link>
               </Button>
-              <Button variant="outline" asChild className="rounded-xl border-white/10 bg-white/[0.03] text-zinc-300 hover:border-blue-500/30 hover:text-white hover:bg-blue-500/10 px-8 py-3 text-base font-semibold transition-all duration-300 gap-2 h-auto">
+              <Button
+                variant="outline"
+                asChild
+                className="h-auto gap-2 rounded-xl border-zinc-200 bg-white px-8 py-3 text-base font-semibold text-zinc-800 transition-all duration-300 hover:border-blue-300 hover:bg-blue-50 hover:text-zinc-950 dark:border-white/10 dark:bg-white/[0.03] dark:text-zinc-300 dark:hover:border-blue-500/30 dark:hover:bg-blue-500/10 dark:hover:text-white"
+              >
                 <Link href="/#projects">
                   Projeleri Gör
                 </Link>
@@ -1372,7 +1419,7 @@ function CTASection() {
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-[#050505] text-zinc-100 flex flex-col">
+    <div className="flex min-h-screen flex-col bg-background text-foreground">
       <Header />
       <main className="flex flex-1 flex-col">
         <HeroSection />

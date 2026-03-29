@@ -388,14 +388,16 @@ function HobbyCard({ hobby }: { hobby: Hobby }) {
       onMouseMove={onMove}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={onLeave}
-      className="relative group flex flex-col rounded-2xl border border-white/[0.07] bg-zinc-900/60 backdrop-blur-sm overflow-hidden h-full"
+      className="relative group flex h-full flex-col overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/95 shadow-md backdrop-blur-sm dark:border-white/[0.07] dark:bg-zinc-900/60 dark:shadow-[0_4px_24px_rgba(0,0,0,0.4)]"
       style={{
         transform:      `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${hovered ? 1.02 : 1})`,
         transition:     hovered ? "transform 0.12s ease-out" : "transform 0.5s ease-out",
         transformStyle: "preserve-3d",
-        boxShadow: hovered
-          ? `0 20px 60px ${hobby.accent.from}22, 0 0 0 1px ${hobby.accent.from}28`
-          : "0 4px 24px rgba(0,0,0,0.4)",
+        ...(hovered
+          ? {
+              boxShadow: `0 20px 60px ${hobby.accent.from}22, 0 0 0 1px ${hobby.accent.from}28`,
+            }
+          : {}),
       }}
     >
       {/* Meteors on hover */}
@@ -452,10 +454,10 @@ function HobbyCard({ hobby }: { hobby: Hobby }) {
               boxShadow:  `0 0 12px ${hobby.accent.from}30`,
             }}
           >
-            <Icon className="w-4 h-4 text-white" />
+            <Icon className="h-4 w-4 !text-white" />
           </div>
           <h3
-            className="font-bold text-white text-sm"
+            className="text-sm font-bold text-zinc-900 dark:text-white"
             style={{ textShadow: `0 0 20px ${hobby.accent.from}40` }}
           >
             {hobby.title}
@@ -463,7 +465,7 @@ function HobbyCard({ hobby }: { hobby: Hobby }) {
         </div>
 
         {/* Description */}
-        <p className="text-xs text-zinc-400 leading-relaxed flex-1">
+        <p className="flex-1 text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
           {hobby.description}
         </p>
 
@@ -472,7 +474,7 @@ function HobbyCard({ hobby }: { hobby: Hobby }) {
           {hobby.tags.map((tag) => (
             <span
               key={tag}
-              className="text-[10px] font-medium px-2 py-0.5 rounded-md border border-white/[0.07] bg-white/[0.04]"
+              className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[10px] font-medium dark:border-white/[0.07] dark:bg-white/[0.04]"
               style={{ color: hobby.accent.from }}
             >
               {tag}
@@ -518,7 +520,7 @@ export function HobbiesSection() {
     <section
       ref={ref}
       id="hobbies"
-      className="relative py-24 overflow-hidden border-b border-white/5"
+      className="relative py-24 overflow-hidden border-b border-zinc-200 dark:border-white/5"
     >
       {/* ── Background ── */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
@@ -553,7 +555,7 @@ export function HobbiesSection() {
           </div>
 
           <h2 className="text-4xl sm:text-[2.75rem] font-bold leading-[1.15] tracking-tight">
-            <span className="text-white">Ekrandan Uzakta</span>
+            <span className="text-zinc-900 dark:text-white">Ekrandan Uzakta</span>
             <br />
             <AnimatedGradientText className="text-4xl sm:text-[2.75rem] font-bold">
               Ne Yapıyorum?

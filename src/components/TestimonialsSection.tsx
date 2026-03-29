@@ -240,7 +240,7 @@ export function TestimonialsSection() {
     <section
       ref={ref}
       id="testimonials"
-      className="relative py-24 overflow-hidden border-b border-white/5"
+      className="relative py-24 overflow-hidden border-b border-zinc-200 dark:border-white/5"
     >
       {/* Background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>

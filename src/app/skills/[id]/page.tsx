@@ -50,7 +50,7 @@ export default async function SkillDetailPage({ params }: { params: Promise<{ id
       <main className="flex flex-1 flex-col">
 
         {/* ── Hero ─────────────────────────────────────── */}
-        <section className="relative overflow-hidden border-b border-white/5 pt-16 pb-20">
+        <section className="relative overflow-hidden border-b border-zinc-200 dark:border-white/5 pt-16 pb-20">
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
             <div
               className="absolute inset-0 opacity-25"

@@ -13,6 +13,7 @@ import {
 import { AnimatedGradientText } from "@/components/magicui/animated-gradient-text";
 import { Meteors } from "@/components/magicui/meteors";
 import { Instagram, Github, Linkedin, Twitter } from "@/components/icons/social";
+import { cn } from "@/lib/utils";
 
 const EMAIL = "fatihemreyuce@gmail.com";
 
@@ -124,9 +125,17 @@ function ContactSpread() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={label}
-                className="group/soc flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 transition-all duration-200 hover:border-white/25 hover:bg-white/[0.05] sm:h-12 sm:w-12"
+                className="group/soc flex h-11 w-11 items-center justify-center rounded-xl border border-zinc-200/90 bg-white shadow-sm transition-all duration-200 hover:border-zinc-300 hover:bg-zinc-50 dark:border-white/10 dark:bg-transparent dark:shadow-none dark:hover:border-white/25 dark:hover:bg-white/[0.05] sm:h-12 sm:w-12"
               >
-                <Icon className="h-5 w-5 opacity-85 transition-transform duration-200 group-hover/soc:scale-110" style={{ color }} />
+                <Icon
+                  className={cn(
+                    "h-5 w-5 transition-transform duration-200 group-hover/soc:scale-110",
+                    label === "GitHub"
+                      ? "text-zinc-800 group-hover/soc:text-zinc-950 dark:text-zinc-400 dark:group-hover/soc:text-zinc-100"
+                      : "opacity-90 group-hover/soc:opacity-100",
+                  )}
+                  style={label === "GitHub" ? undefined : { color }}
+                />
                 <span className="sr-only">{label}</span>
               </a>
             ))}

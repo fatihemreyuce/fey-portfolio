@@ -94,7 +94,7 @@ export function Meteors({ number = 18, className, symmetric = false }: MeteorsPr
             "bg-zinc-400 shadow-[0_0_0_1px_rgba(255,255,255,0.06)]",
             "before:absolute before:top-1/2 before:h-px before:w-[80px]",
             "before:-translate-y-1/2 before:bg-gradient-to-r",
-            "before:from-transparent before:to-white/60",
+            "before:from-transparent before:to-zinc-500/45 dark:before:to-white/60",
           )}
           style={{
             top: m.top,

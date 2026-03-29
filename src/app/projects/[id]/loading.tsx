@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 function SkeletonHeader() {
   return (
-    <div className="fixed top-0 left-0 right-0 z-40 mt-[2px] bg-black/80 backdrop-blur-xl border-b border-white/5">
+    <div className="fixed left-0 right-0 top-0 z-40 border-b border-zinc-200/90 bg-white/90 backdrop-blur-xl dark:border-white/5 dark:bg-black/80">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
@@ -37,7 +37,7 @@ export default function ProjectDetailLoading() {
       <div className="h-[66px]" />
 
       {/* ── Hero ── */}
-      <section className="border-b border-white/5 pt-16 pb-20">
+      <section className="border-b border-zinc-200 dark:border-white/5 pt-16 pb-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 
           {/* Breadcrumb */}

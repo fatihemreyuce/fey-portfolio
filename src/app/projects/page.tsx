@@ -25,7 +25,7 @@ import { AnimatedGradientText } from "@/components/magicui/animated-gradient-tex
 import { TypewriterGradientText } from "@/components/magicui/typewriter-gradient-text";
 import { Meteors } from "@/components/magicui/meteors";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { cn, hexNeedsForcedDarkText } from "@/lib/utils";
 import { projects, type Project } from "@/data/projects";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -35,9 +35,24 @@ import { Footer } from "@/components/Footer";
 const CATEGORIES = ["Tümü", "Fullstack", "Frontend", "Backend"] as const;
 
 const STATUS_MAP = {
-  live:        { label: "Yayında",    icon: Radio,        color: "text-emerald-400 border-emerald-500/25 bg-emerald-500/10" },
-  completed:   { label: "Tamamlandı", icon: CheckCircle2, color: "text-blue-400 border-blue-500/25 bg-blue-500/10"         },
-  development: { label: "Geliştirme", icon: Clock,        color: "text-amber-400 border-amber-500/25 bg-amber-500/10"      },
+  live: {
+    label: "Yayında",
+    icon: Radio,
+    color:
+      "text-emerald-900 border-emerald-400/70 bg-emerald-100/95 dark:text-emerald-400 dark:border-emerald-500/25 dark:bg-emerald-500/10",
+  },
+  completed: {
+    label: "Tamamlandı",
+    icon: CheckCircle2,
+    color:
+      "text-blue-900 border-blue-400/70 bg-blue-100/95 dark:text-blue-400 dark:border-blue-500/25 dark:bg-blue-500/10",
+  },
+  development: {
+    label: "Geliştirme",
+    icon: Clock,
+    color:
+      "text-amber-900 border-amber-400/70 bg-amber-100/95 dark:text-amber-400 dark:border-amber-500/25 dark:bg-amber-500/10",
+  },
 } as const;
 
 const STATS = [
@@ -100,7 +115,7 @@ function ProjectCard({ project, index, visible }: { project: Project; index: num
       onMouseMove={onMove}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={onLeave}
-      className="relative group flex h-full flex-col rounded-2xl border border-white/[0.07] bg-zinc-900/60 backdrop-blur-sm overflow-hidden"
+      className="relative group flex h-full flex-col overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/95 shadow-md backdrop-blur-sm dark:border-white/[0.07] dark:bg-zinc-900/60 dark:shadow-[0_4px_24px_rgba(0,0,0,0.4)]"
       style={{
         opacity:   visible ? 1 : 0,
         transform: visible
@@ -110,9 +125,11 @@ function ProjectCard({ project, index, visible }: { project: Project; index: num
           ? hov ? "transform 0.12s ease-out" : "transform 0.5s ease-out"
           : `opacity 0.55s ease ${0.1 + index * 0.08}s, transform 0.55s ease ${0.1 + index * 0.08}s`,
         transformStyle: "preserve-3d",
-        boxShadow: hov
-          ? `0 20px 60px ${project.accent.from}22, 0 0 0 1px ${project.accent.from}30`
-          : "0 4px 24px rgba(0,0,0,0.4)",
+        ...(hov
+          ? {
+              boxShadow: `0 20px 60px ${project.accent.from}22, 0 0 0 1px ${project.accent.from}30`,
+            }
+          : {}),
       }}
     >
       {/* Meteors on hover */}
@@ -137,9 +154,9 @@ function ProjectCard({ project, index, visible }: { project: Project; index: num
           <div className="flex items-center gap-2">
             <div className="w-10 h-10 rounded-xl flex items-center justify-center border border-white/15"
               style={{ background: `linear-gradient(135deg,${project.accent.from}50,${project.accent.to}50)`, boxShadow: `0 0 20px ${project.accent.from}40` }}>
-              <Icon className="w-5 h-5 text-white" />
+              <Icon className="h-5 w-5 !text-white" />
             </div>
-            <span className="text-[11px] font-bold px-2.5 py-1 rounded-lg border border-white/10 bg-black/30 backdrop-blur-sm" style={{ color: project.accent.from }}>
+            <span className="rounded-lg border border-white/40 bg-white/25 px-2.5 py-1 text-[11px] font-bold shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-black/30 dark:shadow-none" style={{ color: project.accent.from }}>
               {project.category}
             </span>
           </div>
@@ -154,18 +171,25 @@ function ProjectCard({ project, index, visible }: { project: Project; index: num
       {/* Body */}
       <div className="flex flex-1 flex-col gap-4 p-5" style={{ transform: "translateZ(12px)" }}>
         <div className="flex items-start justify-between gap-2">
-          <h3 className="text-base font-bold text-white leading-snug">{project.title}</h3>
-          <span className="text-[11px] text-zinc-600 shrink-0 mt-0.5">{project.year}</span>
+          <h3 className="text-base font-bold leading-snug text-zinc-900 dark:text-white">{project.title}</h3>
+          <span className="mt-0.5 shrink-0 text-[11px] text-zinc-500 dark:text-zinc-600">{project.year}</span>
         </div>
-        <p className="text-sm text-zinc-400 leading-relaxed line-clamp-3 min-h-[4.5rem]">{project.shortDesc}</p>
+        <p className="line-clamp-3 min-h-[4.5rem] text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">{project.shortDesc}</p>
         <div className="mt-auto flex flex-wrap gap-1.5">
           {project.techs.slice(0, 4).map((tech) => (
-            <span key={tech.name} className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-white/[0.05] border border-white/[0.07]" style={{ color: tech.color }}>
+            <span
+              key={tech.name}
+              className={cn(
+                "project-tech-pill rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[10px] font-medium dark:border-white/[0.07] dark:bg-white/[0.05]",
+                hexNeedsForcedDarkText(tech.color) && "project-tech-pill--force-dark",
+              )}
+              style={{ color: tech.color }}
+            >
               {tech.name}
             </span>
           ))}
           {project.techs.length > 4 && (
-            <span className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-white/[0.05] border border-white/[0.07] text-zinc-500">+{project.techs.length - 4}</span>
+            <span className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[10px] font-medium text-zinc-600 dark:border-white/[0.07] dark:bg-white/[0.05] dark:text-zinc-500">+{project.techs.length - 4}</span>
           )}
         </div>
       </div>
@@ -175,19 +199,19 @@ function ProjectCard({ project, index, visible }: { project: Project; index: num
         <div className="flex items-center gap-2">
           {project.githubUrl && (
             <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}
-              className="flex items-center justify-center w-8 h-8 rounded-lg border border-white/10 bg-white/[0.04] text-zinc-400 hover:text-white hover:border-white/20 hover:bg-white/[0.08] transition-all duration-200">
-              <Github className="w-4 h-4" />
+              className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-100 bg-zinc-50/80 text-zinc-600 shadow-sm transition-all duration-200 hover:border-zinc-200 hover:bg-zinc-100/80 hover:text-zinc-900 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-none dark:hover:border-white/20 dark:hover:bg-white/[0.08] dark:hover:text-white">
+              <Github className="h-4 w-4" />
             </a>
           )}
           {project.liveUrl && (
             <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}
-              className="flex items-center justify-center w-8 h-8 rounded-lg border border-white/10 bg-white/[0.04] text-zinc-400 hover:text-white hover:border-white/20 hover:bg-white/[0.08] transition-all duration-200">
-              <ExternalLink className="w-4 h-4" />
+              className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-100 bg-zinc-50/80 text-zinc-600 shadow-sm transition-all duration-200 hover:border-zinc-200 hover:bg-zinc-100/80 hover:text-zinc-900 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-none dark:hover:border-white/20 dark:hover:bg-white/[0.08] dark:hover:text-white">
+              <ExternalLink className="h-4 w-4" />
             </a>
           )}
         </div>
         <Link href={`/projects/${project.id}`} onClick={(e) => e.stopPropagation()}
-          className="group/btn flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-xl border border-white/10 bg-white/[0.04] text-zinc-300 hover:text-white hover:bg-white/[0.08] hover:border-white/20 transition-all duration-200">
+          className="group/btn flex items-center gap-1.5 rounded-xl border border-zinc-100 bg-zinc-50/80 px-4 py-2 text-xs font-semibold text-zinc-700 shadow-sm transition-all duration-200 hover:border-zinc-200 hover:bg-zinc-100/80 hover:text-zinc-950 dark:border-white/10 dark:bg-white/[0.04] dark:text-zinc-300 dark:shadow-none dark:hover:border-white/20 dark:hover:bg-white/[0.08] dark:hover:text-white">
           Detaylar
           <ArrowUpRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform duration-200" />
         </Link>
@@ -208,7 +232,6 @@ function FeaturedCard({ project, vis }: { project: Project; vis: boolean }) {
   const ref         = useRef<HTMLDivElement>(null);
   const [tilt, setT] = useState({ x: 0, y: 0 });
   const [hov, setH]  = useState(false);
-
   const onMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const r = ref.current?.getBoundingClientRect();
     if (!r) return;
@@ -226,7 +249,7 @@ function FeaturedCard({ project, vis }: { project: Project; vis: boolean }) {
       onMouseMove={onMove}
       onMouseEnter={() => setH(true)}
       onMouseLeave={() => { setT({ x: 0, y: 0 }); setH(false); }}
-      className="relative rounded-2xl border border-white/[0.07] bg-zinc-900/70 backdrop-blur-xl overflow-hidden"
+      className="relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/95 shadow-lg backdrop-blur-xl dark:border-white/[0.07] dark:bg-zinc-900/70 dark:shadow-[0_8px_40px_rgba(0,0,0,0.5)]"
       style={{
         opacity: vis ? 1 : 0,
         transform: vis
@@ -234,7 +257,11 @@ function FeaturedCard({ project, vis }: { project: Project; vis: boolean }) {
           : "translateY(40px)",
         transition: vis ? (hov ? "transform 0.12s ease-out" : "transform 0.55s ease-out") : "opacity 0.7s ease 0.15s, transform 0.7s ease 0.15s",
         transformStyle: "preserve-3d",
-        boxShadow: hov ? `0 32px 80px ${project.accent.from}25, 0 0 0 1px ${project.accent.from}20` : "0 8px 40px rgba(0,0,0,0.5)",
+        ...(hov
+          ? {
+              boxShadow: `0 32px 80px ${project.accent.from}25, 0 0 0 1px ${project.accent.from}20`,
+            }
+          : {}),
       }}
     >
       <Meteors number={10} />
@@ -254,11 +281,20 @@ function FeaturedCard({ project, vis }: { project: Project; vis: boolean }) {
           <div className="relative z-10 flex flex-col items-center gap-3" style={{ transform: "translateZ(24px)" }}>
             <div className="w-20 h-20 rounded-2xl flex items-center justify-center border border-white/20"
               style={{ background: `linear-gradient(135deg,${project.accent.from}60,${project.accent.to}60)`, boxShadow: `0 0 48px ${project.accent.from}50` }}>
-              <Icon className="w-10 h-10 text-white" />
+              <Icon className="h-10 w-10 !text-white" />
             </div>
             <div className="flex flex-wrap gap-1.5 justify-center max-w-[180px]">
               {project.techs.map((t) => (
-                <span key={t.name} className="text-[10px] font-medium px-2 py-0.5 rounded-full border border-white/10 bg-black/30" style={{ color: t.color }}>{t.name}</span>
+                <span
+                  key={t.name}
+                  className={cn(
+                    "project-tech-pill rounded-full border border-white/40 bg-white/25 px-2 py-0.5 text-[10px] font-medium shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-black/30 dark:shadow-none",
+                    hexNeedsForcedDarkText(t.color) && "project-tech-pill--force-dark",
+                  )}
+                  style={{ color: t.color }}
+                >
+                  {t.name}
+                </span>
               ))}
             </div>
           </div>
@@ -276,14 +312,14 @@ function FeaturedCard({ project, vis }: { project: Project; vis: boolean }) {
             <span className="text-xs text-zinc-600">{project.year}</span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl font-bold text-white">{project.title}</h2>
-          <p className="text-zinc-400 leading-relaxed">{project.longDesc}</p>
+          <h2 className="text-2xl font-bold text-zinc-900 sm:text-3xl dark:text-white">{project.title}</h2>
+          <p className="leading-relaxed text-zinc-600 dark:text-zinc-400">{project.longDesc}</p>
 
           <div className="space-y-2">
-            <p className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider">Özellikler</p>
-            <div className="grid sm:grid-cols-2 gap-2">
+            <p className="text-[11px] font-bold uppercase tracking-wider text-zinc-500">Özellikler</p>
+            <div className="grid gap-2 sm:grid-cols-2">
               {project.features.map((f) => (
-                <div key={f} className="flex items-start gap-2 text-sm text-zinc-300">
+                <div key={f} className="flex items-start gap-2 text-sm text-zinc-700 dark:text-zinc-300">
                   <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" style={{ color: project.accent.from }} />
                   {f}
                 </div>
@@ -299,7 +335,7 @@ function FeaturedCard({ project, vis }: { project: Project; vis: boolean }) {
             </Link>
             {project.githubUrl && (
               <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium border border-white/10 bg-white/[0.04] text-zinc-300 hover:text-white hover:bg-white/[0.08] transition-all duration-200">
+                className="flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 transition-all duration-200 hover:bg-zinc-50 hover:text-zinc-950 dark:border-white/10 dark:bg-white/[0.04] dark:text-zinc-300 dark:hover:bg-white/[0.08] dark:hover:text-white">
                 <Github className="w-4 h-4" /> GitHub
               </a>
             )}
@@ -334,7 +370,7 @@ function StatCard({ value, suffix, label, icon: Icon, color, vis, delay }: typeo
   const [hov, setHov] = useState(false);
   return (
     <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
-      className="relative text-center p-6 rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden cursor-default"
+      className="relative cursor-default overflow-hidden rounded-2xl border border-zinc-200 bg-white p-6 text-center dark:border-white/[0.06] dark:bg-white/[0.02]"
       style={{
         opacity: vis ? 1 : 0,
         transform: vis ? (hov ? "perspective(400px) translateZ(16px) scale(1.05)" : "none") : "translateY(24px)",
@@ -350,7 +386,7 @@ function StatCard({ value, suffix, label, icon: Icon, color, vis, delay }: typeo
           <Icon className="w-5 h-5" style={{ color }} />
         </div>
         <p className="text-3xl font-black tabular-nums" style={{ color }}>{count}{suffix}</p>
-        <p className="text-xs text-zinc-500 uppercase tracking-widest">{label}</p>
+        <p className="text-xs uppercase tracking-widest text-zinc-600 dark:text-zinc-500">{label}</p>
       </div>
     </div>
   );
@@ -363,7 +399,7 @@ function HeroSection() {
   useEffect(() => { const t = setTimeout(() => setMounted(true), 80); return () => clearTimeout(t); }, []);
 
   return (
-    <section className="relative py-24 overflow-hidden border-b border-white/5">
+    <section className="relative py-24 overflow-hidden border-b border-zinc-200 dark:border-white/5">
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
         <div className="absolute top-1/3 -right-24 w-[600px] h-[500px] rounded-full bg-violet-600/[0.05] blur-3xl" />
         <div className="absolute bottom-1/3 -left-24 w-[500px] h-[400px] rounded-full bg-blue-600/[0.04] blur-3xl" />
@@ -374,7 +410,7 @@ function HeroSection() {
       <div className="relative z-10 mx-auto max-w-6xl w-full px-4 sm:px-6 lg:px-8">
         {/* Back */}
         <div className="mb-10" style={{ opacity: mounted ? 1 : 0, transform: mounted ? "none" : "translateY(-12px)", transition: "opacity 0.5s, transform 0.5s" }}>
-          <Link href="/" className="group inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-white/[0.08] bg-white/[0.03] hover:border-blue-500/30 hover:bg-blue-500/[0.06] transition-all text-zinc-400 hover:text-white text-sm font-medium">
+          <Link href="/" className="group inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-600 transition-all hover:border-blue-300 hover:bg-blue-50 hover:text-zinc-900 dark:border-white/[0.08] dark:bg-white/[0.03] dark:text-zinc-400 dark:hover:border-blue-500/30 dark:hover:bg-blue-500/[0.06] dark:hover:text-white">
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform duration-200" />Ana Sayfa
           </Link>
         </div>
@@ -441,7 +477,7 @@ function HeroSection() {
                 return (
                   <div
                     key={label}
-                    className="absolute flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-white/10 bg-zinc-900/90 backdrop-blur-sm animate-float text-xs font-semibold"
+                    className="absolute flex animate-float items-center gap-1.5 rounded-xl border border-zinc-200 bg-white/95 px-3 py-1.5 text-xs font-semibold shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-zinc-900/90"
                     style={{
                       left: `calc(50% + ${x}px - 48px)`,
                       top:  `calc(50% + ${y}px - 16px)`,
@@ -471,7 +507,7 @@ function HeroSection() {
 function StatsSection() {
   const { ref, vis } = useInView(0.15);
   return (
-    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-14 overflow-hidden border-b border-white/5">
+    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-14 overflow-hidden border-b border-zinc-200 dark:border-white/5">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full bg-violet-600/[0.04] blur-3xl" />
       </div>
@@ -491,7 +527,7 @@ function FeaturedSection() {
   const featured = projects.find((p) => p.status === "live") ?? projects[0]!;
 
   return (
-    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-24 overflow-hidden border-b border-white/5">
+    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-24 overflow-hidden border-b border-zinc-200 dark:border-white/5">
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full bg-blue-600/[0.04] blur-3xl" />
         <Meteors number={12} symmetric />
@@ -503,7 +539,7 @@ function FeaturedSection() {
             <span className="text-xs font-semibold text-amber-400 tracking-[0.18em] uppercase">Öne Çıkan</span>
           </div>
           <h2 className="text-4xl sm:text-[2.75rem] font-bold leading-[1.15] tracking-tight">
-            <span className="text-white">En Dikkat Çekici</span>
+            <span className="text-zinc-900 dark:text-white">En Dikkat Çekici</span>
             <br />
             <AnimatedGradientText className="text-4xl sm:text-[2.75rem] font-bold">Projem</AnimatedGradientText>
           </h2>
@@ -522,7 +558,7 @@ function AllProjectsSection() {
   const filtered = filter === "Tümü" ? projects : projects.filter((p) => p.category === filter);
 
   return (
-    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-24 overflow-hidden border-b border-white/5">
+    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-24 overflow-hidden border-b border-zinc-200 dark:border-white/5">
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
         <div className="absolute -top-20 right-1/3 w-[500px] h-[400px] rounded-full bg-violet-600/[0.04] blur-3xl" />
         <Meteors number={10} />
@@ -535,7 +571,7 @@ function AllProjectsSection() {
             <span className="text-xs font-semibold text-violet-400 tracking-[0.18em] uppercase">Tüm Projeler</span>
           </div>
           <h2 className="text-4xl sm:text-[2.75rem] font-bold leading-[1.15] tracking-tight">
-            <span className="text-white">Üzerinde Çalıştığım</span>
+            <span className="text-zinc-900 dark:text-white">Üzerinde Çalıştığım</span>
             <br />
             <AnimatedGradientText className="text-4xl sm:text-[2.75rem] font-bold">Seçkin Projeler</AnimatedGradientText>
           </h2>
@@ -543,14 +579,14 @@ function AllProjectsSection() {
 
         {/* Filter */}
         <div className="flex justify-center mb-10" style={{ opacity: vis ? 1 : 0, transition: "opacity 0.6s ease 0.1s" }}>
-          <div className="inline-flex items-center gap-1 p-1 rounded-xl border border-white/[0.07] bg-white/[0.03]">
-            <div className="flex items-center gap-1.5 px-3 py-1.5 text-zinc-600 pointer-events-none">
-              <Filter className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-1 rounded-xl border border-zinc-200 bg-slate-100 p-1 dark:border-white/[0.07] dark:bg-white/[0.03]">
+            <div className="pointer-events-none flex items-center gap-1.5 px-3 py-1.5 text-zinc-500 dark:text-zinc-600">
+              <Filter className="h-3.5 w-3.5" />
             </div>
             {CATEGORIES.map((cat) => (
               <button key={cat} onClick={() => setFilter(cat)}
-                className={cn("relative px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200", filter === cat ? "text-white" : "text-zinc-500 hover:text-zinc-300")}>
-                {filter === cat && <span className="absolute inset-0 rounded-lg bg-white/[0.08] border border-white/10" />}
+                className={cn("relative rounded-lg px-5 py-2 text-sm font-medium transition-all duration-200", filter === cat ? "text-zinc-900 dark:text-white" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-300")}>
+                {filter === cat && <span className="absolute inset-0 rounded-lg border border-zinc-300 bg-white dark:border-white/10 dark:bg-white/[0.08]" />}
                 <span className="relative">{cat}</span>
               </button>
             ))}
@@ -568,12 +604,12 @@ function AllProjectsSection() {
 
         {/* Bottom */}
         <div className="flex justify-center mt-12" style={{ opacity: vis ? 1 : 0, transition: "opacity 0.6s ease 0.5s" }}>
-          <div className="flex items-center gap-3 text-sm text-zinc-500">
-            <TrendingUp className="w-4 h-4 text-violet-400" />
+          <div className="flex items-center gap-3 text-sm text-zinc-600 dark:text-zinc-500">
+            <TrendingUp className="h-4 w-4 text-violet-500 dark:text-violet-400" />
             Daha fazlası{" "}
             <a href="https://github.com/fatihemreyuce" target="_blank" rel="noopener noreferrer"
-              className="text-zinc-300 hover:text-white underline underline-offset-4 decoration-white/20 hover:decoration-white/60 transition-all inline-flex items-center gap-1">
-              GitHub&apos;da <ArrowRight className="w-3.5 h-3.5" />
+              className="inline-flex items-center gap-1 text-violet-600 underline decoration-violet-200 underline-offset-4 transition-all hover:text-violet-800 hover:decoration-violet-400 dark:text-zinc-300 dark:decoration-white/20 dark:hover:text-white dark:hover:decoration-white/60">
+              GitHub&apos;da <ArrowRight className="h-3.5 w-3.5" />
             </a>
           </div>
         </div>
@@ -599,7 +635,7 @@ function CTASection() {
           <span className="text-xs font-semibold text-violet-400 tracking-[0.18em] uppercase">Birlikte Çalışalım</span>
         </div>
         <h2 className="text-4xl sm:text-5xl font-black leading-[1.1] tracking-tight">
-          <span className="text-white">Senin Projen de</span>
+          <span className="text-zinc-900 dark:text-white">Senin Projen de</span>
           <br />
           <AnimatedGradientText className="text-4xl sm:text-5xl font-black">Burada Olabilir</AnimatedGradientText>
         </h2>
@@ -626,7 +662,7 @@ function CTASection() {
 
 export default function ProjectsPage() {
   return (
-    <div className="min-h-screen bg-[#050505] text-zinc-100 flex flex-col">
+    <div className="flex min-h-screen flex-col bg-background text-foreground">
       <Header />
       <main className="flex flex-1 flex-col">
         <HeroSection />

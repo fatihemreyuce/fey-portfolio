@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 /* ─── Skeleton Header ────────────────────────────────── */
 function SkeletonHeader() {
   return (
-    <div className="fixed top-0 left-0 right-0 z-40 mt-[2px] bg-black/80 backdrop-blur-xl border-b border-white/5">
+    <div className="fixed left-0 right-0 top-0 z-40 border-b border-zinc-200/90 bg-white/90 backdrop-blur-xl dark:border-white/5 dark:bg-black/80">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
@@ -44,8 +44,8 @@ export default function RootLoading() {
       <SkeletonHeader />
 
       {/* Hero / About section skeleton */}
-      <div className="h-[66px]" />
-      <section className="relative min-h-screen flex items-center py-24 border-b border-white/5">
+      <div className="h-16" />
+      <section className="relative min-h-screen flex items-center py-24 border-b border-zinc-200 dark:border-white/5">
         <div className="mx-auto max-w-6xl w-full px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
 
@@ -117,7 +117,7 @@ export default function RootLoading() {
       </section>
 
       {/* Projects section skeleton */}
-      <section className="py-24 border-b border-white/5">
+      <section className="py-24 border-b border-zinc-200 dark:border-white/5">
         <div className="mx-auto max-w-6xl w-full px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="flex flex-col items-center gap-4">
             <Skeleton className="h-7 w-28 rounded-full" />

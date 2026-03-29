@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ScrollToHash } from "@/components/ScrollToHash";
+import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -26,11 +27,14 @@ export default function RootLayout({
   return (
     <html
       lang="tr"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#050505] text-zinc-100">
-        <ScrollToHash />
-        {children}
+      <body className="flex min-h-full flex-col bg-background text-foreground antialiased">
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+          <ScrollToHash />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -328,7 +328,7 @@ function HobbyCard({ hobby, vis, delay, expanded = false }: { hobby: Hobby; vis:
       onMouseMove={onMove}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={onLeave}
-      className="relative group flex flex-col rounded-2xl border border-white/[0.07] bg-zinc-900/60 backdrop-blur-sm overflow-hidden h-full"
+      className="relative group flex h-full flex-col overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/95 shadow-md backdrop-blur-sm dark:border-white/[0.07] dark:bg-zinc-900/60 dark:shadow-[0_4px_24px_rgba(0,0,0,0.4)]"
       style={{
         opacity: vis ? 1 : 0,
         transform: vis
@@ -336,7 +336,11 @@ function HobbyCard({ hobby, vis, delay, expanded = false }: { hobby: Hobby; vis:
           : "translateY(40px)",
         transition: vis ? (hov ? "transform 0.12s ease-out" : "transform 0.5s ease-out") : `opacity 0.55s ease ${delay}ms, transform 0.55s ease ${delay}ms`,
         transformStyle: "preserve-3d",
-        boxShadow: hov ? `0 20px 60px ${hobby.accent.from}22, 0 0 0 1px ${hobby.accent.from}28` : "0 4px 24px rgba(0,0,0,0.4)",
+        ...(hov
+          ? {
+              boxShadow: `0 20px 60px ${hobby.accent.from}22, 0 0 0 1px ${hobby.accent.from}28`,
+            }
+          : {}),
       }}
     >
       <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
@@ -361,27 +365,27 @@ function HobbyCard({ hobby, vis, delay, expanded = false }: { hobby: Hobby; vis:
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 border border-white/10"
               style={{ background: `linear-gradient(135deg,${hobby.accent.from}35,${hobby.accent.to}35)`, boxShadow: `0 0 12px ${hobby.accent.from}30` }}>
-              <Icon className="w-4 h-4 text-white" />
+              <Icon className="h-4 w-4 !text-white" />
             </div>
-            <h3 className="font-bold text-white text-sm" style={{ textShadow: `0 0 20px ${hobby.accent.from}40` }}>
+            <h3 className="text-sm font-bold text-zinc-900 dark:text-white" style={{ textShadow: `0 0 20px ${hobby.accent.from}40` }}>
               {hobby.title}
             </h3>
           </div>
         </div>
 
-        <p className="text-xs text-zinc-400 leading-relaxed flex-1">{hobby.description}</p>
+        <p className="flex-1 text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">{hobby.description}</p>
 
         {/* Extended content */}
         {open && (
-          <div className="space-y-3 border-t border-white/[0.06] pt-3">
-            <p className="text-xs text-zinc-300 leading-relaxed">{hobby.extendedDesc}</p>
-            <div className="rounded-xl border border-white/[0.07] bg-white/[0.03] p-3 space-y-1">
-              <p className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">İşe bağlantısı</p>
-              <p className="text-xs text-zinc-300">{hobby.workConnection}</p>
+          <div className="space-y-3 border-t border-zinc-200 pt-3 dark:border-white/[0.06]">
+            <p className="text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">{hobby.extendedDesc}</p>
+            <div className="space-y-1 rounded-xl border border-zinc-200 bg-zinc-50 p-3 dark:border-white/[0.07] dark:bg-white/[0.03]">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500">İşe bağlantısı</p>
+              <p className="text-xs text-zinc-700 dark:text-zinc-300">{hobby.workConnection}</p>
             </div>
-            <div className="rounded-xl border border-white/[0.07] bg-white/[0.03] p-3 space-y-1">
-              <p className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">Eğlenceli gerçek</p>
-              <p className="text-xs text-zinc-300">{hobby.funFact}</p>
+            <div className="space-y-1 rounded-xl border border-zinc-200 bg-zinc-50 p-3 dark:border-white/[0.07] dark:bg-white/[0.03]">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500">Eğlenceli gerçek</p>
+              <p className="text-xs text-zinc-700 dark:text-zinc-300">{hobby.funFact}</p>
             </div>
           </div>
         )}
@@ -389,7 +393,7 @@ function HobbyCard({ hobby, vis, delay, expanded = false }: { hobby: Hobby; vis:
         {/* Tags */}
         <div className="flex flex-wrap gap-1.5">
           {hobby.tags.map((tag) => (
-            <span key={tag} className="text-[10px] font-medium px-2 py-0.5 rounded-md border border-white/[0.07] bg-white/[0.04]" style={{ color: hobby.accent.from }}>{tag}</span>
+            <span key={tag} className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[10px] font-medium dark:border-white/[0.07] dark:bg-white/[0.04]" style={{ color: hobby.accent.from }}>{tag}</span>
           ))}
         </div>
 
@@ -420,7 +424,7 @@ function HeroSection() {
   useEffect(() => { const t = setTimeout(() => setMounted(true), 80); return () => clearTimeout(t); }, []);
 
   return (
-    <section className="relative py-24 overflow-hidden border-b border-white/5">
+    <section className="relative py-24 overflow-hidden border-b border-zinc-200 dark:border-white/5">
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
         <div className="absolute top-1/3 left-1/3 w-[600px] h-[500px] rounded-full bg-pink-600/[0.05] blur-3xl" />
         <div className="absolute bottom-0 right-0 w-[500px] h-[400px] rounded-full bg-amber-600/[0.04] blur-3xl" />
@@ -431,7 +435,7 @@ function HeroSection() {
       <div className="relative z-10 mx-auto max-w-6xl w-full px-4 sm:px-6 lg:px-8">
         {/* Back */}
         <div className="mb-10" style={{ opacity: mounted ? 1 : 0, transform: mounted ? "none" : "translateY(-12px)", transition: "opacity 0.5s, transform 0.5s" }}>
-          <Link href="/" className="group inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-white/[0.08] bg-white/[0.03] hover:border-pink-500/30 hover:bg-pink-500/[0.06] transition-all text-zinc-400 hover:text-white text-sm font-medium">
+          <Link href="/" className="group inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-600 transition-all hover:border-pink-300 hover:bg-pink-50 hover:text-zinc-900 dark:border-white/[0.08] dark:bg-white/[0.03] dark:text-zinc-400 dark:hover:border-pink-500/30 dark:hover:bg-pink-500/[0.06] dark:hover:text-white">
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform duration-200" />Ana Sayfa
           </Link>
         </div>
@@ -466,7 +470,7 @@ function HeroSection() {
               {hobbies.map((h) => {
                 const Icon = h.icon;
                 return (
-                  <div key={h.id} className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-white/[0.07] bg-white/[0.03] text-xs font-medium" style={{ color: h.accent.from }}>
+                  <div key={h.id} className="flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium dark:border-white/[0.07] dark:bg-white/[0.03]" style={{ color: h.accent.from }}>
                     <Icon className="w-3.5 h-3.5" />{h.title}
                   </div>
                 );
@@ -501,7 +505,7 @@ function HeroSection() {
                 const x = Math.cos((angle * Math.PI) / 180) * r;
                 const y = Math.sin((angle * Math.PI) / 180) * r;
                 return (
-                  <div key={h.id} className="absolute flex items-center justify-center w-12 h-12 rounded-xl border border-white/10 bg-zinc-900/90 backdrop-blur-sm animate-float shadow-lg"
+                  <div key={h.id} className="absolute flex h-12 w-12 animate-float items-center justify-center rounded-xl border border-zinc-200 bg-white/95 shadow-lg backdrop-blur-sm dark:border-white/10 dark:bg-zinc-900/90"
                     style={{ left: `calc(50% + ${x}px - 24px)`, top: `calc(50% + ${y}px - 24px)`, animationDelay: `${i * 0.5}s`, boxShadow: `0 0 20px ${h.accent.from}30` }}>
                     <Icon className="w-5 h-5" style={{ color: h.accent.from }} />
                   </div>
@@ -524,7 +528,7 @@ function HobbiesGridSection() {
   const [coding, music, gaming, camera, books, fitness] = hobbies;
 
   return (
-    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-24 overflow-hidden border-b border-white/5">
+    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-24 overflow-hidden border-b border-zinc-200 dark:border-white/5">
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
         <div className="absolute top-1/3 left-1/4 w-[500px] h-[400px] rounded-full bg-pink-600/[0.04] blur-3xl" />
         <Meteors number={12} symmetric />
@@ -536,7 +540,7 @@ function HobbiesGridSection() {
             <span className="text-xs font-semibold text-pink-400 tracking-[0.18em] uppercase">Tüm Hobiler</span>
           </div>
           <h2 className="text-4xl sm:text-[2.75rem] font-bold leading-[1.15] tracking-tight">
-            <span className="text-white">Ekrandan Uzakta</span>
+            <span className="text-zinc-900 dark:text-white">Ekrandan Uzakta</span>
             <br />
             <AnimatedGradientText className="text-4xl sm:text-[2.75rem] font-bold">Ne Yapıyorum?</AnimatedGradientText>
           </h2>
@@ -576,7 +580,7 @@ function HobbiesGridSection() {
 function ConnectionsSection() {
   const { ref, vis } = useInView(0.1);
   return (
-    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-24 overflow-hidden border-b border-white/5">
+    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-24 overflow-hidden border-b border-zinc-200 dark:border-white/5">
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full bg-amber-600/[0.03] blur-3xl" />
         <Meteors number={10} />
@@ -588,7 +592,7 @@ function ConnectionsSection() {
             <span className="text-xs font-semibold text-amber-400 tracking-[0.18em] uppercase">Hayat ↔ İş Bağlantısı</span>
           </div>
           <h2 className="text-4xl sm:text-[2.75rem] font-bold leading-[1.15] tracking-tight">
-            <span className="text-white">Hobiler Nasıl</span>
+            <span className="text-zinc-900 dark:text-white">Hobiler Nasıl</span>
             <br />
             <AnimatedGradientText className="text-4xl sm:text-[2.75rem] font-bold">İşimi Şekillendiriyor?</AnimatedGradientText>
           </h2>
@@ -599,7 +603,7 @@ function ConnectionsSection() {
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {CONNECTIONS.map(({ hobby, skill, icon: Icon, color }, i) => (
-            <div key={hobby} className="group relative flex items-center gap-4 p-5 rounded-2xl border border-white/[0.07] bg-zinc-900/50 overflow-hidden"
+            <div key={hobby} className="group relative flex items-center gap-4 overflow-hidden rounded-2xl border border-zinc-200 bg-white p-5 dark:border-white/[0.07] dark:bg-zinc-900/50"
               style={{ opacity: vis ? 1 : 0, transform: vis ? "none" : "translateY(24px)", transition: `opacity 0.6s ease ${i * 0.08}s, transform 0.6s ease ${i * 0.08}s` }}>
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                 style={{ background: `radial-gradient(circle at 0% 50%, ${color}10 0%,transparent 70%)` }} />
@@ -637,7 +641,7 @@ function FunStatsSection() {
   ];
 
   return (
-    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-20 overflow-hidden border-b border-white/5">
+    <section ref={ref as React.RefObject<HTMLElement>} className="relative py-20 overflow-hidden border-b border-zinc-200 dark:border-white/5">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full bg-pink-600/[0.03] blur-3xl" />
       </div>
@@ -648,7 +652,7 @@ function FunStatsSection() {
         </p>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
           {stats.map(({ emoji, value, label, color }, i) => (
-            <div key={label} className="group text-center p-4 rounded-2xl border border-white/[0.06] bg-white/[0.02] cursor-default hover:border-white/15 transition-all duration-200"
+            <div key={label} className="group cursor-default rounded-2xl border border-zinc-200 bg-white p-4 text-center transition-all duration-200 hover:border-zinc-300 dark:border-white/[0.06] dark:bg-white/[0.02] dark:hover:border-white/15"
               style={{ opacity: vis ? 1 : 0, transform: vis ? "none" : "translateY(20px)", transition: `opacity 0.5s ease ${i * 0.07}s, transform 0.5s ease ${i * 0.07}s, border-color 0.2s` }}>
               <p className="text-2xl mb-1">{emoji}</p>
               <p className="text-lg font-black tabular-nums" style={{ color }}>{value}</p>
@@ -678,7 +682,7 @@ function CTASection() {
           <span className="text-xs font-semibold text-pink-400 tracking-[0.18em] uppercase">Birlikte</span>
         </div>
         <h2 className="text-4xl sm:text-5xl font-black leading-[1.1] tracking-tight">
-          <span className="text-white">Sadece Kod Değil,</span>
+          <span className="text-zinc-900 dark:text-white">Sadece Kod Değil,</span>
           <br />
           <AnimatedGradientText className="text-4xl sm:text-5xl font-black">İnsan Olarak Ben</AnimatedGradientText>
         </h2>
@@ -704,7 +708,7 @@ function CTASection() {
 
 export default function HobbiesPage() {
   return (
-    <div className="min-h-screen bg-[#050505] text-zinc-100 flex flex-col">
+    <div className="flex min-h-screen flex-col bg-background text-foreground">
       <Header />
       <main className="flex flex-1 flex-col">
         <HeroSection />

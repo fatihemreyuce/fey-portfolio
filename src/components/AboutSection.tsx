@@ -136,7 +136,7 @@ function ProfileCard3D() {
         return (
           <div
             key={i}
-            className="absolute z-[8] flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.09] bg-zinc-950/90 shadow-lg backdrop-blur-sm animate-float pointer-events-none"
+            className="pointer-events-none absolute z-[8] flex h-10 w-10 animate-float items-center justify-center rounded-xl border border-zinc-200/90 bg-white/95 shadow-lg backdrop-blur-sm dark:border-white/[0.09] dark:bg-zinc-950/90"
             style={{
               top:            pos.top,
               left:           pos.left,
@@ -164,7 +164,7 @@ function ProfileCard3D() {
         onMouseMove={onMove}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={onLeave}
-        className="relative z-30 w-64 cursor-pointer overflow-hidden rounded-3xl border border-white/[0.09] bg-zinc-950/95 shadow-[0_24px_48px_-12px_rgba(0,0,0,0.65)] backdrop-blur-xl"
+        className="relative z-30 w-64 cursor-pointer overflow-hidden rounded-3xl border border-zinc-200/90 bg-white/95 shadow-xl backdrop-blur-xl dark:border-white/[0.09] dark:bg-zinc-950/95 dark:shadow-[0_24px_48px_-12px_rgba(0,0,0,0.65)]"
         style={{
           transform:      `perspective(900px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${hovered ? 1.03 : 1})`,
           transition:     hovered ? "transform 0.1s ease-out" : "transform 0.55s ease-out",
@@ -259,7 +259,7 @@ function ProfileCard3D() {
             ].map(({ icon: Icon, text }) => (
               <div
                 key={text}
-                className="flex items-center gap-3 rounded-xl border border-white/[0.07] bg-zinc-900/85 px-3.5 py-2.5 transition-colors hover:border-white/12 hover:bg-zinc-900/95"
+                className="flex items-center gap-3 rounded-xl border border-zinc-200/90 bg-slate-50/90 px-3.5 py-2.5 transition-colors hover:border-zinc-300 hover:bg-white dark:border-white/[0.07] dark:bg-zinc-900/85 dark:hover:border-white/12 dark:hover:bg-zinc-900/95"
               >
                 <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white/[0.05]">
                   <Icon className="h-3.5 w-3.5 text-zinc-400" />
@@ -318,7 +318,7 @@ function StatCard({
   }, [started, value]);
 
   return (
-    <div className="group relative text-center p-4 rounded-2xl border border-white/5 bg-white/[0.03] hover:border-white/10 hover:bg-white/[0.06] transition-all duration-300 cursor-default">
+    <div className="group relative cursor-default rounded-2xl border border-zinc-200/90 bg-white/80 p-4 text-center transition-all duration-300 hover:border-zinc-300 hover:bg-white dark:border-white/5 dark:bg-white/[0.03] dark:hover:border-white/10 dark:hover:bg-white/[0.06]">
       <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-b from-white/[0.04] to-transparent" />
       <div className="relative z-10 space-y-2">
         <div className={cn("mx-auto w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br opacity-90", gradient)}>
@@ -393,7 +393,7 @@ export function AboutSection() {
     <section
       ref={ref}
       id="about"
-      className="relative min-h-screen flex items-center py-24 overflow-hidden border-b border-white/5"
+      className="relative min-h-screen flex items-center py-24 overflow-hidden border-b border-zinc-200 dark:border-white/5"
     >
       {/* ── Background ── */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden>
