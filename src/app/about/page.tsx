@@ -134,7 +134,7 @@ const TIMELINE = [
   {
     year: "2020",
     title: "Meslek Lisesi",
-    desc: "Bilişim Teknolojileri bölümünde okumaya başladım. HTML, CSS ve JavaScript'in temellerini öğrendim; ilk web projemi tamamladım.",
+    desc: "Kocaeli'de Özel Adem Ceylan Final Teknik Koleji'nde yazılım odaklı bilişim eğitimime başladım. Programlama ve web geliştirme temellerini burada sağlamlaştırdım.",
     icon: BookOpen,
     color: "#34d399",
     side: "right" as const,
@@ -150,7 +150,7 @@ const TIMELINE = [
   {
     year: "2023",
     title: "İlk Profesyonel Deneyim",
-    desc: "Meslek lisesi stajında gerçek bir yazılım ekibinin parçası oldum. Kod review, Git workflow ve proje yönetimini canlıda öğrendim.",
+    desc: "İstanbul'da yaptığım lise stajında donanım tarafında çalıştım. Bilgisayar kurulumu, arıza tespiti, bakım ve teknik destek süreçlerinde aktif görev aldım.",
     icon: Briefcase,
     color: "#f472b6",
     side: "right" as const,
@@ -158,7 +158,7 @@ const TIMELINE = [
   {
     year: "2024",
     title: "Üniversite & Full-Stack",
-    desc: "İstanbul Gedik Üniversitesi'nde Yazılım Mühendisliği'ne başladım. Backend tarafına geçerek Node.js, Kotlin ve veritabanlarıyla çalışmaya başladım.",
+    desc: "İstanbul Gedik Üniversitesi'nde Yazılım Mühendisliği eğitimime başladım. Frontend'in yanında backend, veritabanı ve sistem tasarımı alanlarında da derinleşmeye devam ediyorum.",
     icon: GraduationCap,
     color: "#a78bfa",
     side: "left" as const,
@@ -175,8 +175,8 @@ const TIMELINE = [
 ];
 
 const STATS = [
-  { value: 15, suffix: "+", label: "Proje",       icon: Briefcase, color: "#60a5fa" },
-  { value: 3,  suffix: "+", label: "Yıl Deneyim", icon: Award,     color: "#34d399" },
+  { value: 3,  suffix: "+", label: "Proje",       icon: Briefcase, color: "#60a5fa" },
+  { value: 1,  suffix: "+", label: "Yıl Deneyim", icon: Award,     color: "#34d399" },
   { value: 10, suffix: "+", label: "Teknoloji",   icon: Star,      color: "#fbbf24" },
   { value: 500,suffix: "+", label: "Git Commit",  icon: GitBranch, color: "#a78bfa" },
 ];
@@ -363,7 +363,7 @@ function HeroProfileCard() {
         <div className="space-y-2">
           {[
             { icon: MapPin,   text: "İstanbul, Türkiye" },
-            { icon: Calendar, text: "3+ Yıl Deneyim"    },
+            { icon: Calendar, text: "1+ Yıl Deneyim"    },
             { icon: Globe,    text: "Uzaktan & Tam Zamanlı" },
           ].map(({ icon: Icon, text }) => (
             <div
@@ -497,7 +497,7 @@ function HeroSection() {
             <div className="grid grid-cols-2 gap-3">
               {[
                 { label: "Konum",       value: "İstanbul, TR", icon: MapPin,   color: "#34d399" },
-                { label: "Deneyim",     value: "3+ Yıl",       icon: Calendar, color: "#60a5fa" },
+                { label: "Deneyim",     value: "1+ Yıl",       icon: Calendar, color: "#60a5fa" },
                 { label: "Durum",       value: "Müsait",       icon: Zap,      color: "#fbbf24" },
                 { label: "Çalışma",     value: "Uzaktan",      icon: Globe,    color: "#a78bfa" },
               ].map(({ label, value, icon: Icon, color }) => (
@@ -642,15 +642,15 @@ function StorySection() {
               {[
                 {
                   title: "Merak ile Başladı",
-                  text: "2018 yılında, ortaokul yıllarında bir YouTube videosunda HTML'e denk geldim. İlk <h1> etiketini tarayıcıda görünce içimde bir şeyler tutuştu. 'Bu nasıl çalışıyor?' sorusu beni o günden beri sürüklüyor.",
+                  text: "2018'de, ortaokul yıllarında izlediğim bir YouTube videosunda HTML ile tanıştım. Tarayıcıda gördüğüm bir <h1> etiketinin nasıl çalıştığını merak etmem, yazılım yolculuğumun ilk adımı oldu.",
                 },
                 {
                   title: "Meslek Lisesi Dönemi",
-                  text: "Bilişim Teknolojileri okuduğum meslek lisesinde teorinin ötesine geçtim. İlk profesyonel stajımda gerçek bir ekiple çalıştım — kod review'lardan, Git branch stratejilerinden tutun da müşteri sunum süreçlerine kadar her şeyi öğrendim.",
+                  text: "2020-2024 arasında Özel Adem Ceylan Final Teknik Koleji'nde yazılım odaklı bilişim eğitimi aldım. Bu dönemde temellerimi güçlendirdim; algoritmik düşünme, web geliştirme ve disiplinli çalışma alışkanlığı kazandım. Staj sürecimde ise donanım tarafında görev alarak teknik problem çözme becerimi geliştirdim.",
                 },
                 {
                   title: "Üniversite ve Derinleşme",
-                  text: "İstanbul Gedik Üniversitesi'nde Yazılım Mühendisliği okurken artık sadece frontend değil, full-stack düşünmeye başladım. Backend, veritabanları ve sistem tasarımı — tüm bu parçaların bir bütün oluşturduğunu görüyorum.",
+                  text: "Şu anda İstanbul Gedik Üniversitesi'nde Yazılım Mühendisliği okuyorum. Frontend'in yanında backend, veritabanı ve sistem tasarımı konularında da derinleşerek uçtan uca ürün geliştirme bakışı kazanıyorum.",
                 },
               ].map(({ title, text }) => (
                 <div key={title} className="flex gap-4 group">
@@ -713,8 +713,8 @@ function StorySection() {
 
                 <div className="grid grid-cols-2 gap-3">
                   {[
-                    { value: "15+", label: "Proje",       color: "#60a5fa" },
-                    { value: "3+",  label: "Yıl",         color: "#34d399" },
+                    { value: "3+",  label: "Proje",       color: "#60a5fa" },
+                    { value: "1+",  label: "Yıl",         color: "#34d399" },
                     { value: "10+", label: "Teknoloji",   color: "#fbbf24" },
                     { value: "∞",   label: "Merak",       color: "#a78bfa" },
                   ].map(({ value, label, color }) => (

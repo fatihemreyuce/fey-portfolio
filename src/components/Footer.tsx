@@ -34,8 +34,8 @@ const navColumns = [
 ];
 
 const stats = [
-  { value: "5+",   label: "Proje"      },
-  { value: "2+",   label: "Yıl Deneyim" },
+  { value: "3+",   label: "Proje"      },
+  { value: "1+",   label: "Yıl Deneyim" },
   { value: "10+",  label: "Teknoloji"  },
   { value: "∞",    label: "Tutkuyla"   },
 ];

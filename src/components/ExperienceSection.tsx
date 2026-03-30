@@ -37,13 +37,13 @@ const items: TimelineItem[] = [
   {
     id: "internship",
     type: "experience",
-    title: "Yazılım Geliştirici Stajyeri",
-    organization: "Şirket",
+    title: "Donanım Stajyeri",
+    organization: "Özel Adem Ceylan Final Teknik Koleji (Staj)",
     period: "2023 — 2024",
-    location: "Türkiye",
+    location: "İstanbul",
     description:
-      "Meslek lisesi döneminde tamamladığım ilk stajım. Gerçek bir yazılım ortamında ekiple çalışarak HTML, CSS ve JavaScript temelleri üzerine projeler geliştirdim, versiyon kontrol süreçlerini öğrendim.",
-    tags: ["HTML", "CSS", "JavaScript", "Git"],
+      "Lise döneminde yaptığım staj donanım odaklıydı. Bilgisayar donanımı kurulumu, arıza tespiti, bakım ve teknik destek süreçlerinde aktif rol aldım.",
+    tags: ["Bilgisayar Donanımı", "Arıza Tespiti", "Bakım", "Teknik Destek"],
     current: false,
     icon: Briefcase,
     accent: { from: "#10b981", to: "#06b6d4" },
@@ -56,7 +56,7 @@ const items: TimelineItem[] = [
     period: "2024 — 2028",
     location: "İstanbul",
     description:
-      "Yazılım mühendisliği alanında lisans eğitimi. Veri yapıları, algoritmalar, nesne yönelimli programlama ve yazılım mimarisi konularında aktif öğrenim sürecindeyim.",
+      "İstanbul Gedik Üniversitesinde Yazılım Mühendisliği lisans eğitimime devam ediyorum. Veri yapıları, algoritmalar, nesne yönelimli programlama ve yazılım mimarisi konularında aktif öğrenim sürecindeyim.",
     tags: ["Algoritmalar", "Veri Yapıları", "Yazılım Müh.", "OOP"],
     current: true,
     icon: GraduationCap,
@@ -68,10 +68,10 @@ const items: TimelineItem[] = [
     title: "Bilişim Teknolojileri — Meslek Lisesi",
     organization: "Özel Adem Ceylan Final Teknik Koleji",
     period: "2020 — 2024",
-    location: "Türkiye",
+    location: "Kocaeli",
     description:
-      "Bilişim teknolojileri alanında mesleki eğitim. Lise yıllarında programlamaya adım attım, web geliştirme öğrendim ve sektördeki ilk staj deneyimimi burada kazandım.",
-    tags: ["HTML/CSS", "Python", "JavaScript", "Ağ Temelleri"],
+      "2020-2024 arasında Özel Adem Ceylan Final Teknik Kolejinde yazılım odaklı bilişim eğitimi aldım. Programlama temelleri ve web geliştirme alanlarında kendimi geliştirdim.",
+    tags: ["Yazılım Temelleri", "Web Geliştirme", "HTML/CSS", "JavaScript"],
     current: false,
     icon: BookOpen,
     accent: { from: "#14b8a6", to: "#84cc16" },
@@ -86,28 +86,28 @@ const FILTERS = [
 
 const EN_BY_ID: Record<string, Pick<TimelineItem, "title" | "organization" | "location" | "description" | "tags">> = {
   internship: {
-    title: "Software Developer Intern",
-    organization: "Company",
-    location: "Turkey",
+    title: "Hardware Intern",
+    organization: "Adem Ceylan Final Technical College (Internship)",
+    location: "Istanbul",
     description:
-      "My first internship during vocational high school. I worked in a real team environment and built projects with HTML, CSS, and JavaScript while learning version control workflows.",
-    tags: ["HTML", "CSS", "JavaScript", "Git"],
+      "My internship during high school was hardware-focused. I worked on computer hardware setup, troubleshooting, maintenance, and technical support processes.",
+    tags: ["Computer Hardware", "Troubleshooting", "Maintenance", "Technical Support"],
   },
   university: {
     title: "Software Engineering",
     organization: "Istanbul Gedik University",
     location: "Istanbul",
     description:
-      "Undergraduate education in software engineering. I am actively improving in data structures, algorithms, object-oriented programming, and software architecture.",
+      "I am currently studying Software Engineering at Istanbul Gedik University. I am actively improving in data structures, algorithms, object-oriented programming, and software architecture.",
     tags: ["Algorithms", "Data Structures", "Software Eng.", "OOP"],
   },
   highschool: {
     title: "Information Technologies — Vocational High School",
     organization: "Adem Ceylan Final Technical College",
-    location: "Turkey",
+    location: "Kocaeli",
     description:
-      "Vocational education in information technologies. I started programming in high school, learned web development, and gained my first industry internship experience.",
-    tags: ["HTML/CSS", "Python", "JavaScript", "Networking Basics"],
+      "From 2020 to 2024, I received software-focused IT education at Adem Ceylan Final Technical College. I improved my skills in programming fundamentals and web development.",
+    tags: ["Software Fundamentals", "Web Development", "HTML/CSS", "JavaScript"],
   },
 };
 

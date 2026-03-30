@@ -50,9 +50,9 @@ const techStack: Tech[] = [
 ];
 
 const stats = [
-  { label: "Proje",       value: 15,  suffix: "+", icon: Briefcase, gradient: "from-blue-500 to-cyan-400"     },
+  { label: "Proje",       value: 3,   suffix: "+", icon: Briefcase, gradient: "from-blue-500 to-cyan-400"     },
   { label: "Teknoloji",   value: 20,  suffix: "+", icon: Star,      gradient: "from-violet-500 to-purple-400" },
-  { label: "Yıl Deneyim", value: 3,   suffix: "+", icon: Rocket,    gradient: "from-emerald-500 to-green-400" },
+  { label: "Yıl Deneyim", value: 1,   suffix: "+", icon: Rocket,    gradient: "from-emerald-500 to-green-400" },
   { label: "Commit",      value: 500, suffix: "+", icon: GitBranch, gradient: "from-orange-500 to-amber-400"  },
 ];
 
@@ -247,7 +247,7 @@ function ProfileCard3D() {
           <div className="space-y-2">
             {[
               { icon: MapPin,   text: isEn ? "Turkey" : "Türkiye" },
-              { icon: Calendar, text: isEn ? "3+ Years Experience" : "3+ Yıl Deneyim" },
+              { icon: Calendar, text: isEn ? "1+ Years Experience" : "1+ Yıl Deneyim" },
               { icon: Globe,    text: isEn ? "Remote & Full-time" : "Uzaktan & Tam Zamanlı" },
             ].map(({ icon: Icon, text }) => (
               <div
