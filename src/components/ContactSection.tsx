@@ -14,6 +14,8 @@ import { AnimatedGradientText } from "@/components/magicui/animated-gradient-tex
 import { Meteors } from "@/components/magicui/meteors";
 import { Instagram, Github, Linkedin, Twitter } from "@/components/icons/social";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/components/I18nProvider";
+import type { ReactNode } from "react";
 
 const EMAIL = "fatihemreyuce@gmail.com";
 
@@ -29,49 +31,58 @@ const socialLinks = [
   { icon: Instagram, href: "https://www.instagram.com/fatih.yc8/", label: "Instagram", color: "#f472b6" },
 ];
 
-const contactItems = [
-  {
-    icon: Mail,
-    label: "E-posta",
-    color: "#60a5fa",
-    content: (copyEmail: () => void, copied: boolean) => (
-      <div className="flex flex-wrap items-center gap-2">
-        <a href={`mailto:${EMAIL}`} className="text-base font-medium text-zinc-100 hover:text-white sm:text-lg">
-          {EMAIL}
-        </a>
-        <button
-          type="button"
-          onClick={copyEmail}
-          className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 text-zinc-500 transition-colors hover:border-blue-500/35 hover:text-blue-300"
-          aria-label="E-postayı kopyala"
-        >
-          {copied ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4" />}
-        </button>
-      </div>
-    ),
-  },
-  {
-    icon: MapPin,
-    label: "Konum",
-    color: "#34d399",
-    content: () => <p className="text-base font-medium text-zinc-100 sm:text-lg">Türkiye</p>,
-  },
-  {
-    icon: Clock,
-    label: "Yanıt süresi",
-    color: "#fbbf24",
-    content: () => <p className="text-base font-medium text-zinc-100 sm:text-lg">24 saat içinde</p>,
-  },
-] as const;
+type ContactItem = {
+  icon: typeof Mail;
+  label: string;
+  color: string;
+  content: (copy: () => void, isCopied: boolean) => ReactNode;
+};
 
 function ContactSpread() {
+  const { locale } = useI18n();
   const [copied, setCopied] = useState(false);
+  const isEn = locale === "en";
 
   const copyEmail = useCallback(() => {
     void navigator.clipboard.writeText(EMAIL);
     setCopied(true);
     window.setTimeout(() => setCopied(false), 2000);
   }, []);
+
+  const contactItems: ContactItem[] = [
+    {
+      icon: Mail,
+      label: isEn ? "Email" : "E-posta",
+      color: "#60a5fa",
+      content: (copy: () => void, isCopied: boolean) => (
+        <div className="flex flex-wrap items-center gap-2">
+          <a href={`mailto:${EMAIL}`} className="text-base font-medium text-zinc-100 hover:text-white sm:text-lg">
+            {EMAIL}
+          </a>
+          <button
+            type="button"
+            onClick={copy}
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 text-zinc-500 transition-colors hover:border-blue-500/35 hover:text-blue-300"
+            aria-label={isEn ? "Copy email" : "E-postayı kopyala"}
+          >
+            {isCopied ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4" />}
+          </button>
+        </div>
+      ),
+    },
+    {
+      icon: MapPin,
+      label: isEn ? "Location" : "Konum",
+      color: "#34d399",
+      content: () => <p className="text-base font-medium text-zinc-100 sm:text-lg">{isEn ? "Turkey" : "Türkiye"}</p>,
+    },
+    {
+      icon: Clock,
+      label: isEn ? "Response time" : "Yanıt süresi",
+      color: "#fbbf24",
+      content: () => <p className="text-base font-medium text-zinc-100 sm:text-lg">{isEn ? "Within 24 hours" : "24 saat içinde"}</p>,
+    },
+  ];
 
   return (
     <div className="w-full">
@@ -85,13 +96,16 @@ function ContactSpread() {
         </div>
         <div className="flex w-fit items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/[0.08] px-3 py-1.5">
           <Radio className="h-3.5 w-3.5 shrink-0 animate-pulse text-emerald-400" />
-          <span className="text-xs font-semibold text-emerald-300">Müsait</span>
+          <span className="text-xs font-semibold text-emerald-300">{isEn ? "Available" : "Müsait"}</span>
         </div>
       </div>
 
       <p className="mt-6 max-w-2xl text-sm leading-relaxed text-zinc-500 sm:text-[15px]">
-        E-posta veya sosyal hesaplardan doğrudan ulaşın — en geç{" "}
-        <span className="text-zinc-400">24 saat</span> içinde dönüş yaparım.
+        {isEn
+          ? "Reach out directly via email or social accounts — I reply within "
+          : "E-posta veya sosyal hesaplardan doğrudan ulaşın — en geç "}
+        <span className="text-zinc-400">24 {isEn ? "hours" : "saat"}</span>
+        {isEn ? "." : " içinde dönüş yaparım."}
       </p>
 
       {/* Üç sütun — kart yok, sadece dikey çizgi ile bölünmüş */}
@@ -108,7 +122,7 @@ function ContactSpread() {
               <Icon className="h-5 w-5" style={{ color }} />
             </div>
             <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-zinc-600">{label}</p>
-            {label === "E-posta" ? content(copyEmail, copied) : content()}
+            {content(copyEmail, copied)}
           </div>
         ))}
       </div>
@@ -116,7 +130,7 @@ function ContactSpread() {
       {/* Sosyal + CTA — yatay yayılım */}
       <div className="mt-4 flex flex-col gap-8 border-t border-white/10 pt-10 lg:flex-row lg:items-center lg:justify-between lg:gap-12">
         <div>
-          <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.2em] text-zinc-600">Sosyal</p>
+          <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.2em] text-zinc-600">{isEn ? "Social" : "Sosyal"}</p>
           <div className="flex flex-wrap gap-3 sm:gap-4">
             {socialLinks.map(({ icon: Icon, href, label, color }) => (
               <a
@@ -144,10 +158,12 @@ function ContactSpread() {
 
         <a
           href={`mailto:${EMAIL}`}
-          className="group/mail inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-emerald-600 px-8 py-3.5 text-sm font-semibold text-white shadow-[0_0_28px_rgba(59,130,246,0.2)] transition-all duration-300 hover:shadow-[0_0_40px_rgba(59,130,246,0.35)] hover:brightness-110 lg:w-auto lg:min-w-[240px]"
+          className="group/mail inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-emerald-600 px-8 py-3.5 text-sm font-semibold text-white! [&_*]:text-white! shadow-[0_0_28px_rgba(59,130,246,0.2)] transition-all duration-300 hover:shadow-[0_0_40px_rgba(59,130,246,0.35)] hover:brightness-110 lg:w-auto lg:min-w-[240px]"
         >
           <Mail className="h-4 w-4 shrink-0" />
-          <span>Direkt e-posta gönder</span>
+          <span className="text-white!">
+            {isEn ? "Send direct email" : "Direkt e-posta gönder"}
+          </span>
           <ArrowRight className="h-4 w-4 shrink-0 transition-transform duration-200 group-hover/mail:translate-x-0.5" />
         </a>
       </div>
@@ -156,6 +172,8 @@ function ContactSpread() {
 }
 
 export function ContactSection() {
+  const { locale } = useI18n();
+  const isEn = locale === "en";
   const ref = useRef<HTMLElement>(null);
   const [visible, setVis] = useState(false);
 
@@ -202,17 +220,19 @@ export function ContactSection() {
         >
           <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/25 bg-cyan-500/10 px-3.5 py-1.5">
             <Mail className="h-3.5 w-3.5 text-cyan-400" />
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300/90">İletişim</span>
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300/90">{isEn ? "Contact" : "İletişim"}</span>
           </div>
 
           <h2 className="text-4xl font-bold leading-[1.12] tracking-tight sm:text-[2.75rem]">
-            <span className="text-white">Birlikte Bir Şeyler </span>
+            <span className="text-white">{isEn ? "Let's Build Something " : "Birlikte Bir Şeyler "}</span>
             <br className="sm:hidden" />
-            <AnimatedGradientText className="text-4xl font-bold sm:text-[2.75rem]">İnşa Edelim</AnimatedGradientText>
+            <AnimatedGradientText className="text-4xl font-bold sm:text-[2.75rem]">{isEn ? "Great Together" : "İnşa Edelim"}</AnimatedGradientText>
           </h2>
 
           <p className="mx-auto max-w-lg text-[15px] leading-relaxed text-zinc-500">
-            Yeni bir proje, iş birliği ya da tanışmak için — hangi kanalı tercih ederseniz, oradan devam edelim.
+            {isEn
+              ? "For a new project, collaboration, or just to say hi — choose any channel and we can continue there."
+              : "Yeni bir proje, iş birliği ya da tanışmak için — hangi kanalı tercih ederseniz, oradan devam edelim."}
           </p>
         </div>
 

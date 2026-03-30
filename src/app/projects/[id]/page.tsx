@@ -15,8 +15,11 @@ import { Github } from "@/components/icons/social";
 import { Header } from "@/components/Header";
 import { Meteors } from "@/components/magicui/meteors";
 import { projects, getProjectById } from "@/data/projects";
+import { withLocale } from "@/i18n/withLocale";
 
 /* ─── Static params ─────────────────────────────────── */
+
+export const dynamic = "force-dynamic";
 
 export async function generateStaticParams() {
   return projects.map((p) => ({ id: p.id }));
@@ -57,16 +60,81 @@ const STATUS_MAP = {
   },
 } as const;
 
+const PROJECT_DETAIL_EN: Record<
+  string,
+  {
+    title: string;
+    shortDesc: string;
+    longDesc: string;
+    features: string[];
+  }
+> = {
+  "blog-app": {
+    title: "BlogApp Platform",
+    shortDesc:
+      "Modern article writing and management platform. SEO-focused Next.js frontend with a robust Spring Boot backend.",
+    longDesc:
+      "BlogApp is a full-stack platform where writers can create and manage content easily. It uses Next.js for SSR, Spring Boot for REST APIs, and PostgreSQL for data storage. Features include JWT authentication, automatic slug generation, and category/tag management.",
+    features: [
+      "JWT-based authentication and authorization",
+      "Automatic SEO-friendly slug generation",
+      "Category and tag management",
+      "Rich text editor integration",
+      "Fast page loading with server-side rendering",
+      "Responsive design with dark mode support",
+    ],
+  },
+  "kuafor-yonetim": {
+    title: "Barbershop Management System",
+    shortDesc: "Customer tracking, appointment scheduling, and revenue reporting for barbershops.",
+    longDesc:
+      "This Kotlin + Spring Boot backend is designed to digitize daily operations in barbershops. It handles customer records, appointment planning, staff/service management, and revenue reporting under a single API, integrated with a React frontend.",
+    features: [
+      "Customer records and history tracking",
+      "Appointment scheduling with conflict checks",
+      "Staff and service management",
+      "Revenue and statistics reports",
+      "Role-based access control (RBAC)",
+      "RESTful API documentation",
+    ],
+  },
+  portfolio: {
+    title: "Personal Portfolio",
+    shortDesc: "Portfolio website built with Next.js 16, Tailwind CSS v4, and MagicUI components.",
+    longDesc:
+      "Built from scratch for personal branding and project showcasing, this portfolio uses modern web capabilities: 3D interactions, intersection observer-driven scroll effects, MagicUI components, and fully responsive layouts for a polished experience.",
+    features: [
+      "3D mouse-tilt profile card",
+      "Intersection observer based scroll animations",
+      "MagicUI meteor and gradient text components",
+      "Dynamic project detail pages",
+      "Fully responsive and accessible design",
+      "Animated statistics counters",
+    ],
+  },
+};
+
 /* ─── Page ──────────────────────────────────────────── */
 
-export default async function ProjectDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function ProjectDetailPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ lang?: string }>;
+}) {
   const { id }  = await params;
+  const { lang } = await searchParams;
+  const locale = lang === "en" ? "en" : "tr";
+  const isEn = locale === "en";
   const project = getProjectById(id);
   if (!project) notFound();
 
   const status   = STATUS_MAP[project.status];
   const StatusIcon = status.Icon;
   const ProjectIcon = project.icon;
+  const content = isEn ? PROJECT_DETAIL_EN[project.id] : undefined;
+  const category = isEn ? (project.category === "Fullstack" ? "Fullstack" : project.category) : project.category;
 
   return (
     <>
@@ -106,26 +174,26 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
 
             {/* Breadcrumb */}
             <div className="flex items-center gap-2 text-sm text-zinc-500 mb-8">
-              <Link href="/" className="hover:text-zinc-300 transition-colors">
-                Ana Sayfa
+              <Link href={withLocale("/", locale)} className="hover:text-zinc-300 transition-colors">
+                {isEn ? "Home" : "Ana Sayfa"}
               </Link>
               <span>/</span>
-              <Link href="/#projects" className="hover:text-zinc-300 transition-colors">
-                Projeler
+              <Link href={withLocale("/#projects", locale)} className="hover:text-zinc-300 transition-colors">
+                {isEn ? "Projects" : "Projeler"}
               </Link>
               <span>/</span>
-              <span className="text-zinc-300">{project.title}</span>
+              <span className="text-zinc-300">{content?.title ?? project.title}</span>
             </div>
 
             {/* Back button */}
             <Link
-              href="/#projects"
+              href={withLocale("/#projects", locale)}
               className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-white mb-8 group transition-colors duration-200"
             >
               <span className="flex items-center justify-center w-7 h-7 rounded-lg border border-white/10 bg-white/[0.04] group-hover:border-white/20 group-hover:bg-white/[0.08] transition-all duration-200">
                 <ArrowLeft className="w-3.5 h-3.5" />
               </span>
-              Projelere Dön
+              {isEn ? "Back to Projects" : "Projelere Dön"}
             </Link>
 
             {/* Hero content */}
@@ -149,28 +217,36 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                     className="text-xs font-bold px-2.5 py-1 rounded-lg border border-white/10 bg-white/[0.05]"
                     style={{ color: project.accent.from }}
                   >
-                    {project.category}
+                    {category}
                   </span>
                   {project.status !== "development" && (
                     <div className={`flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border ${status.color}`}>
                       <StatusIcon className="w-3 h-3" />
-                      {status.label}
+                      {isEn
+                        ? project.status === "live"
+                          ? "Live"
+                          : project.status === "completed"
+                            ? "Completed"
+                            : "In Progress"
+                        : status.label}
                     </div>
                   )}
-                  <div className="flex items-center gap-1.5 rounded-full border border-zinc-200/90 bg-slate-50 px-2.5 py-1 text-xs text-zinc-500 dark:border-white/5 dark:bg-white/[0.03]">
-                    <Calendar className="w-3 h-3" />
-                    {project.year}
-                  </div>
+                  {project.year && (
+                    <div className="flex items-center gap-1.5 rounded-full border border-zinc-200/90 bg-slate-50 px-2.5 py-1 text-xs text-zinc-500 dark:border-white/5 dark:bg-white/[0.03]">
+                      <Calendar className="w-3 h-3" />
+                      {project.year}
+                    </div>
+                  )}
                 </div>
 
                 {/* Title */}
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
-                  {project.title}
+                  {content?.title ?? project.title}
                 </h1>
 
                 {/* Short desc */}
                 <p className="text-zinc-400 text-lg leading-relaxed max-w-2xl">
-                  {project.shortDesc}
+                  {content?.shortDesc ?? project.shortDesc}
                 </p>
 
                 {/* CTA links */}
@@ -183,7 +259,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                       className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/10 bg-white/[0.05] text-sm font-semibold text-zinc-200 hover:text-white hover:bg-white/[0.09] hover:border-white/20 transition-all duration-200"
                     >
                       <Github className="w-4 h-4" />
-                      GitHub&apos;da İncele
+                      {isEn ? "View on GitHub" : "GitHub'da İncele"}
                     </a>
                   )}
                   {project.liveUrl && (
@@ -198,7 +274,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                       }}
                     >
                       <ExternalLink className="w-4 h-4" />
-                      Canlıya Git
+                      {isEn ? "Visit Live" : "Canlıya Git"}
                     </a>
                   )}
                 </div>
@@ -230,10 +306,10 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                       className="w-1 h-5 rounded-full"
                       style={{ background: `linear-gradient(180deg, ${project.accent.from}, ${project.accent.to})` }}
                     />
-                    <h2 className="text-lg font-bold text-white">Proje Hakkında</h2>
+                    <h2 className="text-lg font-bold text-white">{isEn ? "About Project" : "Proje Hakkında"}</h2>
                   </div>
                   <p className="text-zinc-400 leading-relaxed text-[15px]">
-                    {project.longDesc}
+                    {content?.longDesc ?? project.longDesc}
                   </p>
                 </div>
 
@@ -244,10 +320,10 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                       className="w-1 h-5 rounded-full"
                       style={{ background: `linear-gradient(180deg, ${project.accent.from}, ${project.accent.to})` }}
                     />
-                    <h2 className="text-lg font-bold text-white">Özellikler</h2>
+                    <h2 className="text-lg font-bold text-white">{isEn ? "Features" : "Özellikler"}</h2>
                   </div>
                   <div className="grid sm:grid-cols-2 gap-3">
-                    {project.features.map((feature, i) => (
+                    {(content?.features ?? project.features).map((feature, i) => (
                       <div
                         key={i}
                         className="flex items-start gap-3 p-4 rounded-xl border border-white/[0.06] bg-white/[0.03] hover:bg-white/[0.05] hover:border-white/10 transition-all duration-200"
@@ -275,7 +351,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                 >
                   <div className="px-5 py-4 border-b border-white/[0.06] flex items-center gap-2">
                     <Layers className="w-4 h-4 text-zinc-500" />
-                    <span className="text-sm font-semibold text-zinc-300">Teknoloji Stack</span>
+                    <span className="text-sm font-semibold text-zinc-300">{isEn ? "Tech Stack" : "Teknoloji Stack"}</span>
                   </div>
                   <div className="p-4 flex flex-wrap gap-2">
                     {project.techs.map((tech) => (
@@ -297,16 +373,30 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                 <div className="rounded-2xl border border-white/[0.07] bg-white/[0.03] overflow-hidden">
                   <div className="px-5 py-4 border-b border-white/[0.06] flex items-center gap-2">
                     <Tag className="w-4 h-4 text-zinc-500" />
-                    <span className="text-sm font-semibold text-zinc-300">Proje Bilgileri</span>
+                    <span className="text-sm font-semibold text-zinc-300">{isEn ? "Project Info" : "Proje Bilgileri"}</span>
                   </div>
                   <div className="p-4 space-y-3">
                     {[
-                      { label: "Kategori",  value: project.category },
+                      { label: isEn ? "Category" : "Kategori",  value: category },
                       ...(project.status !== "development"
-                        ? [{ label: "Durum", value: status.label }] as const
+                        ? [{
+                            label: isEn ? "Status" : "Durum",
+                            value: isEn
+                              ? project.status === "live"
+                                ? "Live"
+                                : project.status === "completed"
+                                  ? "Completed"
+                                  : "In Progress"
+                              : status.label,
+                          }] as const
                         : []),
-                      { label: "Yıl",       value: String(project.year) },
-                      { label: "Teknoloji", value: `${project.techs.length} araç` },
+                      ...(project.year
+                        ? [{
+                            label: isEn ? "Year" : "Yıl",
+                            value: String(project.year),
+                          }] as const
+                        : []),
+                      { label: isEn ? "Tech Count" : "Teknoloji", value: isEn ? `${project.techs.length} tools` : `${project.techs.length} araç` },
                     ].map(({ label, value }) => (
                       <div key={label} className="flex items-center justify-between text-sm">
                         <span className="text-zinc-500">{label}</span>
@@ -327,7 +417,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                     >
                       <Github className="w-4 h-4 text-zinc-400 group-hover:text-white transition-colors" />
                       <span className="text-sm font-medium text-zinc-400 group-hover:text-white transition-colors flex-1">
-                        Kaynak Kodu
+                        {isEn ? "Source Code" : "Kaynak Kodu"}
                       </span>
                       <ExternalLink className="w-3.5 h-3.5 text-zinc-600 group-hover:text-zinc-400 transition-colors" />
                     </a>
@@ -348,7 +438,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                         className="text-sm font-medium flex-1 transition-colors"
                         style={{ color: project.accent.from }}
                       >
-                        Canlı Demo
+                        {isEn ? "Live Demo" : "Canlı Demo"}
                       </span>
                       <ExternalLink className="w-3.5 h-3.5 opacity-50" style={{ color: project.accent.from }} />
                     </a>

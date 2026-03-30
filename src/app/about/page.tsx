@@ -545,8 +545,8 @@ function HeroSection() {
 
             {/* CTAs */}
             <div className="flex flex-wrap gap-3">
-              <Button asChild className="relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-emerald-600 px-6 text-sm font-semibold text-white border-0 shadow-[0_0_20px_rgba(59,130,246,0.25)] hover:shadow-[0_0_36px_rgba(59,130,246,0.45)] hover:scale-[1.02] transition-all duration-300 gap-2">
-                <Link href="/#contact">
+              <Button asChild className="relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-emerald-600 px-6 text-sm font-semibold text-white! border-0 shadow-[0_0_20px_rgba(59,130,246,0.25)] hover:shadow-[0_0_36px_rgba(59,130,246,0.45)] hover:scale-[1.02] transition-all duration-300 gap-2">
+                <Link href="/#contact" className="text-white">
                   <ArrowRight className="w-4 h-4" />
                   İletişime Geç
                 </Link>
@@ -817,7 +817,9 @@ function VisionMissionCard({
           </div>
           {/* Floating label */}
           <div className="mt-3 text-center">
-            <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/60">{type === "vision" ? "Vizyon" : "Misyon"}</span>
+            <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-zinc-600 dark:text-white/60">
+              {type === "vision" ? "Vizyon" : "Misyon"}
+            </span>
           </div>
         </div>
       </div>
@@ -1383,8 +1385,8 @@ function CTASection() {
             </div>
 
             <div className="flex flex-wrap justify-center gap-4">
-              <Button asChild className="relative h-auto gap-2 overflow-hidden rounded-xl border-0 bg-gradient-to-r from-blue-600 to-emerald-600 px-8 py-3 text-base font-semibold text-white shadow-[0_0_28px_rgba(59,130,246,0.35)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_48px_rgba(59,130,246,0.55)]">
-                <Link href="/#contact">
+              <Button asChild className="relative h-auto gap-2 overflow-hidden rounded-xl border-0 bg-gradient-to-r from-blue-600 to-emerald-600 px-8 py-3 text-base font-semibold text-white! shadow-[0_0_28px_rgba(59,130,246,0.35)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_48px_rgba(59,130,246,0.55)]">
+                <Link href="/#contact" className="text-white">
                   <ArrowRight className="h-5 w-5" />
                   İletişime Geç
                 </Link>

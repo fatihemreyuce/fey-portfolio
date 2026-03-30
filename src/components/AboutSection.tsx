@@ -26,7 +26,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { TypewriterGradientText } from "@/components/magicui/typewriter-gradient-text";
 import { Meteors } from "@/components/magicui/meteors";
-import { cn } from "@/lib/utils";
+import { cn, readableOnLightSurface } from "@/lib/utils";
+import { useI18n } from "@/components/I18nProvider";
 
 /* ─── data ──────────────────────────────────────────── */
 
@@ -55,16 +56,6 @@ const stats = [
   { label: "Commit",      value: 500, suffix: "+", icon: GitBranch, gradient: "from-orange-500 to-amber-400"  },
 ];
 
-/** Orta satır: daktilo + döngü — “Kod Yazan, …, Geliştirici” */
-const ABOUT_HEADLINE_PHRASES = [
-  "Ürün Düşünen",
-  "Detay Seven",
-  "Performans Takıntılı",
-  "Deneyim Tasarlayan",
-  "Oyun Seven",
-  "Ölçeklenebilir Düşünen",
-] as const;
-
 const orbitItems: { icon: LucideIcon; angle: number; color: string }[] = [
   { icon: Code2,    angle: 0,   color: "#61DAFB" },
   { icon: Layers,   angle: 90,  color: "#e4e4e7" },
@@ -91,6 +82,8 @@ const ORBIT_ICON_POSITIONS: { top: string; left: string }[] = [
 /* ─── ProfileCard3D ─────────────────────────────────── */
 
 function ProfileCard3D() {
+  const { locale } = useI18n();
+  const isEn = locale === "en";
   const cardRef  = useRef<HTMLDivElement>(null);
   const [tilt,   setTilt]    = useState({ x: 0, y: 0 });
   const [hovered, setHovered] = useState(false);
@@ -144,7 +137,7 @@ function ProfileCard3D() {
               boxShadow:      `0 0 18px ${color}22`,
             }}
           >
-            <Icon className="w-4 h-4" style={{ color }} />
+            <Icon className="w-4 h-4" style={{ color: readableOnLightSurface(color) }} />
           </div>
         );
       })}
@@ -246,16 +239,16 @@ function ProfileCard3D() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
               </span>
-              <span className="text-[11px] text-emerald-400 font-medium">Projelere Açık</span>
+              <span className="text-[11px] text-emerald-400 font-medium">{isEn ? "Open to Projects" : "Projelere Açık"}</span>
             </div>
           </div>
 
           {/* Info rows — opak zemin, alttaki dekorasyon görünmez */}
           <div className="space-y-2">
             {[
-              { icon: MapPin,   text: "Türkiye" },
-              { icon: Calendar, text: "3+ Yıl Deneyim" },
-              { icon: Globe,    text: "Uzaktan & Tam Zamanlı" },
+              { icon: MapPin,   text: isEn ? "Turkey" : "Türkiye" },
+              { icon: Calendar, text: isEn ? "3+ Years Experience" : "3+ Yıl Deneyim" },
+              { icon: Globe,    text: isEn ? "Remote & Full-time" : "Uzaktan & Tam Zamanlı" },
             ].map(({ icon: Icon, text }) => (
               <div
                 key={text}
@@ -358,7 +351,7 @@ function SkillBadge({ name, icon: Icon, hexColor }: Tech) {
           opacity:    hov ? 0.9 : 0.4,
         }}
       />
-      <Icon className="w-4 h-4 relative z-10 shrink-0" style={{ color: hexColor }} />
+      <Icon className="w-4 h-4 relative z-10 shrink-0" style={{ color: readableOnLightSurface(hexColor) }} />
       <span className="text-sm font-medium text-zinc-300 relative z-10">{name}</span>
     </div>
   );
@@ -367,6 +360,7 @@ function SkillBadge({ name, icon: Icon, hexColor }: Tech) {
 /* ─── AboutSection ──────────────────────────────────── */
 
 export function AboutSection() {
+  const { dict, locale } = useI18n();
   const ref              = useRef<HTMLElement>(null);
   const [visible, setVisible] = useState(false);
 
@@ -443,7 +437,7 @@ export function AboutSection() {
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-blue-500/20 bg-blue-500/10">
               <Sparkles className="w-3.5 h-3.5 text-blue-400" />
               <span className="text-xs font-semibold text-blue-400 tracking-[0.18em] uppercase">
-                Hakkımda
+                {dict.about.badge}
               </span>
             </div>
 
@@ -452,10 +446,10 @@ export function AboutSection() {
               className="flex min-w-0 flex-col gap-0 text-4xl font-bold leading-[1.06] tracking-tight sm:text-[2.75rem] sm:leading-[1.12]"
               aria-label="Kod Yazan; vurgu metni dönüşümlü: ürün, detay, performans ve deneyim odaklı ifadeler. Geliştirici."
             >
-              <span className="text-white">Kod Yazan,</span>
+              <span className="text-white">{dict.about.titleTop}</span>
               <span className="min-h-0 min-w-0 leading-[1.06] sm:leading-[1.12]">
                 <TypewriterGradientText
-                  phrases={ABOUT_HEADLINE_PHRASES}
+                  phrases={dict.about.phrases}
                   active={visible}
                   className="text-4xl font-bold sm:text-[2.75rem]"
                   msPerChar={68}
@@ -463,30 +457,22 @@ export function AboutSection() {
                   pauseAfterTypeMs={2600}
                 />
               </span>
-              <span className="text-white">Geliştirici</span>
+              <span className="text-white">{dict.about.titleBottom}</span>
             </h2>
 
             {/* Bio */}
-            <p className="text-zinc-400 leading-relaxed max-w-lg">
-              Merhaba! Ben{" "}
-              <span className="text-white font-semibold">Fatih Emre Yüce</span> — kullanıcı
-              deneyimini ön planda tutan, modern web teknolojileriyle hızlı ve ölçeklenebilir
-              uygulamalar geliştiren bir{" "}
-              <span className="text-blue-400 font-medium">Frontend Developer</span>'ım. Temiz
-              kod yazmaya, performanslı arayüzler tasarlamaya ve iş değeri yaratmaya önem
-              veriyorum.
-            </p>
+            <p className="text-zinc-400 leading-relaxed max-w-lg">{dict.about.bio}</p>
 
             {/* Skills — grouped */}
             <div className="space-y-3">
               <p className="text-[11px] font-semibold text-zinc-500 uppercase tracking-[0.18em]">
-                Teknoloji Stack
+                {dict.about.stackTitle}
               </p>
               <div className="grid grid-cols-2 gap-5">
                 {/* Frontend */}
                 <div className="space-y-2">
                   <p className="text-[10px] font-bold text-blue-400/80 uppercase tracking-widest mb-1">
-                    Frontend
+                    {dict.about.frontend}
                   </p>
                   {frontendTechs.map((tech) => (
                     <SkillBadge key={tech.name} {...tech} />
@@ -495,7 +481,7 @@ export function AboutSection() {
                 {/* Backend */}
                 <div className="space-y-2">
                   <p className="text-[10px] font-bold text-emerald-400/80 uppercase tracking-widest mb-1">
-                    Backend
+                    {dict.about.backend}
                   </p>
                   {backendTechs.map((tech) => (
                     <SkillBadge key={tech.name} {...tech} />
@@ -507,7 +493,22 @@ export function AboutSection() {
             {/* Stats */}
             <div className="grid grid-cols-4 gap-2">
               {stats.map((s) => (
-                <StatCard key={s.label} {...s} started={visible} />
+                <StatCard
+                  key={s.label}
+                  {...s}
+                  label={
+                    locale === "en"
+                      ? s.label === "Proje"
+                        ? "Projects"
+                        : s.label === "Teknoloji"
+                          ? "Technologies"
+                          : s.label === "Yıl Deneyim"
+                            ? "Years Exp."
+                            : "Commits"
+                      : s.label
+                  }
+                  started={visible}
+                />
               ))}
             </div>
 
@@ -515,11 +516,11 @@ export function AboutSection() {
             <div className="flex flex-wrap gap-3 pt-1">
               <Button
                 asChild
-                className="relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-emerald-600 px-6 text-sm font-semibold text-white border-0 shadow-[0_0_20px_rgba(59,130,246,0.25)] hover:shadow-[0_0_36px_rgba(59,130,246,0.45)] hover:scale-[1.02] transition-all duration-300 gap-2"
+                className="relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-emerald-600 px-6 text-sm font-semibold text-white! border-0 shadow-[0_0_20px_rgba(59,130,246,0.25)] hover:shadow-[0_0_36px_rgba(59,130,246,0.45)] hover:scale-[1.02] transition-all duration-300 gap-2"
               >
-                <a href="#contact">
+                <a href="#contact" className="text-white">
                   <ArrowRight className="w-4 h-4" />
-                  İletişime Geç
+                  {dict.about.contactCta}
                 </a>
               </Button>
 
@@ -530,7 +531,7 @@ export function AboutSection() {
               >
                 <Link href="/about">
                   <Sparkles className="w-4 h-4" />
-                  Hakkımda Daha Fazla
+                  {dict.about.moreCta}
                 </Link>
               </Button>
 
@@ -541,7 +542,7 @@ export function AboutSection() {
               >
                 <a href="/cv.pdf" download>
                   <Download className="w-4 h-4" />
-                  CV İndir
+                  {dict.about.cvCta}
                 </a>
               </Button>
             </div>

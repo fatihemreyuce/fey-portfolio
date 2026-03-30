@@ -478,8 +478,8 @@ function HeroSection() {
             </div>
 
             <div className="flex flex-wrap gap-3">
-              <Button asChild className="relative overflow-hidden rounded-xl bg-gradient-to-r from-pink-600 to-orange-600 px-6 text-sm font-semibold text-white border-0 shadow-[0_0_20px_rgba(236,72,153,0.25)] hover:shadow-[0_0_36px_rgba(236,72,153,0.45)] hover:scale-[1.02] transition-all duration-300 gap-2">
-                <Link href="/#contact">
+              <Button asChild className="relative overflow-hidden rounded-xl bg-gradient-to-r from-pink-600 to-orange-600 px-6 text-sm font-semibold text-white! border-0 shadow-[0_0_20px_rgba(236,72,153,0.25)] hover:shadow-[0_0_36px_rgba(236,72,153,0.45)] hover:scale-[1.02] transition-all duration-300 gap-2">
+                <Link href="/#contact" className="text-white">
                   <ArrowRight className="w-4 h-4" />İletişime Geç
                 </Link>
               </Button>
@@ -690,8 +690,8 @@ function CTASection() {
           Beni tanıdın. Şimdi birlikte çalışalım — meraklı, tutku dolu ve her zaman öğrenmeye açık biriyle.
         </p>
         <div className="flex flex-wrap gap-4 justify-center">
-          <Button asChild className="relative overflow-hidden rounded-xl bg-gradient-to-r from-pink-600 to-orange-600 px-8 py-3 text-base font-semibold text-white border-0 shadow-[0_0_28px_rgba(236,72,153,0.35)] hover:shadow-[0_0_48px_rgba(236,72,153,0.55)] hover:scale-[1.02] transition-all duration-300 gap-2 h-auto">
-            <Link href="/#contact">
+          <Button asChild className="relative overflow-hidden rounded-xl bg-gradient-to-r from-pink-600 to-orange-600 px-8 py-3 text-base font-semibold text-white! border-0 shadow-[0_0_28px_rgba(236,72,153,0.35)] hover:shadow-[0_0_48px_rgba(236,72,153,0.55)] hover:scale-[1.02] transition-all duration-300 gap-2 h-auto">
+            <Link href="/#contact" className="text-white">
               <ArrowRight className="w-5 h-5" />İletişime Geç
             </Link>
           </Button>

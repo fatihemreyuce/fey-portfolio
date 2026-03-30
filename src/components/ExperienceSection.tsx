@@ -13,6 +13,7 @@ import type { LucideIcon } from "lucide-react";
 import { AnimatedGradientText } from "@/components/magicui/animated-gradient-text";
 import { Meteors } from "@/components/magicui/meteors";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/components/I18nProvider";
 
 /* ─── data ──────────────────────────────────────────── */
 
@@ -83,16 +84,45 @@ const FILTERS = [
   { label: "Eğitim",   value: "education"  },
 ] as const;
 
+const EN_BY_ID: Record<string, Pick<TimelineItem, "title" | "organization" | "location" | "description" | "tags">> = {
+  internship: {
+    title: "Software Developer Intern",
+    organization: "Company",
+    location: "Turkey",
+    description:
+      "My first internship during vocational high school. I worked in a real team environment and built projects with HTML, CSS, and JavaScript while learning version control workflows.",
+    tags: ["HTML", "CSS", "JavaScript", "Git"],
+  },
+  university: {
+    title: "Software Engineering",
+    organization: "Istanbul Gedik University",
+    location: "Istanbul",
+    description:
+      "Undergraduate education in software engineering. I am actively improving in data structures, algorithms, object-oriented programming, and software architecture.",
+    tags: ["Algorithms", "Data Structures", "Software Eng.", "OOP"],
+  },
+  highschool: {
+    title: "Information Technologies — Vocational High School",
+    organization: "Adem Ceylan Final Technical College",
+    location: "Turkey",
+    description:
+      "Vocational education in information technologies. I started programming in high school, learned web development, and gained my first industry internship experience.",
+    tags: ["HTML/CSS", "Python", "JavaScript", "Networking Basics"],
+  },
+};
+
 /* ─── TimelineCard ───────────────────────────────────── */
 
 function TimelineCard({
   item,
   visible,
   side,
+  currentLabel,
 }: {
   item: TimelineItem;
   visible: boolean;
   side: "left" | "right";
+  currentLabel: string;
 }) {
   const [hov, setHov] = useState(false);
   const Icon = item.icon;
@@ -150,7 +180,7 @@ function TimelineCard({
               <h3 className="text-sm font-bold leading-snug text-zinc-900 dark:text-white">{item.title}</h3>
               {item.current && (
                 <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
-                  Güncel
+                  {currentLabel}
                 </span>
               )}
             </div>
@@ -193,6 +223,7 @@ function TimelineCard({
 /* ─── ExperienceSection ──────────────────────────────── */
 
 export function ExperienceSection() {
+  const { locale } = useI18n();
   const ref               = useRef<HTMLElement>(null);
   const [visible, setVis] = useState(false);
   const [filter, setFil]  = useState<"all" | "experience" | "education">("all");
@@ -228,7 +259,10 @@ export function ExperienceSection() {
     return () => observers.forEach((o) => o.disconnect());
   }, [filter]);
 
-  const filtered = filter === "all" ? items : items.filter((i) => i.type === filter);
+  const localizedItems = locale === "en"
+    ? items.map((i) => ({ ...i, ...EN_BY_ID[i.id] }))
+    : items;
+  const filtered = filter === "all" ? localizedItems : localizedItems.filter((i) => i.type === filter);
 
   return (
     <section
@@ -264,18 +298,20 @@ export function ExperienceSection() {
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-violet-500/20 bg-violet-500/10">
             <Layers className="w-3.5 h-3.5 text-violet-400" />
             <span className="text-xs font-semibold text-violet-400 tracking-[0.18em] uppercase">
-              Deneyim & Eğitim
+              {locale === "en" ? "Experience & Education" : "Deneyim & Eğitim"}
             </span>
           </div>
           <h2 className="text-4xl sm:text-[2.75rem] font-bold leading-[1.15] tracking-tight">
-            <span className="text-zinc-900 dark:text-white">Yolculuğum ve</span>
+            <span className="text-zinc-900 dark:text-white">{locale === "en" ? "My Journey and" : "Yolculuğum ve"}</span>
             <br />
             <AnimatedGradientText className="text-4xl sm:text-[2.75rem] font-bold">
-              Büyüme Hikayem
+              {locale === "en" ? "Growth Story" : "Büyüme Hikayem"}
             </AnimatedGradientText>
           </h2>
           <p className="text-zinc-400 max-w-xl mx-auto leading-relaxed">
-            Yazılım kariyerimde attığım adımlar, çalıştığım yerler ve aldığım eğitimler.
+            {locale === "en"
+              ? "The milestones, experiences, and education that shaped my software journey."
+              : "Yazılım kariyerimde attığım adımlar, çalıştığım yerler ve aldığım eğitimler."}
           </p>
         </div>
 
@@ -302,7 +338,15 @@ export function ExperienceSection() {
                 {filter === value && (
                   <span className="absolute inset-0 rounded-lg border border-zinc-300 bg-white dark:border-white/10 dark:bg-white/[0.08]" />
                 )}
-                <span className="relative">{label}</span>
+                <span className="relative">
+                  {locale === "en"
+                    ? value === "all"
+                      ? "All"
+                      : value === "experience"
+                        ? "Experience"
+                        : "Education"
+                    : label}
+                </span>
               </button>
             ))}
           </div>
@@ -333,6 +377,7 @@ export function ExperienceSection() {
                         item={item}
                         visible={!!cardVis[item.id]}
                         side="left"
+                        currentLabel={locale === "en" ? "Current" : "Güncel"}
                       />
                     )}
                   </div>
@@ -364,6 +409,7 @@ export function ExperienceSection() {
                             item={item}
                             visible={!!cardVis[item.id]}
                             side="right"
+                            currentLabel={locale === "en" ? "Current" : "Güncel"}
                           />
                         )}
                       </div>
@@ -383,6 +429,7 @@ export function ExperienceSection() {
                       item={item}
                       visible={!!cardVis[item.id]}
                       side="right"
+                      currentLabel={locale === "en" ? "Current" : "Güncel"}
                     />
                   </div>
                 </div>

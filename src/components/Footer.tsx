@@ -8,6 +8,8 @@ import { Meteors } from "@/components/magicui/meteors";
 import { BrandSocialIconLink } from "@/components/BrandSocialIconLink";
 import { brandSocialLinksFooter } from "@/data/brand-social-links";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/components/I18nProvider";
+import { withLocale } from "@/i18n/withLocale";
 
 /* ─── Data ───────────────────────────────────────────── */
 
@@ -247,6 +249,8 @@ function FloatingOrbs() {
 /* ─── Footer ─────────────────────────────────────────── */
 
 export function Footer() {
+  const { locale } = useI18n();
+  const isEn = locale === "en";
   const year = new Date().getFullYear();
 
   return (
@@ -279,8 +283,9 @@ export function Footer() {
             <LogoCard />
 
             <p className="text-sm text-zinc-500 leading-relaxed max-w-xs">
-              Güzel, hızlı ve kullanıcı dostu arayüzler inşa etmeyi seven bir
-              frontend geliştirici.
+              {isEn
+                ? "A frontend developer who loves building beautiful, fast, and user-friendly interfaces."
+                : "Güzel, hızlı ve kullanıcı dostu arayüzler inşa etmeyi seven bir frontend geliştirici."}
             </p>
 
             {/* Social icons */}
@@ -297,7 +302,7 @@ export function Footer() {
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
               </span>
               <span className="text-[11px] text-emerald-400 font-medium">
-                Yeni projelere açık
+                {isEn ? "Open to new projects" : "Yeni projelere açık"}
               </span>
             </div>
           </div>
@@ -307,19 +312,37 @@ export function Footer() {
             {navColumns.map((col) => (
               <div key={col.title} className="space-y-4">
                 <h4 className="text-[11px] font-semibold text-zinc-400 tracking-[0.18em] uppercase">
-                  {col.title}
+                  {isEn
+                    ? col.title === "Gezinti"
+                      ? "Navigation"
+                      : "Explore"
+                    : col.title}
                 </h4>
                 <ul className="space-y-2.5">
                   {col.links.map((link) => (
                     <li key={link.href}>
                       <Link
-                        href={link.href}
+                        href={withLocale(link.href, locale)}
                         className="group flex items-center gap-1.5 text-sm text-zinc-500 hover:text-white transition-colors duration-200"
                       >
                         <span
                           className="h-px w-0 bg-gradient-to-r from-blue-400 to-emerald-400 transition-all duration-300 group-hover:w-3 rounded-full"
                         />
-                        {link.label}
+                        {isEn
+                          ? link.label === "Hakkımda"
+                            ? "About"
+                            : link.label === "Deneyim"
+                              ? "Experience"
+                              : link.label === "Projeler"
+                                ? "Projects"
+                                : link.label === "Beceriler"
+                                  ? "Skills"
+                                  : link.label === "Hobiler"
+                                    ? "Hobbies"
+                                    : link.label === "SSS"
+                                      ? "FAQ"
+                                      : "Contact"
+                          : link.label}
                       </Link>
                     </li>
                   ))}
@@ -331,7 +354,7 @@ export function Footer() {
           {/* Stats column */}
           <div className="md:col-span-1 space-y-4">
             <h4 className="text-[11px] font-semibold text-zinc-400 tracking-[0.18em] uppercase">
-              Sayılarla
+              {isEn ? "By Numbers" : "Sayılarla"}
             </h4>
             <div className="grid grid-cols-2 gap-2.5">
               {stats.map((s) => (
@@ -356,7 +379,7 @@ export function Footer() {
               }
             >
               <span className="text-sm font-semibold text-blue-400">
-                Birlikte çalışalım
+                {isEn ? "Let's work together" : "Birlikte çalışalım"}
               </span>
               <ExternalLink className="w-4 h-4 text-blue-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
             </a>
@@ -374,14 +397,14 @@ export function Footer() {
             <AnimatedGradientText className="text-xs font-semibold">
               Fatih Emre Yüce
             </AnimatedGradientText>
-            <span>· Tüm hakları saklıdır.</span>
+            <span>{isEn ? "· All rights reserved." : "· Tüm hakları saklıdır."}</span>
           </p>
 
           <div className="flex items-center gap-3">
             <p className="text-xs text-zinc-600 flex items-center gap-1">
-              <span>Next.js ile</span>
+              <span>{isEn ? "Built with Next.js" : "Next.js ile"}</span>
               <Heart className="h-3 w-3 text-rose-500 animate-heartbeat inline-block" />
-              <span>yapıldı</span>
+              <span>{isEn ? "and love" : "yapıldı"}</span>
             </p>
             <BackToTop />
           </div>

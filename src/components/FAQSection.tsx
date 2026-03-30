@@ -5,6 +5,7 @@ import { ChevronDown, HelpCircle, Sparkles } from "lucide-react";
 import { AnimatedGradientText } from "@/components/magicui/animated-gradient-text";
 import { Meteors } from "@/components/magicui/meteors";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/components/I18nProvider";
 
 /* ─── data ──────────────────────────────────────────── */
 
@@ -53,6 +54,49 @@ const faqs: FAQItem[] = [
   {
     q: "İletişim için en hızlı yöntem hangisi?",
     a: "Bu sayfadaki iletişim formu veya doğrudan e-posta (fatihemreyuce@gmail.com) en hızlı yol. Genellikle 24 saat içinde yanıt veriyorum. LinkedIn üzerinden de ulaşabilirsiniz.",
+    accent: "#f97316",
+  },
+];
+
+const faqsEn: FAQItem[] = [
+  {
+    q: "Do you accept freelance projects?",
+    a: "Yes, I actively take freelance projects including web app development, contribution to existing products, and technical consulting.",
+    accent: "#3b82f6",
+  },
+  {
+    q: "Which technologies do you enjoy the most?",
+    a: "On frontend, I enjoy React + Next.js + TypeScript + Tailwind CSS. On backend, I also enjoy working with Kotlin + Spring Boot.",
+    accent: "#8b5cf6",
+  },
+  {
+    q: "Are you comfortable with remote work?",
+    a: "Absolutely. I am experienced in async communication, issue tracking tools, and regular sync meetings for efficient delivery.",
+    accent: "#10b981",
+  },
+  {
+    q: "How long does a project usually take?",
+    a: "It depends on scope: simple landing pages can take 1-2 weeks, mid-size apps 4-8 weeks, and larger full-stack projects 2-4 months.",
+    accent: "#f59e0b",
+  },
+  {
+    q: "Do you also do design, or only development?",
+    a: "I can handle UI design in Figma, but my strongest area is development. If needed, I can support both design and implementation.",
+    accent: "#ec4899",
+  },
+  {
+    q: "Are you open to full-time opportunities?",
+    a: "Yes. I am open to suitable roles, especially teams using modern technologies with hybrid or remote-friendly culture.",
+    accent: "#14b8a6",
+  },
+  {
+    q: "Do you contribute to open source?",
+    a: "Yes. I care about contributing back to tools I use and sharing useful projects publicly on GitHub.",
+    accent: "#6366f1",
+  },
+  {
+    q: "What's the fastest way to reach you?",
+    a: "The contact form on this page or direct email is the fastest way. I usually respond within 24 hours.",
     accent: "#f97316",
   },
 ];
@@ -161,6 +205,7 @@ function FAQAccordion({
 /* ─── FAQSection ─────────────────────────────────────── */
 
 export function FAQSection() {
+  const { locale } = useI18n();
   const ref               = useRef<HTMLElement>(null);
   const [visible, setVis] = useState(false);
 
@@ -175,9 +220,10 @@ export function FAQSection() {
     return () => obs.disconnect();
   }, []);
 
-  const half = Math.ceil(faqs.length / 2);
-  const col1 = faqs.slice(0, half);
-  const col2 = faqs.slice(half);
+  const data = locale === "en" ? faqsEn : faqs;
+  const half = Math.ceil(data.length / 2);
+  const col1 = data.slice(0, half);
+  const col2 = data.slice(half);
 
   return (
     <section
@@ -212,20 +258,22 @@ export function FAQSection() {
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-indigo-500/20 bg-indigo-500/10">
             <HelpCircle className="w-3.5 h-3.5 text-indigo-400" />
             <span className="text-xs font-semibold text-indigo-400 tracking-[0.18em] uppercase">
-              SSS
+              {locale === "en" ? "FAQ" : "SSS"}
             </span>
           </div>
 
           <h2 className="text-4xl sm:text-[2.75rem] font-bold leading-[1.15] tracking-tight">
-            <span className="text-zinc-900 dark:text-white">Sıkça Sorulan</span>
+            <span className="text-zinc-900 dark:text-white">{locale === "en" ? "Frequently Asked" : "Sıkça Sorulan"}</span>
             <br />
             <AnimatedGradientText className="text-4xl sm:text-[2.75rem] font-bold">
-              Sorular
+              {locale === "en" ? "Questions" : "Sorular"}
             </AnimatedGradientText>
           </h2>
 
           <p className="text-zinc-400 max-w-xl mx-auto leading-relaxed">
-            Aklınızdaki soruyu burada bulamazsanız iletişim formu üzerinden sorabilirsiniz.
+            {locale === "en"
+              ? "If you cannot find your question here, feel free to use the contact form."
+              : "Aklınızdaki soruyu burada bulamazsanız iletişim formu üzerinden sorabilirsiniz."}
           </p>
         </div>
 
@@ -268,12 +316,12 @@ export function FAQSection() {
           <div className="flex items-center gap-3 rounded-2xl border border-zinc-200 bg-white px-6 py-4 dark:border-white/[0.07] dark:bg-white/[0.03]">
             <Sparkles className="w-4 h-4 text-indigo-400 shrink-0" />
             <p className="text-sm text-zinc-400">
-              Başka sorunuz var mı?{" "}
+              {locale === "en" ? "Still have a question?" : "Başka sorunuz var mı?"}{" "}
               <a
                 href="#contact"
                 className="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors underline underline-offset-4 decoration-indigo-400/30"
               >
-                İletişime geçin
+                {locale === "en" ? "Contact me" : "İletişime geçin"}
               </a>
             </p>
           </div>

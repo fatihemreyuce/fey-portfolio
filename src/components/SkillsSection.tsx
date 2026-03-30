@@ -5,8 +5,10 @@ import Link from "next/link";
 import { Cpu, ArrowUpRight, Sparkles } from "lucide-react";
 import { AnimatedGradientText } from "@/components/magicui/animated-gradient-text";
 import { Meteors } from "@/components/magicui/meteors";
-import { cn } from "@/lib/utils";
 import { skillCategories, getLevel, type SkillCategory } from "@/data/skills";
+import { useI18n } from "@/components/I18nProvider";
+import { withLocale } from "@/i18n/withLocale";
+import { readableOnLightSurface } from "@/lib/utils";
 
 /* ─── SkillBar ───────────────────────────────────────── */
 
@@ -16,28 +18,54 @@ function SkillBar({
   color,
   started,
   delay,
+  locale,
 }: {
   name: string;
   level: number;
   color: string;
   started: boolean;
   delay: number;
+  locale: "tr" | "en";
 }) {
   const lvl = getLevel(level);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const update = () => setIsDarkMode(root.classList.contains("dark"));
+    update();
+    const obs = new MutationObserver(update);
+    obs.observe(root, { attributes: true, attributeFilter: ["class"] });
+    return () => obs.disconnect();
+  }, []);
+
+  const barColor = isDarkMode ? color : readableOnLightSurface(color);
+  const levelLabel =
+    locale === "en"
+      ? level >= 90
+        ? "Expert"
+        : level >= 75
+          ? "Advanced"
+          : level >= 55
+            ? "Intermediate"
+            : "Beginner"
+      : lvl.label;
 
   return (
     <div className="space-y-1.5">
-      <div className="flex items-center justify-between text-xs">
-        <span className="font-medium text-zinc-700 dark:text-zinc-300">{name}</span>
+      <div className="flex items-center justify-between gap-2 text-xs">
+        <span className="min-w-0 flex-1 font-medium text-zinc-700 dark:text-zinc-300">
+          {name}
+        </span>
         <span
-          className="text-[10px] font-semibold px-1.5 py-0.5 rounded-md"
+          className="shrink-0 whitespace-nowrap rounded-md px-1.5 py-0.5 text-[10px] font-semibold"
           style={{
-            color,
-            background: `${color}18`,
-            border:     `1px solid ${color}30`,
+            color: barColor,
+            background: `${barColor}1f`,
+            border:     `1px solid ${barColor}45`,
           }}
         >
-          {lvl.label}
+          {levelLabel}
         </span>
       </div>
       {/* Track */}
@@ -50,8 +78,8 @@ function SkillBar({
             transitionDuration: "1.1s",
             transitionTimingFunction: "cubic-bezier(0.34, 1.2, 0.64, 1)",
             transitionDelay: `${delay}ms`,
-            background:      `linear-gradient(90deg, ${color}aa, ${color})`,
-            boxShadow:       `0 0 8px ${color}60`,
+            background:      `linear-gradient(90deg, ${barColor}cc, ${barColor})`,
+            boxShadow:       `0 0 10px ${barColor}75`,
           }}
         />
       </div>
@@ -65,10 +93,14 @@ function CategoryCard({
   category,
   started,
   index,
+  footerLabel,
+  locale,
 }: {
   category: SkillCategory;
   started: boolean;
   index: number;
+  footerLabel: string;
+  locale: "tr" | "en";
 }) {
   const cardRef             = useRef<HTMLDivElement>(null);
   const [tilt, setTilt]     = useState({ x: 0, y: 0 });
@@ -182,6 +214,7 @@ function CategoryCard({
               color={skill.color}
               started={started}
               delay={index * 80 + i * 120}
+              locale={locale}
             />
           ))}
         </div>
@@ -190,11 +223,11 @@ function CategoryCard({
       {/* ── Footer ── */}
       <div className="px-5 pb-5 pt-0 shrink-0">
         <Link
-          href={`/skills/${category.id}`}
+          href={withLocale(`/skills/${category.id}`, locale)}
           className="group/btn flex w-full items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-2.5 transition-all duration-200 hover:border-zinc-300 hover:bg-white dark:border-white/[0.07] dark:bg-white/[0.03] dark:hover:border-white/15 dark:hover:bg-white/[0.07]"
         >
           <span className="text-xs font-semibold text-zinc-600 transition-colors group-hover/btn:text-zinc-900 dark:text-zinc-400 dark:group-hover/btn:text-white">
-            Tüm becerileri gör
+            {footerLabel}
           </span>
           <ArrowUpRight
             className="h-3.5 w-3.5 text-zinc-500 transition-all duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 group-hover/btn:text-zinc-900 dark:text-zinc-600 dark:group-hover/btn:text-white"
@@ -218,6 +251,7 @@ function CategoryCard({
 /* ─── SkillsSection ──────────────────────────────────── */
 
 export function SkillsSection() {
+  const { dict, locale } = useI18n();
   const ref               = useRef<HTMLElement>(null);
   const [visible, setVis] = useState(false);
 
@@ -234,6 +268,42 @@ export function SkillsSection() {
 
   /* total skill count across all categories */
   const totalSkills = skillCategories.reduce((s, c) => s + c.skills.length, 0);
+  const localizedCategories = locale === "en"
+    ? skillCategories.map((c) => {
+        if (c.id === "frontend") {
+          return {
+            ...c,
+            shortDesc: "Modern, accessible, and high-performance user interfaces.",
+          };
+        }
+        if (c.id === "backend") {
+          return {
+            ...c,
+            title: "Backend",
+            shortDesc: "Learning REST and data layers with Kotlin and Spring Boot step by step.",
+          };
+        }
+        if (c.id === "araclar") {
+          return {
+            ...c,
+            title: "Tools & DevOps",
+            shortDesc: "Tooling and infrastructure knowledge that accelerates development workflows.",
+          };
+        }
+        if (c.id === "diger") {
+          return {
+            ...c,
+            title: "Other",
+            shortDesc: "Beyond code: analytical thinking and problem solving.",
+            skills: c.skills.map((s) => ({
+              ...s,
+              name: s.name === "İngilizce" ? "English" : s.name === "Algoritma" ? "Algorithms" : s.name,
+            })),
+          };
+        }
+        return c;
+      })
+    : skillCategories;
 
   return (
     <section
@@ -269,27 +339,26 @@ export function SkillsSection() {
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10">
             <Cpu className="w-3.5 h-3.5 text-emerald-400" />
             <span className="text-xs font-semibold text-emerald-400 tracking-[0.18em] uppercase">
-              Beceriler
+              {dict.skills.badge}
             </span>
           </div>
 
           <h2 className="text-4xl sm:text-[2.75rem] font-bold leading-[1.15] tracking-tight">
-            <span className="text-zinc-900 dark:text-white">Kullandığım</span>
+            <span className="text-zinc-900 dark:text-white">{dict.skills.titleTop}</span>
             <br />
             <AnimatedGradientText className="text-4xl sm:text-[2.75rem] font-bold">
-              Teknolojiler
+              {dict.skills.titleGradient}
             </AnimatedGradientText>
           </h2>
 
           <p className="text-zinc-400 max-w-xl mx-auto leading-relaxed">
-            {totalSkills}+ teknoloji ve araçta deneyim — frontend'den backend'e, geliştirme
-            araçlarından metodolojilere kadar geniş bir yelpaze.
+            {totalSkills}+ {dict.skills.description}
           </p>
         </div>
 
         {/* ── Category cards grid ── */}
         <div className="grid items-stretch sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {skillCategories.map((cat, i) => (
+          {localizedCategories.map((cat, i) => (
             <div
               key={cat.id}
               className="h-full min-h-0"
@@ -299,7 +368,7 @@ export function SkillsSection() {
                 transition: `opacity 0.55s ease ${0.1 + i * 0.1}s, transform 0.55s ease ${0.1 + i * 0.1}s`,
               }}
             >
-              <CategoryCard category={cat} started={visible} index={i} />
+              <CategoryCard category={cat} started={visible} index={i} footerLabel={dict.skills.cardFooter} locale={locale} />
             </div>
           ))}
         </div>
@@ -314,7 +383,7 @@ export function SkillsSection() {
         >
           <div className="flex items-center gap-2 text-sm text-zinc-600">
             <Sparkles className="w-4 h-4 text-emerald-500/60" />
-            <span>Karta tıklayarak detayları keşfedin</span>
+            <span>{dict.skills.discover}</span>
           </div>
         </div>
 

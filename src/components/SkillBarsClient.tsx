@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import { getLevel, type Skill } from "@/data/skills";
+import { readableOnLightSurface } from "@/lib/utils";
 
 interface Props {
   skills: Skill[];
@@ -11,6 +12,7 @@ interface Props {
 export function SkillBarsClient({ skills, accent }: Props) {
   const ref               = useRef<HTMLDivElement>(null);
   const [started, setS]   = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
@@ -23,10 +25,21 @@ export function SkillBarsClient({ skills, accent }: Props) {
     return () => obs.disconnect();
   }, []);
 
+  useEffect(() => {
+    const root = document.documentElement;
+    const update = () => setIsDarkMode(root.classList.contains("dark"));
+    update();
+    const obs = new MutationObserver(update);
+    obs.observe(root, { attributes: true, attributeFilter: ["class"] });
+    return () => obs.disconnect();
+  }, []);
+
   return (
     <div ref={ref} className="space-y-3">
       {skills.map((skill, i) => {
         const lvl = getLevel(skill.level);
+        const skillColor = isDarkMode ? skill.color : readableOnLightSurface(skill.color);
+        const levelColor = isDarkMode ? lvl.color : readableOnLightSurface(lvl.color);
         return (
           <div
             key={skill.name}
@@ -50,9 +63,9 @@ export function SkillBarsClient({ skills, accent }: Props) {
                 <span
                   className="text-[10px] font-bold px-2 py-0.5 rounded-md"
                   style={{
-                    color:      lvl.color,
-                    background: `${lvl.color}18`,
-                    border:     `1px solid ${lvl.color}30`,
+                    color:      levelColor,
+                    background: `${levelColor}20`,
+                    border:     `1px solid ${levelColor}45`,
                   }}
                 >
                   {lvl.label}
@@ -69,8 +82,8 @@ export function SkillBarsClient({ skills, accent }: Props) {
                   transitionDuration: "1.2s",
                   transitionTimingFunction: "cubic-bezier(0.34, 1.1, 0.64, 1)",
                   transitionDelay: `${i * 100}ms`,
-                  background:      `linear-gradient(90deg, ${skill.color}90, ${skill.color})`,
-                  boxShadow:       `0 0 10px ${skill.color}50`,
+                  background:      `linear-gradient(90deg, ${skillColor}b8, ${skillColor})`,
+                  boxShadow:       `0 0 10px ${skillColor}70`,
                 }}
               />
               {/* Percentage label at end of bar */}
@@ -84,7 +97,7 @@ export function SkillBarsClient({ skills, accent }: Props) {
               >
                 <span
                   className="text-[9px] font-bold pr-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                  style={{ color: skill.color }}
+                  style={{ color: skillColor }}
                 >
                   {skill.level}%
                 </span>

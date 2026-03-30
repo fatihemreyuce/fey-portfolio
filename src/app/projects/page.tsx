@@ -25,10 +25,12 @@ import { AnimatedGradientText } from "@/components/magicui/animated-gradient-tex
 import { TypewriterGradientText } from "@/components/magicui/typewriter-gradient-text";
 import { Meteors } from "@/components/magicui/meteors";
 import { Button } from "@/components/ui/button";
-import { cn, hexNeedsForcedDarkText } from "@/lib/utils";
+import { cn, hexNeedsForcedDarkText, readableOnLightSurface } from "@/lib/utils";
 import { projects, type Project } from "@/data/projects";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { useI18n } from "@/components/I18nProvider";
+import { withLocale } from "@/i18n/withLocale";
 
 /* ─── constants ────────────────────────────────────── */
 
@@ -48,7 +50,7 @@ const STATUS_MAP = {
       "text-blue-900 border-blue-400/70 bg-blue-100/95 dark:text-blue-400 dark:border-blue-500/25 dark:bg-blue-500/10",
   },
   development: {
-    label: "Geliştirme",
+    label: "Yapım Aşamasında",
     icon: Clock,
     color:
       "text-amber-900 border-amber-400/70 bg-amber-100/95 dark:text-amber-400 dark:border-amber-500/25 dark:bg-amber-500/10",
@@ -90,9 +92,20 @@ function useInView(threshold = 0.1) {
 /* ─── ProjectCard (3-D tilt) ─────────────────────── */
 
 function ProjectCard({ project, index, visible }: { project: Project; index: number; visible: boolean }) {
+  const { locale } = useI18n();
   const cardRef         = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [hov,  setHov]  = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const update = () => setIsDarkMode(root.classList.contains("dark"));
+    update();
+    const obs = new MutationObserver(update);
+    obs.observe(root, { attributes: true, attributeFilter: ["class"] });
+    return () => obs.disconnect();
+  }, []);
 
   const onMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const r = cardRef.current?.getBoundingClientRect();
@@ -160,11 +173,9 @@ function ProjectCard({ project, index, visible }: { project: Project; index: num
               {project.category}
             </span>
           </div>
-          {project.status !== "development" && (
-            <div className={cn("flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-full border", status.color)}>
-              <StatusIcon className="w-3 h-3" />{status.label}
-            </div>
-          )}
+          <div className={cn("flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-full border", status.color)}>
+            <StatusIcon className="w-3 h-3" />{status.label}
+          </div>
         </div>
       </div>
 
@@ -172,22 +183,27 @@ function ProjectCard({ project, index, visible }: { project: Project; index: num
       <div className="flex flex-1 flex-col gap-4 p-5" style={{ transform: "translateZ(12px)" }}>
         <div className="flex items-start justify-between gap-2">
           <h3 className="text-base font-bold leading-snug text-zinc-900 dark:text-white">{project.title}</h3>
-          <span className="mt-0.5 shrink-0 text-[11px] text-zinc-500 dark:text-zinc-600">{project.year}</span>
+          {project.year && (
+            <span className="mt-0.5 shrink-0 text-[11px] text-zinc-500 dark:text-zinc-600">{project.year}</span>
+          )}
         </div>
         <p className="line-clamp-3 min-h-[4.5rem] text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">{project.shortDesc}</p>
         <div className="mt-auto flex flex-wrap gap-1.5">
-          {project.techs.slice(0, 4).map((tech) => (
-            <span
-              key={tech.name}
-              className={cn(
-                "project-tech-pill rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[10px] font-medium dark:border-white/[0.07] dark:bg-white/[0.05]",
-                hexNeedsForcedDarkText(tech.color) && "project-tech-pill--force-dark",
-              )}
-              style={{ color: tech.color }}
-            >
-              {tech.name}
-            </span>
-          ))}
+          {project.techs.slice(0, 4).map((tech) => {
+            const techColor = isDarkMode ? tech.color : readableOnLightSurface(tech.color);
+            return (
+              <span
+                key={tech.name}
+                className={cn(
+                  "project-tech-pill rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[10px] font-medium dark:border-white/[0.07] dark:bg-white/[0.05]",
+                  hexNeedsForcedDarkText(tech.color) && "project-tech-pill--force-dark",
+                )}
+                style={{ color: techColor }}
+              >
+                {tech.name}
+              </span>
+            );
+          })}
           {project.techs.length > 4 && (
             <span className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[10px] font-medium text-zinc-600 dark:border-white/[0.07] dark:bg-white/[0.05] dark:text-zinc-500">+{project.techs.length - 4}</span>
           )}
@@ -210,7 +226,7 @@ function ProjectCard({ project, index, visible }: { project: Project; index: num
             </a>
           )}
         </div>
-        <Link href={`/projects/${project.id}`} onClick={(e) => e.stopPropagation()}
+        <Link href={withLocale(`/projects/${project.id}`, locale)} onClick={(e) => e.stopPropagation()}
           className="group/btn flex items-center gap-1.5 rounded-xl border border-zinc-100 bg-zinc-50/80 px-4 py-2 text-xs font-semibold text-zinc-700 shadow-sm transition-all duration-200 hover:border-zinc-200 hover:bg-zinc-100/80 hover:text-zinc-950 dark:border-white/10 dark:bg-white/[0.04] dark:text-zinc-300 dark:shadow-none dark:hover:border-white/20 dark:hover:bg-white/[0.08] dark:hover:text-white">
           Detaylar
           <ArrowUpRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform duration-200" />
@@ -229,9 +245,20 @@ function ProjectCard({ project, index, visible }: { project: Project; index: num
 /* ─── Featured Project (big tilt card) ──────────────── */
 
 function FeaturedCard({ project, vis }: { project: Project; vis: boolean }) {
+  const { locale } = useI18n();
   const ref         = useRef<HTMLDivElement>(null);
   const [tilt, setT] = useState({ x: 0, y: 0 });
   const [hov, setH]  = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const update = () => setIsDarkMode(root.classList.contains("dark"));
+    update();
+    const obs = new MutationObserver(update);
+    obs.observe(root, { attributes: true, attributeFilter: ["class"] });
+    return () => obs.disconnect();
+  }, []);
   const onMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const r = ref.current?.getBoundingClientRect();
     if (!r) return;
@@ -284,18 +311,21 @@ function FeaturedCard({ project, vis }: { project: Project; vis: boolean }) {
               <Icon className="h-10 w-10 !text-white" />
             </div>
             <div className="flex flex-wrap gap-1.5 justify-center max-w-[180px]">
-              {project.techs.map((t) => (
-                <span
-                  key={t.name}
-                  className={cn(
-                    "project-tech-pill rounded-full border border-white/40 bg-white/25 px-2 py-0.5 text-[10px] font-medium shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-black/30 dark:shadow-none",
-                    hexNeedsForcedDarkText(t.color) && "project-tech-pill--force-dark",
-                  )}
-                  style={{ color: t.color }}
-                >
-                  {t.name}
-                </span>
-              ))}
+              {project.techs.map((t) => {
+                const techColor = isDarkMode ? t.color : readableOnLightSurface(t.color);
+                return (
+                  <span
+                    key={t.name}
+                    className={cn(
+                      "project-tech-pill rounded-full border border-white/40 bg-white/25 px-2 py-0.5 text-[10px] font-medium shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-black/30 dark:shadow-none",
+                      hexNeedsForcedDarkText(t.color) && "project-tech-pill--force-dark",
+                    )}
+                    style={{ color: techColor }}
+                  >
+                    {t.name}
+                  </span>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -309,7 +339,7 @@ function FeaturedCard({ project, vis }: { project: Project; vis: boolean }) {
             <div className={cn("flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-full border", STATUS_MAP[project.status].color)}>
               <Star className="w-3 h-3" /> Öne Çıkan Proje
             </div>
-            <span className="text-xs text-zinc-600">{project.year}</span>
+            {project.year && <span className="text-xs text-zinc-600">{project.year}</span>}
           </div>
 
           <h2 className="text-2xl font-bold text-zinc-900 sm:text-3xl dark:text-white">{project.title}</h2>
@@ -328,7 +358,7 @@ function FeaturedCard({ project, vis }: { project: Project; vis: boolean }) {
           </div>
 
           <div className="flex items-center gap-3 pt-2">
-            <Link href={`/projects/${project.id}`}
+            <Link href={withLocale(`/projects/${project.id}`, locale)}
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white border-0 transition-all duration-300 hover:scale-[1.02]"
               style={{ background: `linear-gradient(135deg,${project.accent.from},${project.accent.to})`, boxShadow: `0 0 24px ${project.accent.from}35` }}>
               Detayları Gör <ArrowUpRight className="w-4 h-4" />
@@ -644,8 +674,8 @@ function CTASection() {
           Konuşalım.
         </p>
         <div className="flex flex-wrap gap-4 justify-center">
-          <Button asChild className="relative overflow-hidden rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 px-8 py-3 text-base font-semibold text-white border-0 shadow-[0_0_28px_rgba(139,92,246,0.35)] hover:shadow-[0_0_48px_rgba(139,92,246,0.55)] hover:scale-[1.02] transition-all duration-300 gap-2 h-auto">
-            <Link href="/#contact">
+          <Button asChild className="relative overflow-hidden rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 px-8 py-3 text-base font-semibold text-white! border-0 shadow-[0_0_28px_rgba(139,92,246,0.35)] hover:shadow-[0_0_48px_rgba(139,92,246,0.55)] hover:scale-[1.02] transition-all duration-300 gap-2 h-auto">
+            <Link href="/#contact" className="text-white">
               <ArrowRight className="w-5 h-5" />İletişime Geç
             </Link>
           </Button>

@@ -14,6 +14,7 @@ import type { LucideIcon } from "lucide-react";
 import { AnimatedGradientText } from "@/components/magicui/animated-gradient-text";
 import { Meteors } from "@/components/magicui/meteors";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/components/I18nProvider";
 
 /* ─── data ──────────────────────────────────────────── */
 
@@ -91,6 +92,41 @@ const hobbies: Hobby[] = [
     span: "full",
   },
 ];
+
+const EN_HOBBY_BY_ID: Record<VisualKind, Pick<Hobby, "title" | "description" | "tags">> = {
+  terminal: {
+    title: "Coding",
+    description:
+      "I enjoy building things outside work too. Contributing to open source, trying new frameworks, and creating personal tools is a hobby for me.",
+    tags: ["Open Source", "Side Projects", "New Tech"],
+  },
+  equalizer: {
+    title: "Music",
+    description: "I mostly listen to pop, metal, and classic rock, and often switch to lo-fi and ambient for deep focus.",
+    tags: ["Pop", "Metal", "Classic Rock", "Lo-fi", "Ambient"],
+  },
+  gaming: {
+    title: "Gaming",
+    description:
+      "I enjoy strategy, RPG, and MOBA games, and I also love story-driven titles. Game systems often inspire my software thinking.",
+    tags: ["Strategy", "RPG", "MOBA", "Story-rich", "Indie"],
+  },
+  camera: {
+    title: "Photography",
+    description: "Street and landscape photography. Understanding light and composition improves my UI perspective.",
+    tags: ["Street", "Landscape", "Composition"],
+  },
+  books: {
+    title: "Books",
+    description: "Technical books, science fiction, and psychology. Reading shapes how I think.",
+    tags: ["Sci-Fi", "Technical", "Psychology"],
+  },
+  fitness: {
+    title: "Fitness",
+    description: "Regular exercise keeps both body and mind sharp. It balances long coding sessions.",
+    tags: ["Running", "Weights", "Walking"],
+  },
+};
 
 /* ─── Visual components ─────────────────────────────── */
 
@@ -499,6 +535,8 @@ function HobbyCard({ hobby }: { hobby: Hobby }) {
 /* ─── HobbiesSection ─────────────────────────────────── */
 
 export function HobbiesSection() {
+  const { locale } = useI18n();
+  const isEn = locale === "en";
   const ref               = useRef<HTMLElement>(null);
   const [visible, setVis] = useState(false);
 
@@ -514,7 +552,8 @@ export function HobbiesSection() {
   }, []);
 
   /* split into bento rows */
-  const [coding, music, gaming, camera, books, fitness] = hobbies;
+  const localized = isEn ? hobbies.map((h) => ({ ...h, ...EN_HOBBY_BY_ID[h.id] })) : hobbies;
+  const [coding, music, gaming, camera, books, fitness] = localized;
 
   return (
     <section
@@ -550,20 +589,22 @@ export function HobbiesSection() {
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-pink-500/20 bg-pink-500/10">
             <Heart className="w-3.5 h-3.5 text-pink-400" />
             <span className="text-xs font-semibold text-pink-400 tracking-[0.18em] uppercase">
-              Hobiler
+              {isEn ? "Hobbies" : "Hobiler"}
             </span>
           </div>
 
           <h2 className="text-4xl sm:text-[2.75rem] font-bold leading-[1.15] tracking-tight">
-            <span className="text-zinc-900 dark:text-white">Ekrandan Uzakta</span>
+            <span className="text-zinc-900 dark:text-white">{isEn ? "Beyond the Screen" : "Ekrandan Uzakta"}</span>
             <br />
             <AnimatedGradientText className="text-4xl sm:text-[2.75rem] font-bold">
-              Ne Yapıyorum?
+              {isEn ? "What I Do" : "Ne Yapıyorum?"}
             </AnimatedGradientText>
           </h2>
 
           <p className="text-zinc-400 max-w-xl mx-auto leading-relaxed">
-            Yazılımın ötesinde — müzik, oyun, fotoğraf ve hareketle geçen zamanlar.
+            {isEn
+              ? "Beyond software — music, games, photography, and movement."
+              : "Yazılımın ötesinde — müzik, oyun, fotoğraf ve hareketle geçen zamanlar."}
           </p>
         </div>
 

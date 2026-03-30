@@ -17,7 +17,7 @@ export interface Project {
   longDesc: string;
   category: "Frontend" | "Backend" | "Fullstack";
   status: "live" | "development" | "completed";
-  year: number;
+  year?: number;
   techs: ProjectTech[];
   features: string[];
   icon: LucideIcon;
@@ -35,8 +35,7 @@ export const projects: Project[] = [
     longDesc:
       "BlogApp, yazarların kolayca içerik oluşturup yönetebileceği full-stack bir blog platformudur. Next.js ile server-side rendering, Spring Boot ile RESTful API, PostgreSQL ile veri saklama sağlanmaktadır. JWT tabanlı kimlik doğrulama, slug otomatik üretimi, kategori ve etiket yönetimi gibi özellikler içerir.",
     category: "Fullstack",
-    status: "completed",
-    year: 2024,
+    status: "development",
     icon: Globe,
     accent: { from: "#6366f1", to: "#8b5cf6" },
     techs: [
@@ -55,8 +54,7 @@ export const projects: Project[] = [
       "Server-side rendering ile hızlı sayfa yükleme",
       "Responsive tasarım ve dark mode desteği",
     ],
-    githubUrl: "https://github.com",
-    liveUrl: "https://example.com",
+    githubUrl: "https://github.com/fatihemreyuce",
   },
   {
     id: "kuafor-yonetim",
@@ -66,8 +64,7 @@ export const projects: Project[] = [
     longDesc:
       "Kotlin ve Spring Boot ile geliştirilmiş bu backend, kuaför salonlarının günlük operasyonlarını dijitalleştirmek için tasarlanmıştır. Müşteri kaydı, randevu planlaması, personel yönetimi ve gelir raporlama gibi temel iş süreçlerini tek bir API altında toplar. React frontend ile entegre çalışır.",
     category: "Fullstack",
-    status: "completed",
-    year: 2024,
+    status: "development",
     icon: Scissors,
     accent: { from: "#f97316", to: "#f59e0b" },
     techs: [
@@ -85,7 +82,7 @@ export const projects: Project[] = [
       "Rol tabanlı erişim kontrolü (RBAC)",
       "RESTful API dokümantasyonu",
     ],
-    githubUrl: "https://github.com",
+    githubUrl: "https://github.com/fatihemreyuce",
   },
   {
     id: "portfolio",
@@ -96,7 +93,7 @@ export const projects: Project[] = [
       "Kişisel markalama ve proje vitrinleme amacıyla sıfırdan tasarlanmış bu portfolyo, modern web teknolojilerinin sunduğu tüm olanaklardan faydalanmaktadır. 3D animasyonlar, intersection observer tabanlı scroll efektleri, MagicUI bileşenleri ve tam responsive tasarım ile dikkat çekici bir kullanıcı deneyimi sunar.",
     category: "Frontend",
     status: "live",
-    year: 2025,
+    year: 2026,
     icon: Code2,
     accent: { from: "#10b981", to: "#06b6d4" },
     techs: [
@@ -113,8 +110,8 @@ export const projects: Project[] = [
       "Tam responsive ve erişilebilir tasarım",
       "Sayaçlı istatistik animasyonları",
     ],
-    githubUrl: "https://github.com",
-    liveUrl: "https://example.com",
+    githubUrl: "https://github.com/fatihemreyuce/fey-portfolio",
+    liveUrl: "https://fatihemreyuce.vercel.app/",
   },
 ];
 

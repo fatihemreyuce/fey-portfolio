@@ -26,6 +26,8 @@ import { cn } from "@/lib/utils";
 import { skillCategories, getLevel, type SkillCategory } from "@/data/skills";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { useI18n } from "@/components/I18nProvider";
+import { withLocale } from "@/i18n/withLocale";
 
 /* ─── constants ────────────────────────────────────── */
 
@@ -123,6 +125,7 @@ function SkillBar({ name, level, color, started, delay, years }: {
 function CategoryCard({ category, started, index, vis }: {
   category: SkillCategory; started: boolean; index: number; vis: boolean;
 }) {
+  const { locale } = useI18n();
   const cardRef           = useRef<HTMLDivElement>(null);
   const [tilt, setTilt]   = useState({ x: 0, y: 0 });
   const [hov, setHov]     = useState(false);
@@ -217,7 +220,7 @@ function CategoryCard({ category, started, index, vis }: {
 
       {/* Footer */}
       <div className="px-5 pb-5">
-        <Link href={`/skills/${category.id}`}
+        <Link href={withLocale(`/skills/${category.id}`, locale)}
           className="group/btn flex w-full items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-2.5 transition-all duration-200 hover:border-zinc-300 hover:bg-white dark:border-white/[0.07] dark:bg-white/[0.03] dark:hover:border-white/15 dark:hover:bg-white/[0.07]">
           <span className="text-xs font-semibold text-zinc-600 transition-colors group-hover/btn:text-zinc-900 dark:text-zinc-400 dark:group-hover/btn:text-white">Detaylı incele</span>
           <ArrowUpRight className="h-3.5 w-3.5 text-zinc-500 transition-all duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 group-hover/btn:text-zinc-900 dark:text-zinc-600 dark:group-hover/btn:text-white" />
@@ -576,8 +579,8 @@ function CTASection() {
           projenizi bir üst seviyeye taşıyabilirim.
         </p>
         <div className="flex flex-wrap gap-4 justify-center">
-          <Button asChild className="relative overflow-hidden rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-8 py-3 text-base font-semibold text-white border-0 shadow-[0_0_28px_rgba(16,185,129,0.35)] hover:shadow-[0_0_48px_rgba(16,185,129,0.55)] hover:scale-[1.02] transition-all duration-300 gap-2 h-auto">
-            <Link href="/#contact">
+          <Button asChild className="relative overflow-hidden rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-8 py-3 text-base font-semibold text-white! border-0 shadow-[0_0_28px_rgba(16,185,129,0.35)] hover:shadow-[0_0_48px_rgba(16,185,129,0.55)] hover:scale-[1.02] transition-all duration-300 gap-2 h-auto">
+            <Link href="/#contact" className="text-white">
               <ArrowRight className="w-5 h-5" />İletişime Geç
             </Link>
           </Button>

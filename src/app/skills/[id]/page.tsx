@@ -13,8 +13,11 @@ import { Header } from "@/components/Header";
 import { Meteors } from "@/components/magicui/meteors";
 import { skillCategories, getCategoryById, getLevel } from "@/data/skills";
 import { SkillBarsClient } from "@/components/SkillBarsClient";
+import { withLocale } from "@/i18n/withLocale";
 
 /* ─── Static params ─────────────────────────────────── */
+
+export const dynamic = "force-dynamic";
 
 export async function generateStaticParams() {
   return skillCategories.map((c) => ({ id: c.id }));
@@ -34,8 +37,44 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 /* ─── Page ──────────────────────────────────────────── */
 
-export default async function SkillDetailPage({ params }: { params: Promise<{ id: string }> }) {
+const CAT_EN: Record<string, { title: string; shortDesc: string; longDesc: string }> = {
+  frontend: {
+    title: "Frontend",
+    shortDesc: "Modern, accessible, and high-performance user interfaces.",
+    longDesc:
+      "I build within the React ecosystem with a strong focus on user experience. Next.js for SSR/SSG, TypeScript for type safety, and Tailwind CSS for fast and consistent styling form my core toolkit.",
+  },
+  backend: {
+    title: "Backend",
+    shortDesc: "I am learning REST and data layers step by step with Kotlin and Spring Boot.",
+    longDesc:
+      "I am currently at an early stage on backend. I practice with Kotlin and Spring Boot through small projects and REST endpoints, while improving in PostgreSQL, Node.js, and core authentication flows.",
+  },
+  araclar: {
+    title: "Tools & DevOps",
+    shortDesc: "Tooling and infrastructure knowledge that speeds up development workflows.",
+    longDesc:
+      "I manage daily development workflows with Git, containerize with Docker, and test with Postman. I also have foundational knowledge of CI/CD and cloud platforms.",
+  },
+  diger: {
+    title: "Other",
+    shortDesc: "Beyond software: analytical thinking and problem solving.",
+    longDesc:
+      "I have worked on data processing and computer vision with Python. I apply Agile practices in project workflows and can comfortably read/write technical documentation in English.",
+  },
+};
+
+export default async function SkillDetailPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ lang?: string }>;
+}) {
   const { id } = await params;
+  const { lang } = await searchParams;
+  const locale = lang === "en" ? "en" : "tr";
+  const isEn = locale === "en";
   const cat    = getCategoryById(id);
   if (!cat) notFound();
 
@@ -43,6 +82,23 @@ export default async function SkillDetailPage({ params }: { params: Promise<{ id
   const avgLevel = Math.round(cat.skills.reduce((s, sk) => s + sk.level, 0) / cat.skills.length);
   const avgLvl   = getLevel(avgLevel);
   const topSkill = [...cat.skills].sort((a, b) => b.level - a.level)[0];
+  const catText = isEn ? CAT_EN[cat.id] : undefined;
+  const localizedSkills = isEn
+    ? cat.skills.map((s) => ({
+        ...s,
+        name: s.name === "İngilizce" ? "English" : s.name === "Algoritma" ? "Algorithms" : s.name,
+      }))
+    : cat.skills;
+  const levelLabel = (v: number) =>
+    !isEn
+      ? getLevel(v).label
+      : v >= 90
+        ? "Expert"
+        : v >= 75
+          ? "Advanced"
+          : v >= 55
+            ? "Intermediate"
+            : "Beginner";
 
   return (
     <>
@@ -78,22 +134,22 @@ export default async function SkillDetailPage({ params }: { params: Promise<{ id
 
             {/* Breadcrumb */}
             <div className="flex items-center gap-2 text-sm text-zinc-500 mb-8">
-              <Link href="/" className="hover:text-zinc-300 transition-colors">Ana Sayfa</Link>
+              <Link href={withLocale("/", locale)} className="hover:text-zinc-300 transition-colors">{isEn ? "Home" : "Ana Sayfa"}</Link>
               <span>/</span>
-              <Link href="/#skills" className="hover:text-zinc-300 transition-colors">Beceriler</Link>
+              <Link href={withLocale("/#skills", locale)} className="hover:text-zinc-300 transition-colors">{isEn ? "Skills" : "Beceriler"}</Link>
               <span>/</span>
-              <span className="text-zinc-300">{cat.title}</span>
+              <span className="text-zinc-300">{catText?.title ?? cat.title}</span>
             </div>
 
             {/* Back */}
             <Link
-              href="/#skills"
+              href={withLocale("/#skills", locale)}
               className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-white mb-8 group transition-colors duration-200"
             >
               <span className="flex items-center justify-center w-7 h-7 rounded-lg border border-white/10 bg-white/[0.04] group-hover:border-white/20 group-hover:bg-white/[0.08] transition-all duration-200">
                 <ArrowLeft className="w-3.5 h-3.5" />
               </span>
-              Becerilere Dön
+              {isEn ? "Back to Skills" : "Becerilere Dön"}
             </Link>
 
             {/* Hero content */}
@@ -112,11 +168,11 @@ export default async function SkillDetailPage({ params }: { params: Promise<{ id
               <div className="space-y-4">
                 {/* Title */}
                 <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
-                  {cat.title}
+                  {catText?.title ?? cat.title}
                 </h1>
 
                 <p className="text-zinc-400 text-lg leading-relaxed max-w-2xl">
-                  {cat.longDesc}
+                  {catText?.longDesc ?? cat.longDesc}
                 </p>
               </div>
             </div>
@@ -144,23 +200,23 @@ export default async function SkillDetailPage({ params }: { params: Promise<{ id
                       className="w-1 h-5 rounded-full"
                       style={{ background: `linear-gradient(180deg, ${cat.accent.from}, ${cat.accent.to})` }}
                     />
-                    <h2 className="text-lg font-bold text-white">Teknoloji Seviyeleri</h2>
+                    <h2 className="text-lg font-bold text-white">{isEn ? "Technology Levels" : "Teknoloji Seviyeleri"}</h2>
                   </div>
                   <p className="text-sm text-zinc-500">
-                    Her becerinin kullanım deneyimi ve uzmanlık seviyesi.
+                    {isEn ? "Usage experience and proficiency level for each skill." : "Her becerinin kullanım deneyimi ve uzmanlık seviyesi."}
                   </p>
                 </div>
 
                 {/* Client component for animated bars */}
-                <SkillBarsClient skills={cat.skills} accent={cat.accent} />
+                <SkillBarsClient skills={localizedSkills} accent={cat.accent} />
 
                 {/* Level legend */}
                 <div className="flex flex-wrap gap-3 pt-2">
                   {[
-                    { label: "Uzman",      color: "#34d399", min: 90 },
-                    { label: "İleri",       color: "#60a5fa", min: 75 },
-                    { label: "Orta",        color: "#fbbf24", min: 55 },
-                    { label: "Başlangıç",   color: "#f87171", min: 0  },
+                    { label: isEn ? "Expert" : "Uzman",      color: "#34d399", min: 90 },
+                    { label: isEn ? "Advanced" : "İleri",       color: "#60a5fa", min: 75 },
+                    { label: isEn ? "Intermediate" : "Orta",        color: "#fbbf24", min: 55 },
+                    { label: isEn ? "Beginner" : "Başlangıç",   color: "#f87171", min: 0  },
                   ].map(({ label, color, min }) => (
                     <div key={label} className="flex items-center gap-1.5">
                       <div className="w-2.5 h-2.5 rounded-full" style={{ background: color }} />
@@ -179,14 +235,14 @@ export default async function SkillDetailPage({ params }: { params: Promise<{ id
                 <div className="rounded-2xl border border-white/[0.07] bg-white/[0.03] overflow-hidden">
                   <div className="px-5 py-4 border-b border-white/[0.06] flex items-center gap-2">
                     <TrendingUp className="w-4 h-4 text-zinc-500" />
-                    <span className="text-sm font-semibold text-zinc-300">İstatistikler</span>
+                    <span className="text-sm font-semibold text-zinc-300">{isEn ? "Statistics" : "İstatistikler"}</span>
                   </div>
                   <div className="p-4 space-y-3">
                     {[
-                      { label: "Teknoloji",      value: `${cat.skills.length} araç`     },
-                      { label: "Ort. Seviye",     value: `${avgLevel}% — ${avgLvl.label}` },
-                      { label: "En Güçlü",        value: topSkill.name                    },
-                      { label: "Toplam Deneyim",  value: `${Math.max(...cat.skills.map(s => s.years))}+ yıl` },
+                      { label: isEn ? "Technologies" : "Teknoloji", value: isEn ? `${localizedSkills.length} tools` : `${localizedSkills.length} araç` },
+                      { label: isEn ? "Avg. Level" : "Ort. Seviye", value: `${avgLevel}% — ${levelLabel(avgLevel)}` },
+                      { label: isEn ? "Top Skill" : "En Güçlü", value: isEn && topSkill.name === "İngilizce" ? "English" : isEn && topSkill.name === "Algoritma" ? "Algorithms" : topSkill.name },
+                      { label: isEn ? "Total Experience" : "Toplam Deneyim", value: isEn ? `${Math.max(...localizedSkills.map(s => s.years))}+ years` : `${Math.max(...localizedSkills.map(s => s.years))}+ yıl` },
                     ].map(({ label, value }) => (
                       <div key={label} className="flex items-center justify-between text-sm">
                         <span className="text-zinc-500">{label}</span>
@@ -200,10 +256,10 @@ export default async function SkillDetailPage({ params }: { params: Promise<{ id
                 <div className="rounded-2xl border border-white/[0.07] bg-white/[0.03] overflow-hidden">
                   <div className="px-5 py-4 border-b border-white/[0.06] flex items-center gap-2">
                     <Tag className="w-4 h-4 text-zinc-500" />
-                    <span className="text-sm font-semibold text-zinc-300">Teknolojiler</span>
+                    <span className="text-sm font-semibold text-zinc-300">{isEn ? "Technologies" : "Teknolojiler"}</span>
                   </div>
                   <div className="p-4 flex flex-wrap gap-2">
-                    {cat.skills.map((skill) => {
+                    {localizedSkills.map((skill) => {
                       const lvl = getLevel(skill.level);
                       return (
                         <div
@@ -222,7 +278,7 @@ export default async function SkillDetailPage({ params }: { params: Promise<{ id
                 <div className="rounded-2xl border border-white/[0.07] bg-white/[0.03] overflow-hidden">
                   <div className="px-5 py-4 border-b border-white/[0.06] flex items-center gap-2">
                     <Layers className="w-4 h-4 text-zinc-500" />
-                    <span className="text-sm font-semibold text-zinc-300">Diğer Kategoriler</span>
+                    <span className="text-sm font-semibold text-zinc-300">{isEn ? "Other Categories" : "Diğer Kategoriler"}</span>
                   </div>
                   <div className="p-3 space-y-1">
                     {skillCategories
@@ -232,7 +288,7 @@ export default async function SkillDetailPage({ params }: { params: Promise<{ id
                         return (
                           <Link
                             key={c.id}
-                            href={`/skills/${c.id}`}
+                            href={withLocale(`/skills/${c.id}`, locale)}
                             className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/[0.05] transition-colors group"
                           >
                             <div
@@ -243,7 +299,13 @@ export default async function SkillDetailPage({ params }: { params: Promise<{ id
                             </div>
                             <div className="flex-1 min-w-0">
                               <p className="text-xs font-medium text-zinc-400 group-hover:text-white transition-colors">
-                                {c.title}
+                                {isEn
+                                  ? c.id === "araclar"
+                                    ? "Tools & DevOps"
+                                    : c.id === "diger"
+                                      ? "Other"
+                                      : c.title
+                                  : c.title}
                               </p>
                             </div>
                             <Calendar className="w-3 h-3 text-zinc-700 group-hover:text-zinc-500 transition-colors" />
@@ -256,17 +318,17 @@ export default async function SkillDetailPage({ params }: { params: Promise<{ id
                 {/* Back */}
                 <div className="space-y-2">
                   <Link
-                    href="/#skills"
+                    href={withLocale("/#skills", locale)}
                     className="flex items-center gap-3 w-full px-4 py-3 rounded-xl border border-white/[0.07] bg-white/[0.03] hover:bg-white/[0.07] hover:border-white/15 transition-all duration-200 group"
                   >
                     <ArrowLeft className="w-4 h-4 text-zinc-400 group-hover:text-white transition-colors" />
                     <span className="text-sm font-medium text-zinc-400 group-hover:text-white transition-colors flex-1">
-                      Tüm Beceriler
+                      {isEn ? "All Skills" : "Tüm Beceriler"}
                     </span>
                     <CheckCircle2 className="w-3.5 h-3.5 text-zinc-600 group-hover:text-zinc-400 transition-colors" />
                   </Link>
                   <Link
-                    href="/#projects"
+                    href={withLocale("/#projects", locale)}
                     className="flex items-center gap-3 w-full px-4 py-3 rounded-xl border transition-all duration-200 group"
                     style={{
                       borderColor: `${cat.accent.from}35`,
@@ -275,7 +337,7 @@ export default async function SkillDetailPage({ params }: { params: Promise<{ id
                   >
                     <Clock className="w-4 h-4 transition-colors" style={{ color: cat.accent.from }} />
                     <span className="text-sm font-medium flex-1 transition-colors" style={{ color: cat.accent.from }}>
-                      Projeleri İncele
+                      {isEn ? "Browse Projects" : "Projeleri İncele"}
                     </span>
                   </Link>
                 </div>

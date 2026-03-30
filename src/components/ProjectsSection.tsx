@@ -15,8 +15,10 @@ import {
 import { Github } from "@/components/icons/social";
 import { AnimatedGradientText } from "@/components/magicui/animated-gradient-text";
 import { Meteors } from "@/components/magicui/meteors";
-import { cn, hexNeedsForcedDarkText } from "@/lib/utils";
+import { cn, hexNeedsForcedDarkText, readableOnLightSurface } from "@/lib/utils";
 import { projects, type Project } from "@/data/projects";
+import { useI18n } from "@/components/I18nProvider";
+import { withLocale } from "@/i18n/withLocale";
 
 /* ─── constants ─────────────────────────────────────── */
 
@@ -36,19 +38,47 @@ const STATUS_MAP = {
       "text-blue-900 border-blue-400/70 bg-blue-100/95 dark:text-blue-400 dark:border-blue-500/25 dark:bg-blue-500/10",
   },
   development: {
-    label: "Geliştirme",
+    label: "Yapım Aşamasında",
     icon: Clock,
     color:
       "text-amber-900 border-amber-400/70 bg-amber-100/95 dark:text-amber-400 dark:border-amber-500/25 dark:bg-amber-500/10",
   },
 } as const;
 
+const PROJECT_EN: Record<string, { title: string; shortDesc: string; category: "Frontend" | "Backend" | "Fullstack" }> = {
+  "blog-app": {
+    title: "BlogApp Platform",
+    shortDesc: "Modern article writing and management platform. SEO-focused Next.js frontend with a robust Spring Boot backend.",
+    category: "Fullstack",
+  },
+  "kuafor-yonetim": {
+    title: "Barbershop Management System",
+    shortDesc: "Customer tracking, appointment management, and revenue reporting system for barbershops.",
+    category: "Fullstack",
+  },
+  portfolio: {
+    title: "Personal Portfolio",
+    shortDesc: "Portfolio website built with Next.js 16, Tailwind CSS v4, and MagicUI components.",
+    category: "Frontend",
+  },
+};
+
 /* ─── ProjectCard ────────────────────────────────────── */
 
-function ProjectCard({ project, index }: { project: Project; index: number }) {
+function ProjectCard({ project, index, locale }: { project: Project; index: number; locale: "tr" | "en" }) {
   const cardRef            = useRef<HTMLDivElement>(null);
   const [tilt, setTilt]    = useState({ x: 0, y: 0 });
   const [hovered, setHov]  = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const update = () => setIsDarkMode(root.classList.contains("dark"));
+    update();
+    const obs = new MutationObserver(update);
+    obs.observe(root, { attributes: true, attributeFilter: ["class"] });
+    return () => obs.disconnect();
+  }, []);
   const onMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const rect = cardRef.current?.getBoundingClientRect();
     if (!rect) return;
@@ -66,6 +96,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
   }, []);
 
   const status  = STATUS_MAP[project.status];
+  const localized = locale === "en" ? PROJECT_EN[project.id] : undefined;
   const Icon    = project.icon;
   const StatusIcon = status.icon;
 
@@ -143,17 +174,20 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               className="rounded-lg border border-white/40 bg-white/25 px-2.5 py-1 text-[11px] font-bold shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-black/30 dark:shadow-none"
               style={{ color: project.accent.from }}
             >
-              {project.category}
+              {localized?.category ?? project.category}
             </span>
           </div>
 
-          {/* Durum rozeti — "Geliştirme" gösterilmez (öğrenme aşaması) */}
-          {project.status !== "development" && (
-            <div className={cn("flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-full border", status.color)}>
-              <StatusIcon className="w-3 h-3" />
-              {status.label}
-            </div>
-          )}
+          <div className={cn("flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-full border", status.color)}>
+            <StatusIcon className="w-3 h-3" />
+            {locale === "en"
+              ? project.status === "live"
+                ? "Live"
+                : project.status === "completed"
+                  ? "Completed"
+                  : "In Progress"
+              : status.label}
+          </div>
         </div>
       </div>
 
@@ -164,29 +198,34 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       >
         {/* Title + year */}
         <div className="flex items-start justify-between gap-2 shrink-0">
-          <h3 className="text-base font-bold leading-snug text-zinc-900 dark:text-white">{project.title}</h3>
-          <span className="mt-0.5 shrink-0 text-[11px] text-zinc-500 dark:text-zinc-600">{project.year}</span>
+          <h3 className="text-base font-bold leading-snug text-zinc-900 dark:text-white">{localized?.title ?? project.title}</h3>
+          {project.year && (
+            <span className="mt-0.5 shrink-0 text-[11px] text-zinc-500 dark:text-zinc-600">{project.year}</span>
+          )}
         </div>
 
         {/* Description — fixed block height so rows align across cards */}
         <p className="line-clamp-3 min-h-[4.5rem] shrink-0 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-          {project.shortDesc}
+          {localized?.shortDesc ?? project.shortDesc}
         </p>
 
         {/* Tech pills */}
         <div className="mt-auto flex flex-wrap gap-1.5 shrink-0">
-          {project.techs.slice(0, 4).map((tech) => (
-            <span
-              key={tech.name}
-              className={cn(
-                "project-tech-pill rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[10px] font-medium dark:border-white/[0.07] dark:bg-white/[0.05]",
-                hexNeedsForcedDarkText(tech.color) && "project-tech-pill--force-dark",
-              )}
-              style={{ color: tech.color }}
-            >
-              {tech.name}
-            </span>
-          ))}
+          {project.techs.slice(0, 4).map((tech) => {
+            const techColor = isDarkMode ? tech.color : readableOnLightSurface(tech.color);
+            return (
+              <span
+                key={tech.name}
+                className={cn(
+                  "project-tech-pill rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[10px] font-medium dark:border-white/[0.07] dark:bg-white/[0.05]",
+                  hexNeedsForcedDarkText(tech.color) && "project-tech-pill--force-dark",
+                )}
+                style={{ color: techColor }}
+              >
+                {tech.name}
+              </span>
+            );
+          })}
           {project.techs.length > 4 && (
             <span className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[10px] font-medium text-zinc-600 dark:border-white/[0.07] dark:bg-white/[0.05] dark:text-zinc-500">
               +{project.techs.length - 4}
@@ -225,11 +264,11 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
         {/* Detail link */}
         <Link
-          href={`/projects/${project.id}`}
+          href={withLocale(`/projects/${project.id}`, locale)}
           className="group/btn flex items-center gap-1.5 rounded-xl border border-zinc-100 bg-zinc-50/80 px-4 py-2 text-xs font-semibold text-zinc-700 shadow-sm transition-all duration-200 hover:border-zinc-200 hover:bg-zinc-100/80 hover:text-zinc-950 dark:border-white/10 dark:bg-white/[0.04] dark:text-zinc-300 dark:shadow-none dark:hover:border-white/20 dark:hover:bg-white/[0.08] dark:hover:text-white"
           onClick={(e) => e.stopPropagation()}
         >
-          Detaylar
+          {locale === "en" ? "Details" : "Detaylar"}
           <ArrowUpRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform duration-200" />
         </Link>
       </div>
@@ -250,6 +289,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 /* ─── ProjectsSection ────────────────────────────────── */
 
 export function ProjectsSection() {
+  const { dict, locale } = useI18n();
   const ref               = useRef<HTMLElement>(null);
   const [visible, setVis] = useState(false);
   const [filter, setFilter] = useState<string>("Tümü");
@@ -265,9 +305,13 @@ export function ProjectsSection() {
     return () => obs.disconnect();
   }, []);
 
+  const allProjects = locale === "en"
+    ? projects.map((p) => ({ ...p, ...(PROJECT_EN[p.id] ?? {}) }))
+    : projects;
+
   const filtered = filter === "Tümü"
-    ? projects
-    : projects.filter((p) => p.category === filter);
+    ? allProjects
+    : allProjects.filter((p) => p.category === filter);
 
   return (
     <section
@@ -303,21 +347,20 @@ export function ProjectsSection() {
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-violet-500/20 bg-violet-500/10">
             <Layers className="w-3.5 h-3.5 text-violet-400" />
             <span className="text-xs font-semibold text-violet-400 tracking-[0.18em] uppercase">
-              Projeler
+              {dict.projects.badge}
             </span>
           </div>
 
           <h2 className="text-4xl sm:text-[2.75rem] font-bold leading-[1.15] tracking-tight">
-            <span className="text-zinc-900 dark:text-white">Üzerinde Çalıştığım</span>
+            <span className="text-zinc-900 dark:text-white">{dict.projects.titleTop}</span>
             <br />
             <AnimatedGradientText className="text-4xl sm:text-[2.75rem] font-bold">
-              Seçkin Projeler
+              {dict.projects.titleGradient}
             </AnimatedGradientText>
           </h2>
 
           <p className="text-zinc-400 max-w-xl mx-auto leading-relaxed">
-            Frontend'den backend'e, full-stack uygulamalardan API servislerine uzanan geniş
-            bir yelpazede geliştirdiğim projeler.
+            {dict.projects.description}
           </p>
         </div>
 
@@ -345,7 +388,9 @@ export function ProjectsSection() {
                 {filter === cat && (
                   <span className="absolute inset-0 rounded-lg border border-zinc-300 bg-white dark:border-white/10 dark:bg-white/[0.08]" />
                 )}
-                <span className="relative">{cat}</span>
+                <span className="relative">
+                  {locale === "en" ? (cat === "Tümü" ? "All" : cat) : cat}
+                </span>
               </button>
             ))}
           </div>
@@ -363,7 +408,7 @@ export function ProjectsSection() {
                 transition: `opacity 0.55s ease ${0.15 + i * 0.08}s, transform 0.55s ease ${0.15 + i * 0.08}s`,
               }}
             >
-              <ProjectCard project={project} index={i} />
+              <ProjectCard project={project} index={i} locale={locale} />
             </div>
           ))}
         </div>
@@ -379,14 +424,14 @@ export function ProjectsSection() {
           <div className="flex items-center gap-3 text-sm text-zinc-600 dark:text-zinc-500">
             <Sparkles className="h-4 w-4 text-violet-500 dark:text-violet-400" />
             <span>
-              Daha fazla proje{" "}
+              {dict.projects.moreOnGithub}{" "}
               <a
                 href="https://github.com/fatihemreyuce"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 text-violet-600 underline decoration-violet-200 underline-offset-4 transition-all duration-200 hover:text-violet-800 hover:decoration-violet-400 dark:text-zinc-300 dark:decoration-white/20 dark:hover:text-white dark:hover:decoration-white/60"
               >
-                GitHub&apos;da
+                {locale === "en" ? "on GitHub" : "GitHub'da"}
                 <ArrowRight className="h-3.5 w-3.5" />
               </a>
             </span>
