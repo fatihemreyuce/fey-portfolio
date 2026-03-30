@@ -229,8 +229,8 @@ export function Header() {
               </Link>
             ))}
 
-            <div className="mt-3 rounded-2xl border border-zinc-200 bg-zinc-50/70 p-3 dark:border-white/10 dark:bg-white/3">
-              <div className="mb-3 flex items-center gap-2">
+            <div className="mt-3 rounded-2xl border border-zinc-200 bg-zinc-50/70 p-4 dark:border-white/10 dark:bg-white/3">
+              <div className="mb-4 flex flex-wrap items-center gap-3">
                 <div className="inline-flex h-8 items-center rounded-xl border border-zinc-200 bg-white p-0.5 dark:border-white/10 dark:bg-white/5">
                   <button
                     type="button"

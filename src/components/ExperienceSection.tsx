@@ -172,7 +172,7 @@ function TimelineCard({
               boxShadow:  `0 0 16px ${item.accent.from}30`,
             }}
           >
-            <Icon className="h-5 w-5 !text-white" />
+            <Icon className="h-5 w-5 text-white!" />
           </div>
 
           <div className="flex-1 min-w-0">
@@ -208,7 +208,7 @@ function TimelineCard({
           {item.tags.map((tag) => (
             <span
               key={tag}
-              className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[10px] font-medium dark:border-white/[0.07] dark:bg-white/[0.04]"
+              className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[10px] font-medium dark:border-white/[0.07] dark:bg-white/4"
               style={{ color: item.accent.from }}
             >
               {tag}
@@ -272,8 +272,8 @@ export function ExperienceSection() {
     >
       {/* Background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
-        <div className="absolute top-1/3 -left-32 w-[500px] h-[500px] rounded-full bg-blue-600/[0.04] blur-3xl" />
-        <div className="absolute bottom-1/3 -right-32 w-[400px] h-[400px] rounded-full bg-violet-600/[0.04] blur-3xl" />
+        <div className="absolute top-1/3 -left-32 w-[500px] h-[500px] rounded-full bg-blue-600/4 blur-3xl" />
+        <div className="absolute bottom-1/3 -right-32 w-[400px] h-[400px] rounded-full bg-violet-600/4 blur-3xl" />
         <div
           className="absolute inset-0 opacity-[0.022]"
           style={{
@@ -323,7 +323,7 @@ export function ExperienceSection() {
             transition: "opacity 0.6s ease 0.1s",
           }}
         >
-          <div className="inline-flex items-center gap-1 rounded-xl border border-zinc-200 bg-slate-100 p-1 dark:border-white/[0.07] dark:bg-white/[0.03]">
+          <div className="inline-flex items-center gap-1 rounded-xl border border-zinc-200 bg-slate-100 p-1 dark:border-white/[0.07] dark:bg-white/3">
             {FILTERS.map(({ label, value }) => (
               <button
                 key={value}
@@ -336,7 +336,7 @@ export function ExperienceSection() {
                 )}
               >
                 {filter === value && (
-                  <span className="absolute inset-0 rounded-lg border border-zinc-300 bg-white dark:border-white/10 dark:bg-white/[0.08]" />
+                  <span className="absolute inset-0 rounded-lg border border-zinc-300 bg-white dark:border-white/10 dark:bg-white/8" />
                 )}
                 <span className="relative">
                   {locale === "en"
@@ -401,18 +401,14 @@ export function ExperienceSection() {
                   </div>
 
                   {/* Right slot */}
-                  <div className={cn("md:block", isLeft && "md:invisible hidden")}>
-                    {(!isLeft || true) && (
-                      <div className={cn(isLeft ? "hidden md:block" : "")}>
-                        {!isLeft && (
-                          <TimelineCard
-                            item={item}
-                            visible={!!cardVis[item.id]}
-                            side="right"
-                            currentLabel={locale === "en" ? "Current" : "Güncel"}
-                          />
-                        )}
-                      </div>
+                  <div className={cn("hidden md:block", isLeft && "md:invisible")}>
+                    {!isLeft && (
+                      <TimelineCard
+                        item={item}
+                        visible={!!cardVis[item.id]}
+                        side="right"
+                        currentLabel={locale === "en" ? "Current" : "Güncel"}
+                      />
                     )}
                   </div>
 
@@ -423,7 +419,7 @@ export function ExperienceSection() {
                         className="w-2.5 h-2.5 rounded-full shrink-0"
                         style={{ background: item.accent.from, boxShadow: `0 0 8px ${item.accent.from}` }}
                       />
-                      <div className="h-px flex-1 bg-zinc-200 dark:bg-white/[0.06]" />
+                      <div className="h-px flex-1 bg-zinc-200 dark:bg-white/6" />
                     </div>
                     <TimelineCard
                       item={item}
