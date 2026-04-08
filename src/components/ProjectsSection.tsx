@@ -99,6 +99,7 @@ function ProjectCard({ project, index, locale }: { project: Project; index: numb
   const localized = locale === "en" ? PROJECT_EN[project.id] : undefined;
   const Icon    = project.icon;
   const StatusIcon = status.icon;
+  const liveLinks = project.liveUrls ?? (project.liveUrl ? [project.liveUrl] : []);
 
   return (
     <div
@@ -249,9 +250,10 @@ function ProjectCard({ project, index, locale }: { project: Project; index: numb
               <Github className="h-4 w-4" />
             </a>
           )}
-          {project.liveUrl && (
+          {liveLinks.map((liveLink) => (
             <a
-              href={project.liveUrl}
+              key={liveLink}
+              href={liveLink}
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
@@ -259,7 +261,7 @@ function ProjectCard({ project, index, locale }: { project: Project; index: numb
             >
               <ExternalLink className="h-4 w-4" />
             </a>
-          )}
+          ))}
         </div>
 
         {/* Detail link */}

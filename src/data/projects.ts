@@ -24,6 +24,7 @@ export interface Project {
   accent: { from: string; to: string };
   githubUrl?: string;
   liveUrl?: string;
+  liveUrls?: string[];
 }
 
 export const projects: Project[] = [
@@ -35,7 +36,7 @@ export const projects: Project[] = [
     longDesc:
       "BlogApp, yazarların kolayca içerik oluşturup yönetebileceği full-stack bir blog platformudur. Next.js ile server-side rendering, Spring Boot ile RESTful API, PostgreSQL ile veri saklama sağlanmaktadır. JWT tabanlı kimlik doğrulama, slug otomatik üretimi, kategori ve etiket yönetimi gibi özellikler içerir.",
     category: "Fullstack",
-    status: "development",
+    status: "live",
     icon: Globe,
     accent: { from: "#6366f1", to: "#8b5cf6" },
     techs: [
@@ -55,6 +56,10 @@ export const projects: Project[] = [
       "Responsive tasarım ve dark mode desteği",
     ],
     githubUrl: "https://github.com/fatihemreyuce",
+    liveUrls: [
+      "https://blogapplication-panel.vercel.app/",
+      "https://blog-app-pro.vercel.app/",
+    ],
   },
   {
     id: "kuafor-yonetim",
