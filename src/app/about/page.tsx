@@ -50,11 +50,11 @@ import { Footer } from "@/components/Footer";
 ══════════════════════════════════════════════════════ */
 
 const HERO_PHRASES = [
-  "Frontend Geliştirici",
-  "UI/UX Meraklısı",
+  "Frontend · Backend · Mobile",
+  "Ürün Odaklı Geliştirici",
+  "Güçlü API Tasarımcısı",
+  "Mobil Deneyim Üreticisi",
   "Problem Çözücü",
-  "Performans Odaklı",
-  "Hayalci Mühendis",
 ] as const;
 
 const socialLinks = [
@@ -68,13 +68,17 @@ const techStack = [
   { name: "React",       icon: Code2,    color: "#61DAFB", group: "Frontend" },
   { name: "Next.js",     icon: Layers,   color: "#e4e4e7", group: "Frontend" },
   { name: "TypeScript",  icon: Terminal, color: "#60a5fa", group: "Frontend" },
-  { name: "Tailwind",    icon: Palette,  color: "#38BDF8", group: "Frontend" },
-  { name: "Node.js",     icon: Server,   color: "#86efac", group: "Backend" },
+  { name: "Tailwind CSS", icon: Palette, color: "#38BDF8", group: "Frontend" },
+  { name: "NestJS",      icon: Server,   color: "#ef4444", group: "Backend" },
+  { name: "Express.js",  icon: Server,   color: "#a3a3a3", group: "Backend" },
+  { name: "Prisma",      icon: Database, color: "#5eead4", group: "Backend" },
   { name: "PostgreSQL",  icon: Database, color: "#818cf8", group: "Backend" },
-  { name: "Kotlin",      icon: Cpu,      color: "#fb923c", group: "Backend" },
-  { name: "Spring Boot", icon: Zap,      color: "#86efac", group: "Backend" },
+  { name: "React Native", icon: Code2,   color: "#61DAFB", group: "Mobil" },
+  { name: "Flutter",     icon: Cpu,      color: "#38BDF8", group: "Mobil" },
+  { name: "Dart",        icon: Terminal, color: "#60a5fa", group: "Mobil" },
   { name: "Git",         icon: GitBranch,color: "#f97316", group: "Araçlar" },
-  { name: "Figma",       icon: Palette,  color: "#a78bfa", group: "Araçlar" },
+  { name: "Docker",      icon: Server,   color: "#60a5fa", group: "Araçlar" },
+  { name: "Supabase",    icon: Database, color: "#34d399", group: "Araçlar" },
 ];
 
 const VALUES = [
@@ -165,8 +169,8 @@ const TIMELINE = [
   },
   {
     year: "Bugün",
-    title: "Yolculuk Sürüyor",
-    desc: "Modern web teknolojileriyle büyük hayaller kuruyor, her gün biraz daha iyi olmayı hedefliyorum. Seninle de çalışmayı beklerim.",
+    title: "CollbrAİ · Full-Stack Developer",
+    desc: "CollbrAİ'de frontend, backend ve mobil ürün geliştirme süreçlerinde çalışıyor; fikirleri uçtan uca kullanıcı deneyimlerine dönüştürüyorum.",
     icon: Rocket,
     color: "#fb923c",
     side: "right" as const,
@@ -175,7 +179,7 @@ const TIMELINE = [
 ];
 
 const STATS = [
-  { value: 3,  suffix: "+", label: "Proje",       icon: Briefcase, color: "#60a5fa" },
+  { value: 6,  suffix: "+", label: "Proje",       icon: Briefcase, color: "#60a5fa" },
   { value: 1,  suffix: "+", label: "Yıl Deneyim", icon: Award,     color: "#34d399" },
   { value: 10, suffix: "+", label: "Teknoloji",   icon: Star,      color: "#fbbf24" },
   { value: 500,suffix: "+", label: "Git Commit",  icon: GitBranch, color: "#a78bfa" },
@@ -348,7 +352,7 @@ function HeroProfileCard() {
         <div className="text-center">
           <p className="text-lg font-bold text-zinc-900 dark:text-white">Fatih Emre Yüce</p>
           <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-blue-600 dark:text-blue-400">
-            Frontend Developer
+            Frontend · Backend · Mobile
           </p>
         </div>
         <div className="flex justify-center">
@@ -490,7 +494,7 @@ function HeroSection() {
               Merhaba, ben{" "}
               <span className="font-semibold text-zinc-900 dark:text-white">Fatih Emre Yüce</span>. Kod yazmayı bir sanat olarak
               gören, <span className="font-medium text-blue-600 dark:text-blue-400">kullanıcı deneyimini</span> her şeyin merkezine koyan
-              bir frontend geliştirici. Güzel şeyler inşa etmek için sabırsızlanıyorum.
+              frontend, backend ve mobil geliştirme yapan bir ürün geliştiricisi. Güzel şeyler inşa etmek için sabırsızlanıyorum.
             </p>
 
             {/* Quick facts */}
@@ -627,7 +631,7 @@ function StorySection() {
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-zinc-900 dark:text-white">Fatih Emre Yüce</p>
-                    <p className="text-xs text-zinc-500">Frontend Developer</p>
+                    <p className="text-xs text-zinc-500">Frontend · Backend · Mobile</p>
                   </div>
                 </div>
               </div>
@@ -650,7 +654,7 @@ function StorySection() {
                 },
                 {
                   title: "Üniversite ve Derinleşme",
-                  text: "Şu anda İstanbul Gedik Üniversitesi'nde Yazılım Mühendisliği okuyorum. Frontend'in yanında backend, veritabanı ve sistem tasarımı konularında da derinleşerek uçtan uca ürün geliştirme bakışı kazanıyorum.",
+                  text: "Şu anda İstanbul Gedik Üniversitesi'nde Yazılım Mühendisliği okuyorum. Frontend, backend ve mobil geliştirme alanlarında derinleşerek uçtan uca ürün geliştirme bakışımı güçlendiriyorum.",
                 },
               ].map(({ title, text }) => (
                 <div key={title} className="flex gap-4 group">
@@ -713,7 +717,7 @@ function StorySection() {
 
                 <div className="grid grid-cols-2 gap-3">
                   {[
-                    { value: "3+",  label: "Proje",       color: "#60a5fa" },
+                    { value: "6+",  label: "Proje",       color: "#60a5fa" },
                     { value: "1+",  label: "Yıl",         color: "#34d399" },
                     { value: "10+", label: "Teknoloji",   color: "#fbbf24" },
                     { value: "∞",   label: "Merak",       color: "#a78bfa" },
@@ -1043,7 +1047,7 @@ function TechSection() {
 
         {/* Grouped grid */}
         <div className="mt-12 space-y-14 sm:mt-14 sm:space-y-16">
-          {["Frontend", "Backend", "Araçlar"].map((group) => {
+          {["Frontend", "Backend", "Mobil", "Araçlar"].map((group) => {
             const items = techStack.filter((t) => t.group === group);
             return (
               <div key={group}>
@@ -1051,7 +1055,7 @@ function TechSection() {
                   <span
                     className="shrink-0 text-xs font-bold uppercase tracking-[0.2em] sm:text-sm"
                     style={{
-                      color: group === "Frontend" ? "#60a5fa" : group === "Backend" ? "#34d399" : "#a78bfa",
+                      color: group === "Frontend" ? "#60a5fa" : group === "Backend" ? "#34d399" : group === "Mobil" ? "#f472b6" : "#a78bfa",
                     }}
                   >
                     {group}

@@ -5,11 +5,21 @@
 :root {
   --background: #050505;
   --foreground: #ededed;
+  --terminal-code: #e4e4e7;
+  --terminal-keyword: #60a5fa;
+  --terminal-function: #fbbf24;
+  --terminal-declaration: #c084fc;
+  --terminal-component: #86efac;
 }
 
 html.light {
   --background: #f1f5f9;
   --foreground: #0f172a;
+  --terminal-code: #1f2937;
+  --terminal-keyword: #1d4ed8;
+  --terminal-function: #a16207;
+  --terminal-declaration: #7e22ce;
+  --terminal-component: #15803d;
 }
 
 html.dark {

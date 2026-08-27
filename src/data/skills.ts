@@ -1,107 +1,66 @@
-import {
-  Code2,
-  Server,
-  Wrench,
-  Cpu,
-  type LucideIcon,
-} from "lucide-react";
+import { Code2, Cpu, Server, Wrench, type LucideIcon } from "lucide-react";
 
-export interface Skill {
-  name: string;
-  level: number; // 0-100
-  color: string; // hex
-  years: number;
-  description: string;
-}
-
-export interface SkillCategory {
-  id: string;
-  title: string;
-  shortDesc: string;
-  longDesc: string;
-  icon: LucideIcon;
-  accent: { from: string; to: string };
-  skills: Skill[];
-}
+export interface Skill { name: string; level: number; color: string; years: number; description: string; }
+export interface SkillCategory { id: string; title: string; shortDesc: string; longDesc: string; icon: LucideIcon; accent: { from: string; to: string }; skills: Skill[]; }
 
 export const skillCategories: SkillCategory[] = [
   {
-    id: "frontend",
-    title: "Frontend",
+    id: "frontend", title: "Frontend", icon: Code2, accent: { from: "#3b82f6", to: "#06b6d4" },
     shortDesc: "Modern, erişilebilir ve performanslı kullanıcı arayüzleri.",
-    longDesc:
-      "Kullanıcı deneyimini ön planda tutarak React ekosistemi üzerine geliştirme yapıyorum. Next.js ile SSR/SSG, TypeScript ile tip güvenliği ve Tailwind CSS ile hızlı, tutarlı stil yazımı temel araç setimi oluşturuyor.",
-    icon: Code2,
-    accent: { from: "#3b82f6", to: "#06b6d4" },
+    longDesc: "React ekosistemi üzerinde kullanıcı deneyimini önceliklendiren arayüzler geliştiriyorum. Next.js, TypeScript ve Tailwind CSS günlük araç setimin temelini oluşturuyor.",
     skills: [
-      { name: "React",        level: 90, color: "#61DAFB", years: 3, description: "Hooks, context, custom hook geliştirme ve performans optimizasyonu." },
-      { name: "Next.js",      level: 85, color: "#e4e4e7", years: 2, description: "App Router, SSR/SSG, API routes ve edge runtime." },
-      { name: "TypeScript",   level: 82, color: "#60a5fa", years: 2, description: "Strict mode, utility types, generics ve type narrowing." },
-      { name: "Tailwind CSS", level: 92, color: "#38BDF8", years: 3, description: "Utility-first tasarım, dark mode ve özel animasyonlar." },
-      { name: "HTML / CSS",   level: 95, color: "#f97316", years: 4, description: "Semantik markup, CSS Grid/Flexbox, animasyonlar ve erişilebilirlik." },
-      { name: "Framer Motion", level: 70, color: "#a78bfa", years: 1, description: "Sayfa geçişleri, scroll animasyonları ve gesture etkileşimleri." },
+      { name: "React", level: 90, color: "#61DAFB", years: 3, description: "Hooks, context, custom hook geliştirme ve performans optimizasyonu." },
+      { name: "Next.js", level: 85, color: "#e4e4e7", years: 2, description: "App Router, SSR/SSG ve tip güvenli web uygulamaları." },
+      { name: "TypeScript", level: 82, color: "#60a5fa", years: 2, description: "Strict mode, utility types, generics ve type narrowing." },
+      { name: "Tailwind CSS", level: 92, color: "#38BDF8", years: 3, description: "Responsive tasarım, dark mode ve özel animasyonlar." },
+      { name: "React Native", level: 70, color: "#61DAFB", years: 1, description: "Expo ile iOS ve Android için veri odaklı mobil uygulamalar." },
+      { name: "HTML / CSS", level: 95, color: "#f97316", years: 4, description: "Semantik markup, CSS Grid/Flexbox ve erişilebilirlik." },
     ],
   },
   {
-    id: "backend",
-    title: "Backend",
-    shortDesc: "REST ve veri katmanı konularında öğreniyorum; Kotlin ve Spring Boot ile adım adım ilerliyorum.",
-    longDesc:
-      "Backend tarafında henüz başlangıç seviyesindeyim. Kotlin ve Spring Boot ile küçük projeler ve REST uçları deniyorum; PostgreSQL, Node.js ve temel kimlik doğrulama konularında pratik yapmaya odaklanıyorum.",
-    icon: Server,
-    accent: { from: "#10b981", to: "#6366f1" },
+    id: "backend", title: "Backend", icon: Server, accent: { from: "#10b981", to: "#6366f1" },
+    shortDesc: "Güvenli REST API’ler, veri modelleri ve iş akışları.",
+    longDesc: "NestJS ve Express.js ile API’ler, Prisma ve PostgreSQL ile veri katmanları geliştiriyorum. Kimlik doğrulama, yetkilendirme, dokümantasyon ve container tabanlı geliştirme akışlarında pratik deneyime sahibim.",
     skills: [
-      { name: "Kotlin",       level: 28, color: "#fb923c", years: 0, description: "Temel sözdizimi, sınıflar ve coroutines'e giriş." },
-      { name: "Spring Boot",  level: 25, color: "#86efac", years: 0, description: "REST controller, proje yapısı ve dependency injection öğreniyorum." },
-      { name: "Node.js",      level: 32, color: "#84cc16", years: 1, description: "Basit Express sunucuları ve async/await ile pratik." },
-      { name: "PostgreSQL",   level: 30, color: "#818cf8", years: 0, description: "İlişkisel model ve temel SQL sorguları." },
-      { name: "REST API",     level: 35, color: "#34d399", years: 1, description: "HTTP metodları ve JSON API temelleri." },
-      { name: "JWT / Auth",   level: 22, color: "#fbbf24", years: 0, description: "Token kavramı ve basit doğrulama akışlarına giriş." },
+      { name: "NestJS", level: 72, color: "#ef4444", years: 1, description: "Modüler REST API, DTO doğrulama, Swagger ve JWT akışları." },
+      { name: "Express.js", level: 68, color: "#a3a3a3", years: 1, description: "Middleware, REST uçları ve hata yönetimi." },
+      { name: "Prisma", level: 70, color: "#5eead4", years: 1, description: "Şema tasarımı, migration, ilişki modelleme ve sorgular." },
+      { name: "PostgreSQL", level: 68, color: "#818cf8", years: 1, description: "İlişkisel veri modelleme, SQL ve erişim politikaları." },
+      { name: "REST API", level: 75, color: "#34d399", years: 1, description: "Kaynak odaklı endpoint tasarımı ve OpenAPI dokümantasyonu." },
+      { name: "JWT / Auth", level: 70, color: "#fbbf24", years: 1, description: "Access/refresh token, rol tabanlı erişim ve oturum akışları." },
     ],
   },
   {
-    id: "araclar",
-    title: "Araçlar & DevOps",
+    id: "mobile", title: "Mobil Geliştirme", icon: Cpu, accent: { from: "#a855f7", to: "#ec4899" },
+    shortDesc: "Tek kod tabanıyla iOS ve Android için mobil deneyimler.",
+    longDesc: "React Native / Expo ve Flutter / Dart ile; API entegrasyonu, kimlik doğrulama ve bildirim akışları içeren mobil uygulamalar geliştiriyorum.",
+    skills: [
+      { name: "React Native", level: 70, color: "#61DAFB", years: 1, description: "Expo, mobil navigasyon ve REST API entegrasyonu." },
+      { name: "Expo", level: 68, color: "#a78bfa", years: 1, description: "Cihaz testi, geliştirme build’leri ve uygulama akışları." },
+      { name: "Flutter", level: 65, color: "#38BDF8", years: 1, description: "Widget tabanlı arayüzler ve mobil uygulama mimarisi." },
+      { name: "Dart", level: 65, color: "#60a5fa", years: 1, description: "Null safety, asenkron işlemler ve uygulama katmanları." },
+      { name: "Push Notifications", level: 60, color: "#f87171", years: 1, description: "Cihaz kaydı ve bildirim tercihleriyle entegrasyon." },
+    ],
+  },
+  {
+    id: "araclar", title: "Araçlar & DevOps", icon: Wrench, accent: { from: "#f59e0b", to: "#ef4444" },
     shortDesc: "Geliştirme süreçlerini hızlandıran araç ve altyapı bilgisi.",
-    longDesc:
-      "Günlük geliştirme iş akışımı Git ile yönetiyor, Docker ile containerize ediyor, Postman ile test ediyorum. CI/CD süreçleri ve bulut platformları konusunda temel bilgiye sahibim.",
-    icon: Wrench,
-    accent: { from: "#f59e0b", to: "#ef4444" },
+    longDesc: "Git ile sürüm kontrolü yapıyor; Docker ile yerel geliştirme ortamları kuruyor ve Postman ile API sözleşmelerini test ediyorum.",
     skills: [
-      { name: "Git / GitHub",  level: 88, color: "#f97316", years: 3, description: "Branch stratejisi, PR süreci, rebase ve conflict çözümü." },
-      { name: "Docker",        level: 65, color: "#60a5fa", years: 1, description: "Image oluşturma, compose ve temel container yönetimi." },
-      { name: "VS Code",       level: 95, color: "#4ade80", years: 4, description: "Extension geliştirme, snippet'lar ve workspace konfigürasyonu." },
-      { name: "Postman",       level: 85, color: "#f97316", years: 2, description: "API test, collection oluşturma ve environment yönetimi." },
-      { name: "Figma",         level: 60, color: "#a78bfa", years: 1, description: "Tasarım inceleme, prototip ve component inspect." },
-      { name: "Linux / CLI",   level: 70, color: "#e4e4e7", years: 2, description: "Shell scripting, dosya yönetimi ve süreç kontrolü." },
-    ],
-  },
-  {
-    id: "diger",
-    title: "Diğer",
-    shortDesc: "Yazılımın ötesinde: analitik düşünce ve problem çözme.",
-    longDesc:
-      "Python ile veri işleme ve görüntü analizi üzerine çalışmalar yaptım. Agile metodolojisini proje süreçlerinde uyguluyor, İngilizce teknik dokümantasyonu rahatlıkla okuyup yazabiliyorum.",
-    icon: Cpu,
-    accent: { from: "#8b5cf6", to: "#ec4899" },
-    skills: [
-      { name: "Python",        level: 65, color: "#facc15", years: 1, description: "Veri işleme, script otomasyonu ve kütüphane entegrasyonu." },
-      { name: "OpenCV",        level: 55, color: "#34d399", years: 1, description: "Görüntü işleme, bölge tespiti ve filtreleme operasyonları." },
-      { name: "Agile / Scrum", level: 75, color: "#60a5fa", years: 2, description: "Sprint planlaması, daily standup ve retrospektif süreci." },
-      { name: "İngilizce",     level: 80, color: "#f9a8d4", years: 5, description: "Teknik doküman okuma/yazma ve asenkron iletişim." },
-      { name: "Algoritma",     level: 70, color: "#a78bfa", years: 2, description: "Veri yapıları, zaman karmaşıklığı analizi ve problem çözme." },
-      { name: "UI / UX",       level: 68, color: "#38BDF8", years: 2, description: "Kullanıcı odaklı tasarım prensipleri ve erişilebilirlik standartları." },
+      { name: "Git / GitHub", level: 88, color: "#f97316", years: 3, description: "Branch stratejisi, PR süreci, rebase ve conflict çözümü." },
+      { name: "Docker", level: 70, color: "#60a5fa", years: 1, description: "Image oluşturma, Compose ve yerel servis yönetimi." },
+      { name: "Postman", level: 85, color: "#f97316", years: 2, description: "API testleri, collection ve environment yönetimi." },
+      { name: "Supabase", level: 68, color: "#34d399", years: 1, description: "Auth, PostgreSQL, RLS ve yerel geliştirme akışları." },
+      { name: "Redis", level: 55, color: "#f87171", years: 1, description: "Önbellekleme ve arka plan işlerinde temel kullanım." },
+      { name: "Linux / CLI", level: 70, color: "#e4e4e7", years: 2, description: "Shell komutları, dosya yönetimi ve süreç kontrolü." },
     ],
   },
 ];
 
-export function getCategoryById(id: string): SkillCategory | undefined {
-  return skillCategories.find((c) => c.id === id);
-}
-
+export function getCategoryById(id: string): SkillCategory | undefined { return skillCategories.find((category) => category.id === id); }
 export function getLevel(level: number): { label: string; color: string } {
-  if (level >= 90) return { label: "Uzman",       color: "#34d399" };
-  if (level >= 75) return { label: "İleri",        color: "#60a5fa" };
-  if (level >= 55) return { label: "Orta",         color: "#fbbf24" };
-  return            { label: "Başlangıç",           color: "#f87171" };
+  if (level >= 90) return { label: "Uzman", color: "#34d399" };
+  if (level >= 75) return { label: "İleri", color: "#60a5fa" };
+  if (level >= 55) return { label: "Orta", color: "#fbbf24" };
+  return { label: "Başlangıç", color: "#f87171" };
 }

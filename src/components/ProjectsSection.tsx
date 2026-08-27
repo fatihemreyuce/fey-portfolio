@@ -46,6 +46,36 @@ const STATUS_MAP = {
 } as const;
 
 const PROJECT_EN: Record<string, { title: string; shortDesc: string; category: "Frontend" | "Backend" | "Fullstack" }> = {
+  tahminmetre: {
+    title: "Öngörü",
+    shortDesc: "A social, gamified mobile experience for making predictions about current topics.",
+    category: "Fullstack",
+  },
+  kelepir: {
+    title: "Kelepir",
+    shortDesc: "A game-price comparison platform with favorites and price alerts.",
+    category: "Fullstack",
+  },
+  bridge: {
+    title: "Bridge",
+    shortDesc: "A mobile app for coordinating family care, medication, appointments, tasks, and notifications.",
+    category: "Fullstack",
+  },
+  "coltsoft-panel": {
+    title: "Coltsoft Panel",
+    shortDesc: "A multi-tenant operations panel for inventory, accounts, warehouses, and purchasing.",
+    category: "Fullstack",
+  },
+  "fitness-app": {
+    title: "Fitness App",
+    shortDesc: "A mobile app for workout logging, exercise libraries, and training history.",
+    category: "Fullstack",
+  },
+  "aycicegi-spirali": {
+    title: "Sunflower Spiral",
+    shortDesc: "An interactive desktop application visualizing Fibonacci, the golden ratio, and graph theory.",
+    category: "Frontend",
+  },
   "blog-app": {
     title: "BlogApp Platform",
     shortDesc: "Modern article writing and management platform. SEO-focused Next.js frontend with a robust Spring Boot backend.",
@@ -177,6 +207,11 @@ function ProjectCard({ project, index, locale }: { project: Project; index: numb
             >
               {localized?.category ?? project.category}
             </span>
+            {project.visibility === "private" && (
+              <span className="rounded-lg border border-amber-400/40 bg-amber-100/90 px-2 py-1 text-[10px] font-bold text-amber-900 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-300">
+                {locale === "en" ? "Private project" : "Özel proje"}
+              </span>
+            )}
           </div>
 
           <div className={cn("flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-full border", status.color)}>
@@ -246,6 +281,7 @@ function ProjectCard({ project, index, locale }: { project: Project; index: numb
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
               className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-100 bg-zinc-50/80 text-zinc-600 shadow-sm transition-all duration-200 hover:border-zinc-200 hover:bg-zinc-100/80 hover:text-zinc-900 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-none dark:hover:border-white/20 dark:hover:bg-white/[0.08] dark:hover:text-white"
+              aria-label={`${project.title} GitHub`}
             >
               <Github className="h-4 w-4" />
             </a>
@@ -258,6 +294,7 @@ function ProjectCard({ project, index, locale }: { project: Project; index: numb
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
               className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-100 bg-zinc-50/80 text-zinc-600 shadow-sm transition-all duration-200 hover:border-zinc-200 hover:bg-zinc-100/80 hover:text-zinc-900 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-none dark:hover:border-white/20 dark:hover:bg-white/[0.08] dark:hover:text-white"
+              aria-label={`${project.title} ${locale === "en" ? "live demo" : "canlı demo"}`}
             >
               <ExternalLink className="h-4 w-4" />
             </a>

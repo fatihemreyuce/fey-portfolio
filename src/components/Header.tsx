@@ -110,7 +110,7 @@ export function Header() {
                   Fatih Emre Yüce
                 </AnimatedGradientText>
                 <span className="hidden pt-0.5 text-[9px] uppercase tracking-[0.2em] text-zinc-500 xl:block">
-                  Frontend Developer
+                  Full-Stack Developer
                 </span>
               </div>
             </Link>

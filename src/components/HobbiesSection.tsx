@@ -131,6 +131,13 @@ const EN_HOBBY_BY_ID: Record<VisualKind, Pick<Hobby, "title" | "description" | "
 /* ─── Visual components ─────────────────────────────── */
 
 function TerminalVisual() {
+  const syntaxColor: Record<string, string> = {
+    "#e4e4e7": "var(--terminal-code)",
+    "#60a5fa": "var(--terminal-keyword)",
+    "#fbbf24": "var(--terminal-function)",
+    "#c084fc": "var(--terminal-declaration)",
+    "#86efac": "var(--terminal-component)",
+  };
   const lines = [
     { tokens: [{ c: "#60a5fa", t: "import " }, { c: "#e4e4e7", t: "{ useState } " }, { c: "#60a5fa", t: "from " }, { c: "#86efac", t: "'react'" }] },
     { tokens: [] },
@@ -156,7 +163,7 @@ function TerminalVisual() {
             <span className="text-zinc-700 w-4 text-right mr-3 shrink-0 text-[10px]">{li + 1}</span>
             <span>
               {line.tokens.map((tok, ti) => (
-                <span key={ti} style={{ color: tok.c }}>{tok.t}</span>
+                <span key={ti} style={{ color: syntaxColor[tok.c] ?? tok.c }}>{tok.t}</span>
               ))}
               {li === lines.length - 1 && (
                 <span

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useActionState, useRef, useState, useEffect, useCallback } from "react";
 import {
   Mail,
   MapPin,
@@ -9,12 +9,16 @@ import {
   ArrowRight,
   Copy,
   Check,
+  LoaderCircle,
+  Send,
+  MessageSquare,
 } from "lucide-react";
 import { AnimatedGradientText } from "@/components/magicui/animated-gradient-text";
 import { Meteors } from "@/components/magicui/meteors";
 import { Instagram, Github, Linkedin, Twitter } from "@/components/icons/social";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/components/I18nProvider";
+import { sendContactEmail, type ContactResult } from "@/app/actions/contact";
 import type { ReactNode } from "react";
 
 const EMAIL = "fatihemreyuce@gmail.com";
@@ -56,7 +60,7 @@ function ContactSpread() {
       color: "#60a5fa",
       content: (copy: () => void, isCopied: boolean) => (
         <div className="flex flex-wrap items-center gap-2">
-          <a href={`mailto:${EMAIL}`} className="text-base font-medium text-zinc-100 hover:text-white sm:text-lg">
+          <a href={`mailto:${EMAIL}`} className="min-w-0 break-all text-sm font-medium leading-snug text-zinc-100 hover:text-white sm:text-base">
             {EMAIL}
           </a>
           <button
@@ -109,13 +113,15 @@ function ContactSpread() {
       </p>
 
       {/* Üç sütun — kart yok, sadece dikey çizgi ile bölünmüş */}
-      <div className="mt-12 grid grid-cols-1 gap-0 sm:grid-cols-3 sm:gap-0">
+      <div className="mt-12 grid grid-cols-2 gap-0">
         {contactItems.map(({ icon: Icon, label, color, content }, i) => (
           <div
             key={label}
             className={[
-              "py-8 sm:py-6 sm:px-6 lg:px-10",
-              i > 0 ? "border-t border-white/10 sm:border-t-0 sm:border-l" : "",
+              "min-w-0 py-6",
+              i === 0 ? "col-span-2 border-b border-white/10 pb-7" : "",
+              i === 1 ? "pr-5" : "",
+              i === 2 ? "border-l border-white/10 pl-5" : "",
             ].join(" ")}
           >
             <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/10" style={{ background: `${color}12` }}>
@@ -158,7 +164,7 @@ function ContactSpread() {
 
         <a
           href={`mailto:${EMAIL}`}
-          className="group/mail inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-emerald-600 px-8 py-3.5 text-sm font-semibold text-white! [&_*]:text-white! shadow-[0_0_28px_rgba(59,130,246,0.2)] transition-all duration-300 hover:shadow-[0_0_40px_rgba(59,130,246,0.35)] hover:brightness-110 lg:w-auto lg:min-w-[240px]"
+          className="hidden"
         >
           <Mail className="h-4 w-4 shrink-0" />
           <span className="text-white!">
@@ -167,6 +173,62 @@ function ContactSpread() {
           <ArrowRight className="h-4 w-4 shrink-0 transition-transform duration-200 group-hover/mail:translate-x-0.5" />
         </a>
       </div>
+    </div>
+  );
+}
+
+const initialContactState: ContactResult = { success: false };
+
+function ContactForm() {
+  const { locale } = useI18n();
+  const isEn = locale === "en";
+  const [state, formAction, isPending] = useActionState(sendContactEmail, initialContactState);
+  const inputClass = "mt-2 w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-3 text-sm text-zinc-900 outline-none transition placeholder:text-zinc-400 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 dark:border-white/10 dark:bg-white/[0.04] dark:text-white dark:placeholder:text-zinc-600";
+
+  return (
+    <div className="rounded-2xl border border-zinc-200/90 bg-white/90 p-5 shadow-xl shadow-cyan-950/[0.06] backdrop-blur-sm dark:border-white/10 dark:bg-zinc-900/70 dark:shadow-black/20 sm:p-7">
+      <div className="mb-6 flex items-start gap-3">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-300">
+          <MessageSquare className="h-5 w-5" aria-hidden="true" />
+        </div>
+        <div>
+          <h3 className="text-lg font-bold text-zinc-900 dark:text-white">{isEn ? "Start a conversation" : "Mesajınızı gönderin"}</h3>
+          <p className="mt-0.5 text-sm text-zinc-600 dark:text-zinc-400">{isEn ? "I will get back to you within 24 hours." : "En geç 24 saat içinde dönüş yaparım."}</p>
+        </div>
+      </div>
+
+      <form action={formAction} className="space-y-4">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-200">
+            {isEn ? "Name" : "Ad soyad"}
+            <input className={inputClass} name="name" required maxLength={100} autoComplete="name" placeholder={isEn ? "Your name" : "Adınız"} />
+          </label>
+          <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-200">
+            {isEn ? "Email" : "E-posta"}
+            <input className={inputClass} name="email" type="email" required maxLength={254} autoComplete="email" placeholder="ornek@email.com" />
+          </label>
+        </div>
+        <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-200">
+          {isEn ? "Subject" : "Konu"}
+          <input className={inputClass} name="subject" required maxLength={160} placeholder={isEn ? "How can I help?" : "Size nasıl yardımcı olabilirim?"} />
+        </label>
+        <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-200">
+          {isEn ? "Message" : "Mesaj"}
+          <textarea className={`${inputClass} min-h-32 resize-y`} name="message" required minLength={10} maxLength={5000} placeholder={isEn ? "Tell me a little about your project..." : "Projenizden kısaca bahsedin..."} />
+        </label>
+        <label className="sr-only" aria-hidden="true">
+          Website
+          <input name="website" tabIndex={-1} autoComplete="off" />
+        </label>
+
+        {state.error && <p role="alert" className="rounded-lg border border-red-500/20 bg-red-500/10 px-3 py-2 text-sm text-red-600 dark:text-red-300">{state.error}</p>}
+        {state.success && <p role="status" className="rounded-lg border border-emerald-500/20 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-700 dark:text-emerald-300">{isEn ? "Thanks — your message has been sent." : "Teşekkürler — mesajınız gönderildi."}</p>}
+
+        <button type="submit" disabled={isPending} className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 px-5 py-3 text-sm font-semibold text-white! [&_*]:text-white! shadow-lg shadow-blue-500/20 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60">
+          {isPending ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+          {isPending ? (isEn ? "Sending..." : "Gönderiliyor...") : (isEn ? "Send message" : "Mesajı gönder")}
+        </button>
+      </form>
     </div>
   );
 }
@@ -243,7 +305,10 @@ export function ContactSection() {
             transition: "opacity 0.7s ease 0.1s, transform 0.7s ease 0.1s",
           }}
         >
-          <ContactSpread />
+          <div className="grid items-start gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-10">
+            <ContactSpread />
+            <ContactForm />
+          </div>
         </div>
       </div>
     </section>

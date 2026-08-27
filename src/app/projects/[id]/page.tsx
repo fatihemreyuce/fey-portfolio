@@ -69,6 +69,42 @@ const PROJECT_DETAIL_EN: Record<
     features: string[];
   }
 > = {
+  tahminmetre: {
+    title: "Öngörü",
+    shortDesc: "A social, gamified mobile experience for making predictions about current topics.",
+    longDesc: "Foresight is a full-stack mobile application where users join open predictions, follow outcomes, earn points for correct answers, and appear on a leaderboard. The management side covers the full prediction lifecycle: draft, publish, close, resolve, and cancel.",
+    features: ["Refreshable JWT sessions and role-based access", "Category-based discovery and prediction history", "Points system and leaderboard", "Push-notification device registration", "Prediction lifecycle management", "Swagger / OpenAPI API contract"],
+  },
+  kelepir: {
+    title: "Kelepir",
+    shortDesc: "A game-price comparison platform with favorites and price alerts.",
+    longDesc: "Kelepir is an open-source web application that compares game prices across digital stores using the IsThereAnyDeal API. Users can save favorite games, set a target price, and receive an email when the condition is met.",
+    features: ["Cross-store live price comparison", "Price history and lowest-price tracking", "Favorites and target-price alerts", "HTTP-only cookie sessions", "Scheduled checks and email notifications", "Live responsive Turkish interface"],
+  },
+  bridge: {
+    title: "Bridge",
+    shortDesc: "A mobile app for coordinating family care, medication, appointments, tasks, and notifications.",
+    longDesc: "Bridge is a full-stack mobile app built to simplify daily care coordination for families. It brings medication, appointments, tasks, notifications, and emergency flows together under a secure family-membership model.",
+    features: ["Family membership and invitations", "Medication, appointment, and task management", "Device notifications and family preferences", "Emergency and care coordination", "Secure JWT API access", "Docker Compose local environment"],
+  },
+  "coltsoft-panel": {
+    title: "Coltsoft Panel",
+    shortDesc: "A multi-tenant operations panel for inventory, accounts, warehouses, and purchasing.",
+    longDesc: "Coltsoft Panel is a comprehensive operations system for managing inventory, accounts, warehouses, purchasing, and reporting. Its multi-tenant architecture and role-based access model support secure collaboration between teams.",
+    features: ["Multi-tenant architecture and RBAC", "Customer and account management", "Inventory, warehouse, and barcode workflows", "Purchasing and invoicing", "Reports, filtering, and exports", "Documented delivery workflow"],
+  },
+  "fitness-app": {
+    title: "Fitness App",
+    shortDesc: "A mobile app for workout logging, exercise libraries, and training history.",
+    longDesc: "Fitness App helps users record their workouts and monitor progress. It is built around a Supabase data model with RLS policies and seeded exercise data.",
+    features: ["Ready-to-use exercise library", "Sets, reps, and weight logging", "Training-history tracking", "Supabase Auth and Row Level Security", "Local Docker/Supabase workflow", "Expo testing for iOS and Android"],
+  },
+  "aycicegi-spirali": {
+    title: "Sunflower Spiral",
+    shortDesc: "An interactive desktop application visualizing Fibonacci, the golden ratio, and graph theory.",
+    longDesc: "Sunflower Spiral is an academic project that models sunflower seed arrangements through Vogel's formula, the golden angle, and directed graphs. It turns mathematical concepts into an interactive visual experience.",
+    features: ["Spiral generation with Vogel's formula", "Golden-angle and Fibonacci visualizations", "Convergence charts and adjacency matrix", "Structural analysis through a graph model"],
+  },
   "blog-app": {
     title: "BlogApp Platform",
     shortDesc:
@@ -219,6 +255,11 @@ export default async function ProjectDetailPage({
                   >
                     {category}
                   </span>
+                  {project.visibility === "private" && (
+                    <span className="rounded-lg border border-amber-400/25 bg-amber-400/10 px-2.5 py-1 text-xs font-bold text-amber-300">
+                      {isEn ? "Private project" : "Özel proje"}
+                    </span>
+                  )}
                   {project.status !== "development" && (
                     <div className={`flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border ${status.color}`}>
                       <StatusIcon className="w-3 h-3" />
@@ -378,6 +419,7 @@ export default async function ProjectDetailPage({
                   <div className="p-4 space-y-3">
                     {[
                       { label: isEn ? "Category" : "Kategori",  value: category },
+                      { label: isEn ? "Visibility" : "Erişim", value: project.visibility === "private" ? (isEn ? "Private" : "Özel") : (isEn ? "Public" : "Açık kaynak") },
                       ...(project.status !== "development"
                         ? [{
                             label: isEn ? "Status" : "Durum",

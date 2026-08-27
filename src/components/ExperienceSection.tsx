@@ -35,6 +35,20 @@ interface TimelineItem {
 
 const items: TimelineItem[] = [
   {
+    id: "collbrai",
+    type: "experience",
+    title: "Full-Stack Developer",
+    organization: "CollbrAİ",
+    period: "Günümüz",
+    location: "İstanbul",
+    description:
+      "CollbrAİ'de ürün odaklı web uygulamalarının frontend ve backend geliştirme süreçlerinde çalışıyorum.",
+    tags: ["Full-Stack Development", "Web Uygulamaları", "API Entegrasyonu", "Ekip Çalışması"],
+    current: true,
+    icon: Briefcase,
+    accent: { from: "#8b5cf6", to: "#06b6d4" },
+  },
+  {
     id: "internship",
     type: "experience",
     title: "Donanım Stajyeri",
@@ -85,6 +99,14 @@ const FILTERS = [
 ] as const;
 
 const EN_BY_ID: Record<string, Pick<TimelineItem, "title" | "organization" | "location" | "description" | "tags">> = {
+  collbrai: {
+    title: "Full-Stack Developer",
+    organization: "CollbrAİ",
+    location: "Istanbul",
+    description:
+      "I work on the frontend and backend development of product-focused web applications at CollbrAİ.",
+    tags: ["Full-Stack Development", "Web Applications", "API Integration", "Team Collaboration"],
+  },
   internship: {
     title: "Hardware Intern",
     organization: "Adem Ceylan Final Technical College (Internship)",

@@ -4,12 +4,8 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import {
   Code2,
   Layers,
-  Zap,
   MapPin,
-  Calendar,
-  Globe,
   Server,
-  Cpu,
   Database,
   Palette,
   Terminal,
@@ -17,7 +13,6 @@ import {
   ArrowRight,
   Download,
   Briefcase,
-  GitBranch,
   Star,
   Rocket,
 } from "lucide-react";
@@ -39,21 +34,18 @@ interface Tech {
 }
 
 const techStack: Tech[] = [
-  { name: "React",       icon: Code2,    hexColor: "#61DAFB", category: "frontend" },
-  { name: "Next.js",     icon: Layers,   hexColor: "#e4e4e7", category: "frontend" },
-  { name: "TypeScript",  icon: Terminal, hexColor: "#60a5fa", category: "frontend" },
-  { name: "Tailwind",    icon: Palette,  hexColor: "#38BDF8", category: "frontend" },
-  { name: "Node.js",     icon: Server,   hexColor: "#86efac", category: "backend"  },
-  { name: "PostgreSQL",  icon: Database, hexColor: "#818cf8", category: "backend"  },
-  { name: "Kotlin",      icon: Cpu,      hexColor: "#fb923c", category: "backend"  },
-  { name: "Spring Boot", icon: Zap,      hexColor: "#86efac", category: "backend"  },
+  { name: "Next.js",      icon: Layers,   hexColor: "#e4e4e7", category: "frontend" },
+  { name: "TypeScript",   icon: Terminal, hexColor: "#60a5fa", category: "frontend" },
+  { name: "NestJS",       icon: Server,   hexColor: "#ef4444", category: "backend"  },
+  { name: "Prisma",       icon: Database, hexColor: "#5eead4", category: "backend"  },
+  { name: "React Native", icon: Code2,    hexColor: "#61DAFB", category: "frontend" },
 ];
 
 const stats = [
-  { label: "Proje",       value: 3,   suffix: "+", icon: Briefcase, gradient: "from-blue-500 to-cyan-400"     },
-  { label: "Teknoloji",   value: 20,  suffix: "+", icon: Star,      gradient: "from-violet-500 to-purple-400" },
-  { label: "Yıl Deneyim", value: 1,   suffix: "+", icon: Rocket,    gradient: "from-emerald-500 to-green-400" },
-  { label: "Commit",      value: 500, suffix: "+", icon: GitBranch, gradient: "from-orange-500 to-amber-400"  },
+  { label: "Proje",       value: 6,   suffix: "+", icon: Briefcase, gradient: "from-blue-500 to-cyan-400"     },
+  { label: "Platform",    value: 2,   suffix: "",  icon: Layers,    gradient: "from-violet-500 to-purple-400" },
+  { label: "Ana Teknoloji", value: 5, suffix: "",  icon: Star,      gradient: "from-emerald-500 to-green-400" },
+  { label: "Aktif Rol",   value: 1,   suffix: "",  icon: Rocket,    gradient: "from-orange-500 to-amber-400"  },
 ];
 
 const orbitItems: { icon: LucideIcon; angle: number; color: string }[] = [
@@ -165,7 +157,7 @@ function ProfileCard3D() {
         }}
       >
         {/* ── Header: avatar area ── */}
-        <div className="relative flex h-52 items-center justify-center overflow-hidden">
+        <div className="relative flex h-44 items-center justify-center overflow-hidden">
           {/* BG gradient */}
           <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-indigo-950/80 to-emerald-950" />
 
@@ -223,12 +215,12 @@ function ProfileCard3D() {
         </div>
 
         {/* ── Body ── */}
-        <div className="relative z-10 space-y-4 p-5" style={{ transform: "translateZ(20px)" }}>
+        <div className="relative z-10 space-y-3 p-4" style={{ transform: "translateZ(20px)" }}>
           {/* Name & role */}
           <div className="text-center">
-            <p className="text-base font-bold text-white">Fatih Emre Yüce</p>
-            <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-blue-400/95">
-              Frontend Developer
+            <p className="text-base font-bold text-zinc-900 dark:text-white">Fatih Emre Yüce</p>
+            <p className="mt-1 text-[10px] font-semibold leading-relaxed uppercase tracking-[0.12em] text-blue-400/95">
+              Frontend, Backend & Mobile Developer
             </p>
           </div>
 
@@ -239,27 +231,43 @@ function ProfileCard3D() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
               </span>
-              <span className="text-[11px] text-emerald-400 font-medium">{isEn ? "Open to Projects" : "Projelere Açık"}</span>
+              <span className="text-[11px] font-medium text-emerald-700 dark:text-emerald-400">{isEn ? "Open to collaborations" : "Yeni iş birliklerine açık"}</span>
             </div>
           </div>
 
-          {/* Info rows — opak zemin, alttaki dekorasyon görünmez */}
-          <div className="space-y-2">
-            {[
-              { icon: MapPin,   text: isEn ? "Turkey" : "Türkiye" },
-              { icon: Calendar, text: isEn ? "1+ Years Experience" : "1+ Yıl Deneyim" },
-              { icon: Globe,    text: isEn ? "Remote & Full-time" : "Uzaktan & Tam Zamanlı" },
-            ].map(({ icon: Icon, text }) => (
-              <div
-                key={text}
-                className="flex items-center gap-3 rounded-xl border border-zinc-200/90 bg-slate-50/90 px-3.5 py-2.5 transition-colors hover:border-zinc-300 hover:bg-white dark:border-white/[0.07] dark:bg-zinc-900/85 dark:hover:border-white/12 dark:hover:bg-zinc-900/95"
-              >
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white/[0.05]">
-                  <Icon className="h-3.5 w-3.5 text-zinc-400" />
-                </span>
-                <span className="text-xs font-medium text-zinc-300">{text}</span>
+          <div className="rounded-2xl border border-violet-500/15 bg-violet-500/[0.06] p-3 dark:border-violet-400/15 dark:bg-violet-400/[0.06]">
+            <div className="flex items-center gap-2.5">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-violet-500/12 text-violet-600 dark:text-violet-300">
+                <Briefcase className="h-4 w-4" />
+              </span>
+              <div className="min-w-0">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-violet-600 dark:text-violet-300">{isEn ? "Currently" : "Şu anda"}</p>
+                <p className="truncate text-xs font-bold text-zinc-800 dark:text-zinc-100">{isEn ? "Full-Stack Developer at CollbrAİ" : "CollbrAİ'de Full-Stack Developer"}</p>
               </div>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-1.5">
+            {["Next.js", "NestJS", "React Native"].map((tech) => (
+              <span key={tech} className="rounded-full border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-[10px] font-semibold text-zinc-600 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-zinc-300">
+                {tech}
+              </span>
             ))}
+          </div>
+
+          <div className="flex items-center justify-center gap-2 text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
+            <span className="inline-flex items-center gap-1"><MapPin className="h-3.5 w-3.5" />{isEn ? "Istanbul, TR" : "İstanbul, TR"}</span>
+            <span aria-hidden="true" className="text-zinc-300 dark:text-zinc-600">•</span>
+            <span>{isEn ? "Remote-friendly" : "Uzaktan çalışmaya uygun"}</span>
+          </div>
+
+          <div className="grid grid-cols-2 gap-2">
+            <Link href="/#projects" className="inline-flex h-10 items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 px-3 text-xs font-semibold text-white shadow-sm transition-transform duration-200 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-zinc-950">
+              {isEn ? "Projects" : "Projeler"}<ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+            </Link>
+            <a href="https://www.linkedin.com/in/fatih-emre-y%C3%BCce-3b0538355/" target="_blank" rel="noopener noreferrer" className="inline-flex h-10 items-center justify-center rounded-xl border border-zinc-200 bg-zinc-50 px-3 text-xs font-semibold text-zinc-700 transition-colors hover:border-blue-300 hover:bg-blue-50 hover:text-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-zinc-200 dark:hover:border-blue-400/40 dark:hover:bg-blue-400/10 dark:hover:text-white dark:focus-visible:ring-offset-zinc-950">
+              LinkedIn
+            </a>
           </div>
         </div>
 
@@ -336,7 +344,7 @@ function SkillBadge({ name, icon: Icon, hexColor }: Tech) {
     <div
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
-      className="relative flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl border border-white/[0.07] bg-white/[0.04] hover:bg-white/[0.08] hover:border-white/15 transition-all duration-200 cursor-default overflow-hidden"
+      className="relative flex items-center gap-2.5 overflow-hidden rounded-xl border border-zinc-200 bg-white px-3.5 py-2.5 transition-all duration-200 hover:border-zinc-300 hover:bg-zinc-50 dark:border-white/[0.07] dark:bg-white/[0.04] dark:hover:border-white/15 dark:hover:bg-white/[0.08]"
       style={{
         transform:  hov ? "translateY(-2px)" : "translateY(0px)",
         transition: "transform 0.2s ease, background 0.2s, border-color 0.2s",
@@ -352,7 +360,7 @@ function SkillBadge({ name, icon: Icon, hexColor }: Tech) {
         }}
       />
       <Icon className="w-4 h-4 relative z-10 shrink-0" style={{ color: readableOnLightSurface(hexColor) }} />
-      <span className="text-sm font-medium text-zinc-300 relative z-10">{name}</span>
+      <span className="relative z-10 text-sm font-medium text-zinc-700 dark:text-zinc-300">{name}</span>
     </div>
   );
 }
@@ -361,6 +369,7 @@ function SkillBadge({ name, icon: Icon, hexColor }: Tech) {
 
 export function AboutSection() {
   const { dict, locale } = useI18n();
+  const isEn             = locale === "en";
   const ref              = useRef<HTMLElement>(null);
   const [visible, setVisible] = useState(false);
 
@@ -380,8 +389,8 @@ export function AboutSection() {
     return () => obs.disconnect();
   }, []);
 
-  const frontendTechs = techStack.filter((t) => t.category === "frontend");
-  const backendTechs  = techStack.filter((t) => t.category === "backend");
+  const frontendTechs = techStack.filter((tech) => tech.category === "frontend");
+  const backendTechs = techStack.filter((tech) => tech.category === "backend");
 
   return (
     <section
@@ -446,7 +455,7 @@ export function AboutSection() {
               className="flex min-w-0 flex-col gap-0 text-4xl font-bold leading-[1.06] tracking-tight sm:text-[2.75rem] sm:leading-[1.12]"
               aria-label="Kod Yazan; vurgu metni dönüşümlü: ürün, detay, performans ve deneyim odaklı ifadeler. Geliştirici."
             >
-              <span className="text-white">{dict.about.titleTop}</span>
+              <span className="text-zinc-900 dark:text-white">{dict.about.titleTop}</span>
               <span className="min-h-0 min-w-0 leading-[1.06] sm:leading-[1.12]">
                 <TypewriterGradientText
                   phrases={dict.about.phrases}
@@ -457,11 +466,11 @@ export function AboutSection() {
                   pauseAfterTypeMs={2600}
                 />
               </span>
-              <span className="text-white">{dict.about.titleBottom}</span>
+              <span className="text-zinc-900 dark:text-white">{dict.about.titleBottom}</span>
             </h2>
 
             {/* Bio */}
-            <p className="text-zinc-400 leading-relaxed max-w-lg">{dict.about.bio}</p>
+            <p className="max-w-lg leading-relaxed text-zinc-600 dark:text-zinc-400">{dict.about.bio}</p>
 
             {/* Skills — grouped */}
             <div className="space-y-3">
@@ -490,6 +499,19 @@ export function AboutSection() {
               </div>
             </div>
 
+            <div className="grid gap-3 sm:grid-cols-3">
+              {[
+                { label: isEn ? "Current role" : "Aktif rol", value: isEn ? "Full-Stack Developer at CollbrAİ" : "CollbrAİ’de Full-Stack Developer" },
+                { label: isEn ? "Product focus" : "Ürün odağı", value: isEn ? "Web, API, and mobile" : "Web, API ve mobil" },
+                { label: isEn ? "Collaboration" : "İş birliği", value: isEn ? "Remote-friendly" : "Uzaktan çalışmaya uygun" },
+              ].map((item) => (
+                <div key={item.label} className="rounded-2xl border border-zinc-200 bg-white/80 p-3.5 shadow-sm dark:border-white/[0.08] dark:bg-white/[0.03]">
+                  <p className="mb-1 text-[10px] font-bold tracking-[0.14em] text-violet-600 uppercase dark:text-violet-300">{item.label}</p>
+                  <p className="text-xs font-medium leading-relaxed text-zinc-700 dark:text-zinc-300">{item.value}</p>
+                </div>
+              ))}
+            </div>
+
             {/* Stats */}
             <div className="grid grid-cols-4 gap-2">
               {stats.map((s) => (
@@ -500,11 +522,11 @@ export function AboutSection() {
                     locale === "en"
                       ? s.label === "Proje"
                         ? "Projects"
-                        : s.label === "Teknoloji"
-                          ? "Technologies"
-                          : s.label === "Yıl Deneyim"
-                            ? "Years Exp."
-                            : "Commits"
+                        : s.label === "Platform"
+                          ? "Platforms"
+                          : s.label === "Ana Teknoloji"
+                            ? "Core Tech"
+                            : "Active Role"
                       : s.label
                   }
                   started={visible}

@@ -554,7 +554,7 @@ function StatsSection() {
 
 function FeaturedSection() {
   const { ref, vis } = useInView(0.08);
-  const featured = projects.find((p) => p.status === "live") ?? projects[0]!;
+  const featured = projects.find((p) => p.featured) ?? projects.find((p) => p.status === "live") ?? projects[0]!;
 
   return (
     <section ref={ref as React.RefObject<HTMLElement>} className="relative py-24 overflow-hidden border-b border-zinc-200 dark:border-white/5">
